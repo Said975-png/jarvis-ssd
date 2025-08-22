@@ -63,7 +63,7 @@ function ChatRobotModel({ isVisible }: { isVisible: boolean }) {
         object={scene}
         rotation={[0, 0, 0]}
         scale={[1.2, 1.2, 1.2]}
-        position={[0, -0.1, 0]}
+        position={[0, -0.3, 0]}
       />
     </group>
   )
