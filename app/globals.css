@@ -753,8 +753,9 @@ body {
   }
 
   .scroll-animated-robot {
-    width: 70vw;
-    opacity: 0.4;
+    width: 60vw;
+    right: 5vw;
+    opacity: 0.5;
   }
 }
 
@@ -766,9 +767,9 @@ body {
   }
 
   .scroll-animated-robot {
-    width: 80vw;
-    right: -20vw;
-    opacity: 0.3;
+    width: 70vw;
+    right: -10vw;
+    opacity: 0.4;
   }
 
   .hero-content::before {
