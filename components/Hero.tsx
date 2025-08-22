@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
@@ -36,11 +37,32 @@ export default function Hero() {
             <div className="nav-logo">
               <span className="logo-text">JARVIS</span>
             </div>
-            <div className="nav-links">
+
+            {/* Desktop Navigation */}
+            <div className="nav-links desktop-nav">
               <a href="#services" className="nav-link">Services</a>
               <a href="#about" className="nav-link">About</a>
               <a href="#contact" className="nav-link">Contact</a>
               <button className="cta-button">Get Started</button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="mobile-menu-button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
+            </button>
+
+            {/* Mobile Navigation */}
+            <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+              <a href="#services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</a>
+              <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
+              <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
+              <button className="mobile-cta-button" onClick={() => setIsMobileMenuOpen(false)}>Get Started</button>
             </div>
           </nav>
 
