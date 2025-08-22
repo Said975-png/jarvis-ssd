@@ -750,6 +750,11 @@ body {
     width: 70%;
     opacity: 0.4;
   }
+
+  .scroll-animated-robot {
+    width: 70vw;
+    opacity: 0.4;
+  }
 }
 
 @media (max-width: 768px) {
@@ -757,6 +762,12 @@ body {
     width: 80%;
     opacity: 0.3;
     right: -20%;
+  }
+
+  .scroll-animated-robot {
+    width: 80vw;
+    right: -20vw;
+    opacity: 0.3;
   }
 
   .hero-content::before {
