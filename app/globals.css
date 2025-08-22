@@ -2026,6 +2026,16 @@ canvas {
   stroke-width: 2;
 }
 
+.modern-ai-avatar:hover .ai-avatar-container {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.modern-ai-avatar:hover .ai-avatar-image {
+  filter: brightness(1.1) contrast(1.2);
+}
+
 .chat-header-text {
   display: flex;
   flex-direction: column;
