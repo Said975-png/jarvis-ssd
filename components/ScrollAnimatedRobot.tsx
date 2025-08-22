@@ -1,0 +1,53 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
+
+const Robot3D = dynamic(() => import('./Robot3D'), {
+  ssr: false,
+  loading: () => <div className="robot-loading" />
+})
+
+export default function ScrollAnimatedRobot() {
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [currentSection, setCurrentSection] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const windowHeight = window.innerHeight
+
+      // Determine current section (0 = hero, 1 = advantages, 2 = pricing)
+      const section = Math.floor(scrollTop / windowHeight)
+      setCurrentSection(Math.min(section, 2))
+
+      // Calculate progress for robot movement between sections
+      let progress = 0
+
+      if (scrollTop < windowHeight) {
+        // First section - no movement yet
+        progress = 0
+      } else if (scrollTop < windowHeight * 2) {
+        // Moving from first to second section
+        progress = (scrollTop - windowHeight * 0.5) / (windowHeight * 0.8)
+        progress = Math.max(0, Math.min(progress, 1))
+      } else {
+        // Moving from second to third section
+        const secondToThirdProgress = (scrollTop - windowHeight * 1.5) / (windowHeight * 0.8)
+        progress = 1 + Math.max(0, Math.min(secondToThirdProgress, 1))
+      }
+
+      setScrollProgress(progress)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Call once to set initial position
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div className="scroll-animated-robot">
+      <Robot3D scrollProgress={scrollProgress} currentSection={currentSection} />
+    </div>
+  )
+}

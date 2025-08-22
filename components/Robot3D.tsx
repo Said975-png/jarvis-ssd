@@ -5,22 +5,52 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, OrbitControls, Environment } from '@react-three/drei'
 import * as THREE from 'three'
 
-function RobotModel() {
+interface Robot3DProps {
+  scrollProgress: number
+  currentSection?: number
+}
+
+function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: number; currentSection?: number }) {
   const groupRef = useRef<THREE.Group>(null)
   const { scene } = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
 
   useFrame((state) => {
     if (groupRef.current) {
       // Slow floating animation
-      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1
+      const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
+      const baseY = -1 + floatY
+
+      // Animate position based on scroll progress
+      let targetX, targetY, targetZ
+
+      if (scrollProgress <= 1) {
+        // First to second section
+        targetX = THREE.MathUtils.lerp(1, -0.5, scrollProgress)
+        targetY = THREE.MathUtils.lerp(baseY, baseY + 0.3, scrollProgress)
+        targetZ = THREE.MathUtils.lerp(-1, 0.5, scrollProgress)
+      } else {
+        // Second to third section
+        const secondProgress = scrollProgress - 1
+        targetX = THREE.MathUtils.lerp(-0.5, 0, secondProgress)
+        targetY = THREE.MathUtils.lerp(baseY + 0.3, baseY - 0.5, secondProgress)
+        targetZ = THREE.MathUtils.lerp(0.5, -0.5, secondProgress)
+      }
+
+      // Smooth interpolation
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.05)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.05)
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.05)
+
+      // Rotation animation
+      const rotationProgress = Math.min(scrollProgress, 2)
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1 + (rotationProgress * Math.PI * 0.25)
     }
   })
 
   return (
-    <group ref={groupRef} position={[2, -1, -2]} scale={[0.8, 0.8, 0.8]}>
-      <primitive 
-        object={scene} 
+    <group ref={groupRef} scale={[0.8, 0.8, 0.8]}>
+      <primitive
+        object={scene}
         rotation={[0, Math.PI * 0.2, 0]}
       />
     </group>
@@ -35,13 +65,13 @@ function Loader() {
   )
 }
 
-export default function Robot3D() {
+export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
   return (
     <div className="robot-3d-container">
       <Canvas
-        camera={{ 
-          position: [0, 0, 5], 
-          fov: 45,
+        camera={{
+          position: [0, 0, 4],
+          fov: 50,
           near: 0.1,
           far: 1000
         }}
@@ -70,7 +100,7 @@ export default function Robot3D() {
           <Environment preset="night" />
           
           {/* Robot Model */}
-          <RobotModel />
+          <RobotModel scrollProgress={scrollProgress} currentSection={currentSection} />
           
           {/* Controls - disabled for background effect */}
           <OrbitControls 
@@ -81,12 +111,6 @@ export default function Robot3D() {
           />
         </Suspense>
       </Canvas>
-      
-      <Suspense fallback={<Loader />}>
-        <div style={{ display: 'none' }}>
-          <RobotModel />
-        </div>
-      </Suspense>
     </div>
   )
 }
