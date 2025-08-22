@@ -1770,7 +1770,7 @@ canvas {
 .chat-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: #000000;
   backdrop-filter: blur(20px);
   z-index: 9999;
   display: flex;
@@ -1797,7 +1797,7 @@ canvas {
 .chat-container {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a, #111111);
+  background: #000000;
   border-radius: 0;
   border: none;
   box-shadow: none;
@@ -1897,8 +1897,8 @@ canvas {
 }
 
 .chat-avatar {
-  width: 5rem;
-  height: 5rem;
+  width: 3rem;
+  height: 3rem;
   background: linear-gradient(135deg, #0ea5e9, #06b6d4);
   border-radius: 50%;
   display: flex;
