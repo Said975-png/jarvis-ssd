@@ -10,11 +10,17 @@ const Robot3D = dynamic(() => import('./Robot3D'), {
 
 export default function ScrollAnimatedRobot() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY
       const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+
+      // Show robot only on first two sections
+      const shouldShow = scrollTop < windowHeight * 2
+      setIsVisible(shouldShow)
 
       // Calculate progress for robot movement between sections
       // Start moving when scrolled 20% of first screen, complete at 80%
@@ -33,6 +39,8 @@ export default function ScrollAnimatedRobot() {
     handleScroll() // Call once to set initial position
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  if (!isVisible) return null
 
   return (
     <div className="scroll-animated-robot">
