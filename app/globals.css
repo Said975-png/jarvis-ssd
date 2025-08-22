@@ -1897,8 +1897,8 @@ canvas {
 }
 
 .chat-avatar {
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 5rem;
   background: linear-gradient(135deg, #0ea5e9, #06b6d4);
   border-radius: 50%;
   display: flex;
@@ -1910,6 +1910,8 @@ canvas {
 
 .chat-avatar-3d {
   background: transparent;
+  width: 6rem;
+  height: 6rem;
 }
 
 .chat-avatar-transition {
@@ -1930,32 +1932,7 @@ canvas {
   transform-origin: center;
 }
 
-.chat-robot-container::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(45deg, #0ea5e9, #06b6d4, #8b5cf6, #0ea5e9);
-  border-radius: 50%;
-  z-index: -1;
-  animation: robotGlow 3s ease-in-out infinite;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-
-.chat-robot-container.fade-in::before {
-  opacity: 0.6;
-}
-
-@keyframes robotGlow {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-    filter: blur(4px);
-  }
-  50% {
-    transform: scale(1.1) rotate(180deg);
-    filter: blur(6px);
-  }
-}
+/* Убираем фоновые эффекты для более чистого вида */
 
 .chat-robot-3d {
   width: 100%;
