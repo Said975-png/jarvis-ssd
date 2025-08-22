@@ -10,20 +10,31 @@ const Robot3D = dynamic(() => import('./Robot3D'), {
 
 export default function ScrollAnimatedRobot() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [currentSection, setCurrentSection] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY
       const windowHeight = window.innerHeight
 
-      // Calculate progress for robot movement between sections
-      // Start moving when scrolled 30% of first screen, complete when entering second section
-      const startPoint = windowHeight * 0.3
-      const endPoint = windowHeight * 1.2
+      // Determine current section (0 = hero, 1 = advantages, 2 = pricing)
+      const section = Math.floor(scrollTop / windowHeight)
+      setCurrentSection(Math.min(section, 2))
 
+      // Calculate progress for robot movement between sections
       let progress = 0
-      if (scrollTop >= startPoint) {
-        progress = Math.min((scrollTop - startPoint) / (endPoint - startPoint), 1)
+
+      if (scrollTop < windowHeight) {
+        // First section - no movement yet
+        progress = 0
+      } else if (scrollTop < windowHeight * 2) {
+        // Moving from first to second section
+        progress = (scrollTop - windowHeight * 0.5) / (windowHeight * 0.8)
+        progress = Math.max(0, Math.min(progress, 1))
+      } else {
+        // Moving from second to third section
+        const secondToThirdProgress = (scrollTop - windowHeight * 1.5) / (windowHeight * 0.8)
+        progress = 1 + Math.max(0, Math.min(secondToThirdProgress, 1))
       }
 
       setScrollProgress(progress)
