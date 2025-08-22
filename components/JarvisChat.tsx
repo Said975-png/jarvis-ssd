@@ -85,19 +85,7 @@ export default function JarvisChat() {
   }
 
   const toggleChat = () => {
-    if (!isOpen) {
-      setIsOpen(true)
-      // Задержка для плавного появления 3D модели
-      setTimeout(() => {
-        setShow3DRobot(true)
-      }, 300)
-    } else {
-      setShow3DRobot(false)
-      // Задержка перед закрытием чата
-      setTimeout(() => {
-        setIsOpen(false)
-      }, 400)
-    }
+    setIsOpen(!isOpen)
   }
 
   return (
