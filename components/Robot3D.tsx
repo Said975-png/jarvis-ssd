@@ -81,12 +81,6 @@ export default function Robot3D() {
           />
         </Suspense>
       </Canvas>
-      
-      <Suspense fallback={<Loader />}>
-        <div style={{ display: 'none' }}>
-          <RobotModel />
-        </div>
-      </Suspense>
     </div>
   )
 }
