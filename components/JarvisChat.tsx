@@ -1,13 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
-import dynamic from 'next/dynamic'
-
-const ChatRobot3D = dynamic(() => import('./ChatRobot3D'), {
-  ssr: false,
-  loading: () => null
-})
+import { MessageCircle, X, Send, Bot, User, Sparkles, Zap } from 'lucide-react'
 
 interface Message {
   id: string
