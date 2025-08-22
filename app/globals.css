@@ -850,6 +850,7 @@ canvas {
 .scroll-animated-robot canvas {
   overflow: visible !important;
   clip-path: none !important;
+  pointer-events: none !important;
 }
 
 /* Additional responsive improvements for small screens */
