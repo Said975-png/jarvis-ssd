@@ -1670,7 +1670,7 @@ canvas {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 .chat-button {
