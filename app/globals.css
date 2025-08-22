@@ -1802,6 +1802,49 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-avatar-3d {
+  background: transparent;
+}
+
+.chat-avatar-transition {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-robot-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.chat-robot-3d {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.fade-in {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: scale(0.3) rotate(180deg);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chat-avatar-icon {
