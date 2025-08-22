@@ -47,7 +47,7 @@ export default function ScrollAnimatedRobot() {
 
   return (
     <div className="scroll-animated-robot">
-      <Robot3D scrollProgress={scrollProgress} />
+      <Robot3D scrollProgress={scrollProgress} currentSection={currentSection} />
     </div>
   )
 }
