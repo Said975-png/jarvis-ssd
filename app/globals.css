@@ -1812,9 +1812,8 @@ canvas {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+  background: transparent;
   opacity: 0;
-  animation: containerGlow 1s ease-in-out 0.3s forwards;
 }
 
 @keyframes epicSlideUp {
