@@ -8,6 +8,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: visible;
 }
 
 body {
@@ -750,27 +751,36 @@ body {
 /* Mobile 3D optimizations */
 @media (max-width: 1024px) {
   .robot-3d-container {
-    width: 70%;
+    width: 120%;
+    right: -15%;
+    top: -15%;
+    height: 130%;
     opacity: 0.4;
   }
 
   .scroll-animated-robot {
-    width: 55vw;
-    right: 2vw;
+    width: 65vw;
+    right: -10vw;
+    top: -15vh;
+    height: 130vh;
     opacity: 0.6;
   }
 }
 
 @media (max-width: 768px) {
   .robot-3d-container {
-    width: 80%;
+    width: 140%;
     opacity: 0.3;
-    right: -20%;
+    right: -30%;
+    top: -20%;
+    height: 140%;
   }
 
   .scroll-animated-robot {
-    width: 65vw;
-    right: -5vw;
+    width: 80vw;
+    right: -15vw;
+    top: -20vh;
+    height: 140vh;
     opacity: 0.5;
   }
 
@@ -796,6 +806,25 @@ body {
   .hero-content::before {
     background: rgba(0, 0, 0, 0.2);
   }
+}
+
+/* Ensure no element clips the 3D robot */
+main {
+  overflow: visible !important;
+}
+
+canvas {
+  overflow: visible !important;
+}
+
+.robot-3d-container canvas {
+  overflow: visible !important;
+  clip-path: none !important;
+}
+
+.scroll-animated-robot canvas {
+  overflow: visible !important;
+  clip-path: none !important;
 }
 
 /* Additional responsive improvements for small screens */
