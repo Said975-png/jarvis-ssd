@@ -56,9 +56,9 @@ export default function Robot3D({ scrollProgress = 0 }: Robot3DProps) {
   return (
     <div className="robot-3d-container">
       <Canvas
-        camera={{ 
-          position: [0, 0, 5], 
-          fov: 45,
+        camera={{
+          position: [0, 0, 4],
+          fov: 50,
           near: 0.1,
           far: 1000
         }}
