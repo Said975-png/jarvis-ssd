@@ -45,30 +45,45 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
       const baseY = -1 + floatY
 
-      // Animate position based on scroll progress
-      let targetX, targetY, targetZ
+      // Creative movement patterns based on scroll progress
+      let targetX, targetY, targetZ, targetRotationY, targetScale
 
       if (scrollProgress <= 1) {
-        // First to second section
-        targetX = THREE.MathUtils.lerp(1, -0.5, scrollProgress)
-        targetY = THREE.MathUtils.lerp(baseY, baseY + 0.3, scrollProgress)
-        targetZ = THREE.MathUtils.lerp(-1, 0.5, scrollProgress)
+        // First to second section - Spiral entry from top-right
+        const progress = scrollProgress
+        const spiralAngle = progress * Math.PI * 2
+
+        targetX = Math.cos(spiralAngle) * (2 - progress * 1.5) // Spiral in from right
+        targetY = baseY + Math.sin(spiralAngle) * 0.5 + (1 - progress) * 3 // Start from top
+        targetZ = Math.sin(spiralAngle) * 0.3 + progress * 0.5
+        targetRotationY = spiralAngle * 0.5
+        targetScale = 0.5 + progress * 0.3 // Grow as it approaches
       } else {
-        // Second to third section
+        // Second to third section - Figure-8 movement
         const secondProgress = scrollProgress - 1
-        targetX = THREE.MathUtils.lerp(-0.5, 0, secondProgress)
-        targetY = THREE.MathUtils.lerp(baseY + 0.3, baseY - 0.5, secondProgress)
-        targetZ = THREE.MathUtils.lerp(0.5, -0.5, secondProgress)
+        const figure8Angle = secondProgress * Math.PI * 3
+
+        targetX = Math.sin(figure8Angle) * 1.2 // Figure-8 horizontal
+        targetY = baseY + Math.sin(figure8Angle * 2) * 0.4 - secondProgress * 0.8 // Figure-8 vertical + descent
+        targetZ = Math.cos(figure8Angle) * 0.6
+        targetRotationY = Math.PI * 0.5 + figure8Angle * 0.3
+        targetScale = 0.8 + Math.sin(secondProgress * Math.PI) * 0.2 // Pulsating scale
       }
 
-      // Smooth interpolation
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.05)
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.05)
-      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.05)
+      // Smooth interpolation with different speeds for more organic movement
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.03)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.04)
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.035)
 
-      // Rotation animation
-      const rotationProgress = Math.min(scrollProgress, 2)
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1 + (rotationProgress * Math.PI * 0.25)
+      // Dynamic rotation with scroll-based movement
+      const baseRotation = Math.sin(state.clock.elapsedTime * 0.15) * 0.05
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY + baseRotation, 0.02)
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.03
+      groupRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.2) * 0.02
+
+      // Dynamic scaling
+      const currentScale = targetScale || 0.8
+      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, currentScale, 0.03))
     }
   })
 
