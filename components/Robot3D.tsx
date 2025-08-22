@@ -45,45 +45,56 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
       const baseY = -1 + floatY
 
-      // Creative movement patterns based on scroll progress
+      // Engaging movement patterns with safe boundaries
       let targetX, targetY, targetZ, targetRotationY, targetScale
 
-      if (scrollProgress <= 1) {
-        // First to second section - Spiral entry from top-right
-        const progress = scrollProgress
-        const spiralAngle = progress * Math.PI * 2
+      // Clamp scroll progress to prevent extreme values
+      const safeScrollProgress = Math.max(0, Math.min(scrollProgress, 2))
 
-        targetX = Math.cos(spiralAngle) * (2 - progress * 1.5) // Spiral in from right
-        targetY = baseY + Math.sin(spiralAngle) * 0.5 + (1 - progress) * 3 // Start from top
-        targetZ = Math.sin(spiralAngle) * 0.3 + progress * 0.5
-        targetRotationY = spiralAngle * 0.5
-        targetScale = 0.5 + progress * 0.3 // Grow as it approaches
+      if (safeScrollProgress <= 1) {
+        // Hero section - Gentle orbit movement
+        const progress = safeScrollProgress
+        const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
+
+        // Keep within safe bounds [-1.5, 1.5] for X and Y
+        targetX = Math.cos(orbitAngle) * (0.8 - progress * 0.3) // Orbit movement, contained
+        targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2 // Gentle vertical movement
+        targetZ = Math.sin(progress * Math.PI) * 0.4 // Forward and back
+        targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
+        targetScale = 0.7 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else {
-        // Second to third section - Figure-8 movement
-        const secondProgress = scrollProgress - 1
-        const figure8Angle = secondProgress * Math.PI * 3
+        // Advantages/Pricing sections - Interactive dance
+        const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
+        const danceTime = state.clock.elapsedTime * 0.3 + secondProgress * 2
 
-        targetX = Math.sin(figure8Angle) * 1.2 // Figure-8 horizontal
-        targetY = baseY + Math.sin(figure8Angle * 2) * 0.4 - secondProgress * 0.8 // Figure-8 vertical + descent
-        targetZ = Math.cos(figure8Angle) * 0.6
-        targetRotationY = Math.PI * 0.5 + figure8Angle * 0.3
-        targetScale = 0.8 + Math.sin(secondProgress * Math.PI) * 0.2 // Pulsating scale
+        // Dancing motion with bounds
+        targetX = Math.sin(danceTime) * 0.6 + Math.cos(danceTime * 0.7) * 0.3 // Dancing left-right
+        targetY = baseY + Math.sin(danceTime * 1.3) * 0.25 + Math.cos(secondProgress * Math.PI) * 0.3 // Up-down dance
+        targetZ = Math.cos(danceTime * 0.9) * 0.4 + secondProgress * 0.2 // Forward-back rhythm
+        targetRotationY = danceTime * 0.4 + Math.sin(danceTime * 0.6) * 0.3
+        targetScale = 0.8 + Math.sin(danceTime * 2) * 0.1 // Rhythmic pulsing
       }
 
-      // Smooth interpolation with different speeds for more organic movement
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.03)
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.04)
-      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.035)
+      // Extra safety clamps to ensure robot stays visible
+      targetX = Math.max(-1.5, Math.min(1.5, targetX))
+      targetY = Math.max(-2, Math.min(2, targetY))
+      targetZ = Math.max(-1, Math.min(1, targetZ))
 
-      // Dynamic rotation with scroll-based movement
-      const baseRotation = Math.sin(state.clock.elapsedTime * 0.15) * 0.05
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY + baseRotation, 0.02)
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.03
-      groupRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.2) * 0.02
+      // Smooth interpolation with organic feel
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.04)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.05)
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.045)
 
-      // Dynamic scaling
-      const currentScale = targetScale || 0.8
-      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, currentScale, 0.03))
+      // Engaging rotation with personality
+      const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY + personalityRotation, 0.03)
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.04 + Math.cos(safeScrollProgress * 2) * 0.02
+      groupRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.15) * 0.03
+
+      // Breathing scale animation
+      const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
+      const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
+      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, finalScale, 0.04))
     }
   })
 
