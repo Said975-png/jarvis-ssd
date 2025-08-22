@@ -62,20 +62,9 @@ function ChatRobotModel({ isVisible }: { isVisible: boolean }) {
       <primitive
         object={scene}
         rotation={[0, 0, 0]}
-        scale={[0.6, 0.6, 0.6]}
-        position={[0, -0.2, 0]}
+        scale={[1.2, 1.2, 1.2]}
+        position={[0, -0.1, 0]}
       />
-      
-      {/* Subtle glow effect */}
-      <mesh position={[0, 0, 0]} scale={[0.8, 0.8, 0.8]}>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshBasicMaterial
-          color="#0ea5e9"
-          transparent
-          opacity={0.1}
-          wireframe={false}
-        />
-      </mesh>
     </group>
   )
 }
