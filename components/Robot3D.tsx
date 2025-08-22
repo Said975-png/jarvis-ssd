@@ -5,22 +5,39 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, OrbitControls, Environment } from '@react-three/drei'
 import * as THREE from 'three'
 
-function RobotModel() {
+interface Robot3DProps {
+  scrollProgress: number
+}
+
+function RobotModel({ scrollProgress }: { scrollProgress: number }) {
   const groupRef = useRef<THREE.Group>(null)
   const { scene } = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
 
   useFrame((state) => {
     if (groupRef.current) {
       // Slow floating animation
-      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1
+      const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
+      const baseY = -1 + floatY
+
+      // Animate position based on scroll progress
+      const targetX = THREE.MathUtils.lerp(2, -2, scrollProgress)
+      const targetY = THREE.MathUtils.lerp(baseY, baseY + 1, scrollProgress)
+      const targetZ = THREE.MathUtils.lerp(-2, 0, scrollProgress)
+
+      // Smooth interpolation
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.05)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.05)
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.05)
+
+      // Rotation animation
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1 + (scrollProgress * Math.PI)
     }
   })
 
   return (
-    <group ref={groupRef} position={[2, -1, -2]} scale={[0.8, 0.8, 0.8]}>
-      <primitive 
-        object={scene} 
+    <group ref={groupRef} scale={[0.8, 0.8, 0.8]}>
+      <primitive
+        object={scene}
         rotation={[0, Math.PI * 0.2, 0]}
       />
     </group>
@@ -35,7 +52,7 @@ function Loader() {
   )
 }
 
-export default function Robot3D() {
+export default function Robot3D({ scrollProgress = 0 }: Robot3DProps) {
   return (
     <div className="robot-3d-container">
       <Canvas
@@ -70,7 +87,7 @@ export default function Robot3D() {
           <Environment preset="night" />
           
           {/* Robot Model */}
-          <RobotModel />
+          <RobotModel scrollProgress={scrollProgress} />
           
           {/* Controls - disabled for background effect */}
           <OrbitControls 
