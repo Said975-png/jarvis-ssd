@@ -1828,11 +1828,40 @@ canvas {
   transform-origin: center;
 }
 
+.chat-robot-container::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #0ea5e9, #06b6d4, #8b5cf6, #0ea5e9);
+  border-radius: 50%;
+  z-index: -1;
+  animation: robotGlow 3s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.chat-robot-container.fade-in::before {
+  opacity: 0.6;
+}
+
+@keyframes robotGlow {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter: blur(4px);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+    filter: blur(6px);
+  }
+}
+
 .chat-robot-3d {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
 .fade-in {
