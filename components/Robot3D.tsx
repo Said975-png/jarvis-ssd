@@ -1,13 +1,55 @@
 'use client'
 
-import { Suspense, useRef, useEffect } from 'react'
+import { Suspense, useRef, useEffect, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, useAnimations, OrbitControls, Environment } from '@react-three/drei'
+import { useGLTF, useAnimations, OrbitControls, Environment, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
 
 interface Robot3DProps {
   scrollProgress: number
   currentSection?: number
+}
+
+// Floating particles around robot
+function RobotParticles({ position }: { position: [number, number, number] }) {
+  const particlesRef = useRef<THREE.Points>(null)
+
+  const particlePositions = useMemo(() => {
+    const positions = new Float32Array(50 * 3)
+    for (let i = 0; i < 50; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 4
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 4
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 4
+    }
+    return positions
+  }, [])
+
+  useFrame((state) => {
+    if (particlesRef.current) {
+      particlesRef.current.rotation.y = state.clock.elapsedTime * 0.1
+      particlesRef.current.position.set(...position)
+    }
+  })
+
+  return (
+    <points ref={particlesRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={50}
+          array={particlePositions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.02}
+        color="#0ea5e9"
+        transparent
+        opacity={0.6}
+        sizeAttenuation={true}
+      />
+    </points>
+  )
 }
 
 function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: number; currentSection?: number }) {
@@ -99,11 +141,37 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   })
 
   return (
-    <group ref={groupRef} scale={[0.8, 0.8, 0.8]}>
+    <group ref={groupRef}>
+      {/* Sparkles effect around robot */}
+      <Sparkles
+        count={30}
+        scale={[3, 3, 3]}
+        size={2}
+        speed={0.3}
+        color="#0ea5e9"
+        opacity={0.4}
+      />
+
+      {/* Floating particles */}
+      <RobotParticles position={[0, 0, 0]} />
+
+      {/* Main robot model */}
       <primitive
         object={scene}
         rotation={[0, Math.PI * 0.2, 0]}
+        scale={[0.8, 0.8, 0.8]}
       />
+
+      {/* Energy field effect */}
+      <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
+        <sphereGeometry args={[1, 16, 16]} />
+        <meshBasicMaterial
+          color="#0ea5e9"
+          transparent
+          opacity={0.05}
+          wireframe={true}
+        />
+      </mesh>
     </group>
   )
 }
@@ -134,23 +202,43 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
-          {/* Lighting */}
-          <ambientLight intensity={0.4} />
-          <directionalLight 
-            position={[10, 10, 5]} 
-            intensity={0.8}
+          {/* Enhanced Lighting */}
+          <ambientLight intensity={0.3} />
+
+          {/* Primary dramatic lighting */}
+          <directionalLight
+            position={[10, 10, 5]}
+            intensity={1.2}
             color="#0ea5e9"
+            castShadow={true}
           />
-          <pointLight 
-            position={[-10, -10, -10]} 
-            intensity={0.3}
+
+          {/* Accent lights for depth */}
+          <pointLight
+            position={[-8, -8, -8]}
+            intensity={0.5}
             color="#3b82f6"
           />
-          
+          <pointLight
+            position={[8, -5, 3]}
+            intensity={0.4}
+            color="#8b5cf6"
+          />
+
+          {/* Moving spotlight for drama */}
+          <spotLight
+            position={[5, 8, 5]}
+            angle={0.3}
+            intensity={0.8}
+            color="#ffffff"
+            penumbra={0.5}
+            castShadow={true}
+          />
+
           {/* Environment for reflections */}
           <Environment preset="night" />
-          
-          {/* Robot Model */}
+
+          {/* Robot Model with effects */}
           <RobotModel scrollProgress={scrollProgress} currentSection={currentSection} />
           
           {/* Controls - disabled for background effect */}
