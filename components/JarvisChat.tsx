@@ -2,6 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
+import dynamic from 'next/dynamic'
+
+const ChatRobot3D = dynamic(() => import('./ChatRobot3D'), {
+  ssr: false,
+  loading: () => null
+})
 
 interface Message {
   id: string
@@ -114,8 +120,13 @@ export default function JarvisChat() {
             {/* Заголовок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
-                <div className="chat-avatar">
-                  <Bot className="chat-avatar-icon" />
+                <div className="chat-avatar chat-avatar-3d">
+                  <div className="chat-avatar-transition">
+                    <Bot className={`chat-avatar-icon ${isOpen ? 'fade-out' : 'fade-in'}`} />
+                    <div className={`chat-robot-container ${isOpen ? 'fade-in' : 'fade-out'}`}>
+                      <ChatRobot3D isVisible={isOpen} />
+                    </div>
+                  </div>
                 </div>
                 <div className="chat-header-text">
                   <h3 className="chat-title">Джарвис</h3>
