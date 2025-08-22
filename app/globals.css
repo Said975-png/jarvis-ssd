@@ -184,16 +184,18 @@ body {
   top: 100%;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.97);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  padding: 2rem 1.5rem;
+  margin-top: 0.5rem;
   transform: translateY(-10px);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 100;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .mobile-nav.open {
@@ -204,21 +206,24 @@ body {
 
 .mobile-nav-link {
   display: block;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   text-decoration: none;
-  padding: 0.75rem 0;
+  padding: 1rem 0;
   font-weight: 500;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  transition: color 0.3s ease;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .mobile-nav-link:hover {
   color: #0ea5e9;
+  padding-left: 0.5rem;
 }
 
 .mobile-nav-link:last-of-type {
   border-bottom: none;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .mobile-cta-button {
@@ -226,16 +231,18 @@ body {
   background: linear-gradient(135deg, #0ea5e9, #3b82f6);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.3);
 }
 
 .mobile-cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 40px rgba(14, 165, 233, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 50px rgba(14, 165, 233, 0.5);
 }
 
 .desktop-nav {
