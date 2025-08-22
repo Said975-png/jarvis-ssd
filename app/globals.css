@@ -2065,12 +2065,6 @@ canvas {
     right: 1.5rem;
   }
 
-  .chat-container {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
-
   .chat-header {
     padding: 1rem 1.5rem;
   }
