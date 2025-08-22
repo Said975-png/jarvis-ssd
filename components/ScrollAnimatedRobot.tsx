@@ -15,14 +15,22 @@ export default function ScrollAnimatedRobot() {
     const handleScroll = () => {
       const scrollTop = window.scrollY
       const windowHeight = window.innerHeight
-      const documentHeight = document.documentElement.scrollHeight - windowHeight
-      
-      // Calculate progress between 0 and 1
-      const progress = Math.min(scrollTop / windowHeight, 1)
+
+      // Calculate progress for robot movement between sections
+      // Start moving when scrolled 20% of first screen, complete at 80%
+      const startPoint = windowHeight * 0.2
+      const endPoint = windowHeight * 0.8
+
+      let progress = 0
+      if (scrollTop >= startPoint) {
+        progress = Math.min((scrollTop - startPoint) / (endPoint - startPoint), 1)
+      }
+
       setScrollProgress(progress)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Call once to set initial position
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
