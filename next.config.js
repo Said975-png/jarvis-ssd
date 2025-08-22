@@ -1,44 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable faster builds and better HMR
-  swcMinify: true,
-  // Headers to handle CORS and development issues
-  async headers() {
-    return [
-      {
-        source: '/_next/:path*',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*',
-          },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization',
-          },
-        ],
-      },
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
-        ],
-      },
-    ]
+  // Improve HMR and development experience
+  experimental: {
+    turbo: false // Disable turbopack for better compatibility
   },
-  // Optimize for development
-  webpack: (config, { dev }) => {
-    if (dev) {
+  // Optimize webpack for development
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      // Better HMR configuration
       config.watchOptions = {
         poll: 1000,
         aggregateTimeout: 300,
+        ignored: ['**/node_modules/**', '**/.git/**']
+      }
+
+      // Ensure proper module resolution
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
       }
     }
     return config
