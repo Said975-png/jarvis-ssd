@@ -2,6 +2,7 @@ import Hero from '@/components/Hero'
 import Advantages from '@/components/Advantages'
 import Pricing from '@/components/Pricing'
 import ScrollAnimatedRobot from '@/components/ScrollAnimatedRobot'
+import JarvisChat from '@/components/JarvisChat'
 import './globals.css'
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         <Advantages />
         <Pricing />
       </main>
+      <JarvisChat />
     </>
   )
 }
