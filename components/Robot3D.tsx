@@ -20,9 +20,20 @@ function RobotModel({ scrollProgress }: { scrollProgress: number }) {
       const baseY = -1 + floatY
 
       // Animate position based on scroll progress
-      const targetX = THREE.MathUtils.lerp(1, -0.5, scrollProgress)
-      const targetY = THREE.MathUtils.lerp(baseY, baseY + 0.3, scrollProgress)
-      const targetZ = THREE.MathUtils.lerp(-1, 0.5, scrollProgress)
+      let targetX, targetY, targetZ
+
+      if (scrollProgress <= 1) {
+        // First to second section
+        targetX = THREE.MathUtils.lerp(1, -0.5, scrollProgress)
+        targetY = THREE.MathUtils.lerp(baseY, baseY + 0.3, scrollProgress)
+        targetZ = THREE.MathUtils.lerp(-1, 0.5, scrollProgress)
+      } else {
+        // Second to third section
+        const secondProgress = scrollProgress - 1
+        targetX = THREE.MathUtils.lerp(-0.5, 0, secondProgress)
+        targetY = THREE.MathUtils.lerp(baseY + 0.3, baseY - 0.5, secondProgress)
+        targetZ = THREE.MathUtils.lerp(0.5, -0.5, secondProgress)
+      }
 
       // Smooth interpolation
       groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.05)
@@ -30,7 +41,8 @@ function RobotModel({ scrollProgress }: { scrollProgress: number }) {
       groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.05)
 
       // Rotation animation
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1 + (scrollProgress * Math.PI * 0.5)
+      const rotationProgress = Math.min(scrollProgress, 2)
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1 + (rotationProgress * Math.PI * 0.25)
     }
   })
 
