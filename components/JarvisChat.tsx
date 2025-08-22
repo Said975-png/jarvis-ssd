@@ -12,7 +12,6 @@ interface Message {
 
 export default function JarvisChat() {
   const [isOpen, setIsOpen] = useState(false)
-  const [show3DRobot, setShow3DRobot] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
