@@ -6,38 +6,38 @@ import { Brain, Zap, Target, TrendingUp, Users, Shield } from 'lucide-react'
 const advantages = [
   {
     icon: Brain,
-    title: "AI-Powered Intelligence",
-    description: "Advanced machine learning algorithms that understand customer behavior and provide personalized experiences for each visitor.",
+    title: "ИИ-интеллект",
+    description: "Продвинутые алгоритмы машинного обучения, которые понимают поведение клиентов и предоставляют персонализированный опыт для каждого посетителя.",
     color: "from-blue-500 to-cyan-500"
   },
   {
     icon: Zap,
-    title: "Lightning Fast Performance",
-    description: "Optimized for speed with 99.9% uptime guarantee. Your customers get instant responses and seamless interactions.",
+    title: "Молниеносная скорость",
+    description: "Оптимизированы для скорости с гарантией 99.9% доступности. Ваши клиенты получают мгновенные ответы и бесшовные взаимодействия.",
     color: "from-yellow-500 to-orange-500"
   },
   {
     icon: Target,
-    title: "Precision Targeting",
-    description: "Smart recommendation engine that increases conversion rates by up to 40% through intelligent product suggestions.",
+    title: "Точное таргетирование",
+    description: "Умная система рекомендаций, которая увеличивает конверсию до 40% благодаря интеллектуальным предложениям товаров.",
     color: "from-purple-500 to-pink-500"
   },
   {
     icon: TrendingUp,
-    title: "Sales Growth Analytics",
-    description: "Real-time insights and detailed analytics help you understand what drives sales and optimize your strategy.",
+    title: "Аналитика роста продаж",
+    description: "Аналитика в реальном времени и подробная статистика помогают понять, что движет продажами и оптимизировать стратегию.",
     color: "from-green-500 to-emerald-500"
   },
   {
     icon: Users,
-    title: "24/7 Customer Support",
-    description: "AI assistant handles customer queries round the clock, reducing response time and improving satisfaction.",
+    title: "Поддержка 24/7",
+    description: "ИИ-ассистент обрабатывает запросы клиентов круглосуточно, сокращая время ответа и повышая удовлетворенность.",
     color: "from-indigo-500 to-blue-500"
   },
   {
     icon: Shield,
-    title: "Enterprise Security",
-    description: "Bank-level security with SSL encryption, GDPR compliance, and advanced fraud protection for your peace of mind.",
+    title: "Корпоративная безопасность",
+    description: "Безопасность банковского уровня с SSL шифрованием, соответствие GDPR и продвинутая защита от мошенничества для вашего спокойствия.",
     color: "from-red-500 to-rose-500"
   }
 ]
@@ -76,10 +76,10 @@ export default function Advantages() {
       <div className="advantages-container">
         <div className="advantages-header">
           <h2 className="advantages-title">
-            Why Choose <span className="gradient-text">JARVIS</span>
+            Почему выбирают <span className="gradient-text">JARVIS</span>
           </h2>
           <p className="advantages-subtitle">
-            Powerful AI-driven solutions that transform your e-commerce business
+            Мощные ИИ-решения, которые трансформируют ваш интернет-бизнес
           </p>
         </div>
 
@@ -107,14 +107,14 @@ export default function Advantages() {
 
         <div className="advantages-cta">
           <button className="primary-button">
-            <span>Get Started Today</span>
+            <span>Начать сегодня</span>
             <svg className="button-arrow" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
             </svg>
           </button>
           <div className="cta-text">
-            <span className="cta-label">Join 500+ successful businesses</span>
-            <span className="cta-subtext">Start your AI-powered transformation today</span>
+            <span className="cta-label">Присоединяйтесь к 500+ успешным компаниям</span>
+            <span className="cta-subtext">Начните свою ИИ-трансформацию сегодня</span>
           </div>
         </div>
       </div>
