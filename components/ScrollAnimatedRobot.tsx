@@ -23,9 +23,9 @@ export default function ScrollAnimatedRobot() {
       setIsVisible(shouldShow)
 
       // Calculate progress for robot movement between sections
-      // Start moving when scrolled 20% of first screen, complete at 80%
-      const startPoint = windowHeight * 0.2
-      const endPoint = windowHeight * 0.8
+      // Start moving when scrolled 30% of first screen, complete when entering second section
+      const startPoint = windowHeight * 0.3
+      const endPoint = windowHeight * 1.2
 
       let progress = 0
       if (scrollTop >= startPoint) {
