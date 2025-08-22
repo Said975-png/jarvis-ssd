@@ -1,8 +1,10 @@
+import Hero from '@/components/Hero'
+import './globals.css'
+
 export default function Home() {
   return (
-    <main style={{ padding: '2rem', fontFamily: 'system-ui' }}>
-      <h1>Welcome to Next.js!</h1>
-      <p>Your app is now working correctly.</p>
+    <main className="min-h-screen">
+      <Hero />
     </main>
   )
 }
