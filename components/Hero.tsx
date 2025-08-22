@@ -41,10 +41,10 @@ export default function Hero() {
 
             {/* Desktop Navigation */}
             <div className="nav-links desktop-nav">
-              <a href="#services" className="nav-link">Services</a>
-              <a href="#about" className="nav-link">About</a>
-              <a href="#contact" className="nav-link">Contact</a>
-              <button className="cta-button">Get Started</button>
+              <a href="#services" className="nav-link">Услуги</a>
+              <a href="#about" className="nav-link">О нас</a>
+              <a href="#contact" className="nav-link">Контакты</a>
+              <button className="cta-button">Начать</button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -60,10 +60,10 @@ export default function Hero() {
 
             {/* Mobile Navigation */}
             <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
-              <a href="#services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</a>
-              <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
-              <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
-              <button className="mobile-cta-button" onClick={() => setIsMobileMenuOpen(false)}>Get Started</button>
+              <a href="#services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Услуги</a>
+              <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>О нас</a>
+              <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Контакты</a>
+              <button className="mobile-cta-button" onClick={() => setIsMobileMenuOpen(false)}>Начать</button>
             </div>
           </nav>
 
@@ -72,46 +72,46 @@ export default function Hero() {
             <div className="hero-badge">
               <span className="badge-text">
                 <Zap className="badge-icon" />
-                AI-Powered Solutions
+                ИИ-решения
               </span>
             </div>
             
             <h1 className="hero-title">
-              We Create <span className="gradient-text">Intelligent</span>
+              Мы создаем <span className="gradient-text">умные</span>
               <br />
-              E-commerce Experiences
+              интернет-магазины
             </h1>
             
             <p className="hero-description">
-              JARVIS builds cutting-edge websites with AI assistants that transform 
-              online stores into intelligent, customer-focused experiences. 
-              Boost sales with automated support, personalized recommendations, and smart interactions.
+              JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
+              обычные интернет-магазины в умные, клиентоориентированные платформы.
+              Увеличьте продажи с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
             <div className="hero-actions">
               <button className="primary-button">
-                <span>Start Your Project</span>
+                <span>Начать проект</span>
                 <svg className="button-arrow" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
                 </svg>
               </button>
               <button className="secondary-button">
-                View Our Work
+                Наши работы
               </button>
             </div>
 
             <div className="hero-stats">
               <div className="stat-item">
                 <span className="stat-number">50+</span>
-                <span className="stat-label">AI-Powered Stores</span>
+                <span className="stat-label">ИИ-магазинов</span>
               </div>
               <div className="stat-item">
                 <span className="stat-number">300%</span>
-                <span className="stat-label">Average Sales Increase</span>
+                <span className="stat-label">Рост продаж</span>
               </div>
               <div className="stat-item">
                 <span className="stat-number">24/7</span>
-                <span className="stat-label">AI Assistant Support</span>
+                <span className="stat-label">ИИ-поддержка</span>
               </div>
             </div>
           </div>
@@ -124,19 +124,19 @@ export default function Hero() {
           <div className="card-icon">
             <MessageCircle className="icon" />
           </div>
-          <div className="card-text">AI Chat Support</div>
+          <div className="card-text">ИИ-чат поддержка</div>
         </div>
         <div className="floating-card card-2">
           <div className="card-icon">
             <BarChart3 className="icon" />
           </div>
-          <div className="card-text">Analytics & Insights</div>
+          <div className="card-text">Аналитика и отчеты</div>
         </div>
         <div className="floating-card card-3">
           <div className="card-icon">
             <Target className="icon" />
           </div>
-          <div className="card-text">Smart Recommendations</div>
+          <div className="card-text">Умные рекомендации</div>
         </div>
       </div>
     </section>
