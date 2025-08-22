@@ -18,8 +18,8 @@ export default function ScrollAnimatedRobot() {
       const windowHeight = window.innerHeight
       const documentHeight = document.documentElement.scrollHeight
 
-      // Show robot only on first two sections
-      const shouldShow = scrollTop < windowHeight * 2
+      // Show robot on first two sections and a bit more
+      const shouldShow = scrollTop < windowHeight * 2.5
       setIsVisible(shouldShow)
 
       // Calculate progress for robot movement between sections
