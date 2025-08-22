@@ -606,14 +606,17 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem 1.5rem;
+    gap: 2rem 1rem;
     margin-top: 3rem;
-    padding: 2rem 0;
+    padding: 2rem 1rem;
+    width: 100%;
+    overflow: visible;
   }
 
   .stat-item {
-    flex: 0 1 calc(50% - 0.75rem);
+    flex: 0 1 calc(50% - 1rem);
     text-align: center;
+    min-width: 0;
   }
 
   .stat-number {
@@ -634,6 +637,7 @@ body {
 @media (max-width: 480px) {
   .hero-container {
     padding: 0 1rem;
+    overflow: visible;
   }
 
   .hero-nav {
@@ -844,6 +848,8 @@ canvas {
   .hero-main {
     padding: 1rem 0 2rem;
     gap: 1.25rem;
+    overflow: visible;
+    width: 100%;
   }
 
   .hero-title {
@@ -868,15 +874,28 @@ canvas {
 
   .hero-stats {
     margin-top: 2rem;
-    gap: 1.25rem 0.75rem;
+    gap: 1.5rem 0.5rem;
+    padding: 1.5rem 0.5rem;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .stat-item {
+    flex: 0 1 calc(50% - 0.5rem);
+    min-width: 0;
+    max-width: calc(50% - 0.5rem);
   }
 
   .stat-number {
     font-size: 1.75rem;
+    white-space: nowrap;
+    overflow: visible;
   }
 
   .stat-label {
     font-size: 0.8rem;
+    line-height: 1.2;
+    word-wrap: break-word;
   }
 
   .badge-text {
