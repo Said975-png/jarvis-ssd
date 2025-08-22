@@ -92,7 +92,19 @@ export default function JarvisChat() {
   }
 
   const toggleChat = () => {
-    setIsOpen(!isOpen)
+    if (!isOpen) {
+      setIsOpen(true)
+      // Задержка для плавного появления 3D модели
+      setTimeout(() => {
+        setShow3DRobot(true)
+      }, 300)
+    } else {
+      setShow3DRobot(false)
+      // Задержка перед закрытием чата
+      setTimeout(() => {
+        setIsOpen(false)
+      }, 400)
+    }
   }
 
   return (
@@ -123,9 +135,9 @@ export default function JarvisChat() {
               <div className="chat-header-info">
                 <div className="chat-avatar chat-avatar-3d">
                   <div className="chat-avatar-transition">
-                    <Bot className={`chat-avatar-icon ${isOpen ? 'fade-out' : 'fade-in'}`} />
-                    <div className={`chat-robot-container ${isOpen ? 'fade-in' : 'fade-out'}`}>
-                      <ChatRobot3D isVisible={isOpen} />
+                    <Bot className={`chat-avatar-icon ${show3DRobot ? 'fade-out' : 'fade-in'}`} />
+                    <div className={`chat-robot-container ${show3DRobot ? 'fade-in' : 'fade-out'}`}>
+                      <ChatRobot3D isVisible={show3DRobot} />
                     </div>
                   </div>
                 </div>
