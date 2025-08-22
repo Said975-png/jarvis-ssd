@@ -7,9 +7,10 @@ import * as THREE from 'three'
 
 interface Robot3DProps {
   scrollProgress: number
+  currentSection?: number
 }
 
-function RobotModel({ scrollProgress }: { scrollProgress: number }) {
+function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: number; currentSection?: number }) {
   const groupRef = useRef<THREE.Group>(null)
   const { scene } = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
 
@@ -64,7 +65,7 @@ function Loader() {
   )
 }
 
-export default function Robot3D({ scrollProgress = 0 }: Robot3DProps) {
+export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
   return (
     <div className="robot-3d-container">
       <Canvas
@@ -99,7 +100,7 @@ export default function Robot3D({ scrollProgress = 0 }: Robot3DProps) {
           <Environment preset="night" />
           
           {/* Robot Model */}
-          <RobotModel scrollProgress={scrollProgress} />
+          <RobotModel scrollProgress={scrollProgress} currentSection={currentSection} />
           
           {/* Controls - disabled for background effect */}
           <OrbitControls 
