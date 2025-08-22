@@ -1,0 +1,47 @@
+.robot-3d-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  opacity: 0.6;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.robot-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.loader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(14, 165, 233, 0.2);
+  border-top: 3px solid #0ea5e9;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .robot-3d-container {
+    width: 80%;
+    opacity: 0.3;
+    right: -20%;
+  }
+}
+
+@media (max-width: 480px) {
+  .robot-3d-container {
+    display: none; /* Hide on very small screens for performance */
+  }
+}
