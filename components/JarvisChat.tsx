@@ -128,12 +128,17 @@ export default function JarvisChat() {
             {/* Заголовок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
-                <div className="chat-avatar chat-avatar-3d">
-                  <div className="chat-avatar-transition">
-                    <Bot className={`chat-avatar-icon ${show3DRobot ? 'fade-out' : 'fade-in'}`} />
-                    <div className={`chat-robot-container ${show3DRobot ? 'fade-in' : 'fade-out'}`}>
-                      <ChatRobot3D isVisible={show3DRobot} />
+                <div className="chat-avatar modern-ai-avatar">
+                  <div className="ai-avatar-container">
+                    <img
+                      src="https://images.pexels.com/photos/18069157/pexels-photo-18069157.png"
+                      alt="AI Assistant"
+                      className="ai-avatar-image"
+                    />
+                    <div className="ai-avatar-overlay">
+                      <Sparkles className="ai-sparkle-icon" />
                     </div>
+                    <div className="ai-avatar-pulse"></div>
                   </div>
                 </div>
                 <div className="chat-header-text">
@@ -209,7 +214,7 @@ export default function JarvisChat() {
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim()}
                   className="chat-send-button"
-                  aria-label="Отправить сообщение"
+                  aria-label="Отправить соо��щение"
                 >
                   <Send className="chat-send-icon" />
                 </button>
