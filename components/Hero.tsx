@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Zap, MessageCircle, BarChart3, Target } from 'lucide-react'
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -69,7 +70,10 @@ export default function Hero() {
           {/* Main hero content */}
           <div className="hero-main">
             <div className="hero-badge">
-              <span className="badge-text">⚡ AI-Powered Solutions</span>
+              <span className="badge-text">
+                <Zap className="badge-icon" />
+                AI-Powered Solutions
+              </span>
             </div>
             
             <h1 className="hero-title">
@@ -117,15 +121,21 @@ export default function Hero() {
       {/* Floating elements */}
       <div className="floating-elements">
         <div className="floating-card card-1">
-          <div className="card-icon">💎</div>
+          <div className="card-icon">
+            <MessageCircle className="icon" />
+          </div>
           <div className="card-text">AI Chat Support</div>
         </div>
         <div className="floating-card card-2">
-          <div className="card-icon">⚡</div>
+          <div className="card-icon">
+            <BarChart3 className="icon" />
+          </div>
           <div className="card-text">Analytics & Insights</div>
         </div>
         <div className="floating-card card-3">
-          <div className="card-icon">🚀</div>
+          <div className="card-icon">
+            <Target className="icon" />
+          </div>
           <div className="card-text">Smart Recommendations</div>
         </div>
       </div>
