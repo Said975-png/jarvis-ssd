@@ -128,18 +128,8 @@ export default function JarvisChat() {
             {/* Заголовок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
-                <div className="chat-avatar modern-ai-avatar">
-                  <div className="ai-avatar-container">
-                    <img
-                      src="https://images.pexels.com/photos/18069157/pexels-photo-18069157.png"
-                      alt="AI Assistant"
-                      className="ai-avatar-image"
-                    />
-                    <div className="ai-avatar-overlay">
-                      <Sparkles className="ai-sparkle-icon" />
-                    </div>
-                    <div className="ai-avatar-pulse"></div>
-                  </div>
+                <div className="chat-avatar">
+                  <Bot className="chat-avatar-icon" />
                 </div>
                 <div className="chat-header-text">
                   <h3 className="chat-title">Джарвис</h3>
