@@ -785,6 +785,10 @@ body {
     display: none; /* Hide on very small screens for performance */
   }
 
+  .scroll-animated-robot {
+    display: none; /* Hide on very small screens for performance */
+  }
+
   .hero-content::before {
     background: rgba(0, 0, 0, 0.2);
   }
