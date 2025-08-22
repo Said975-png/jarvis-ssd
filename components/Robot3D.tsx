@@ -1,8 +1,8 @@
 'use client'
 
-import { Suspense, useRef } from 'react'
+import { Suspense, useRef, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, OrbitControls, Environment } from '@react-three/drei'
+import { useGLTF, useAnimations, OrbitControls, Environment } from '@react-three/drei'
 import * as THREE from 'three'
 
 interface Robot3DProps {
@@ -12,7 +12,32 @@ interface Robot3DProps {
 
 function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: number; currentSection?: number }) {
   const groupRef = useRef<THREE.Group>(null)
-  const { scene } = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
+  const { scene, animations } = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
+  const { actions, mixer } = useAnimations(animations, groupRef)
+
+  useEffect(() => {
+    // Play all available animations
+    if (actions) {
+      Object.values(actions).forEach((action) => {
+        if (action) {
+          action.reset().fadeIn(0.5).play()
+          // Set animation speed based on section
+          action.timeScale = currentSection === 0 ? 1 : 0.7
+        }
+      })
+    }
+
+    return () => {
+      // Cleanup animations on unmount
+      if (actions) {
+        Object.values(actions).forEach((action) => {
+          if (action) {
+            action.fadeOut(0.5)
+          }
+        })
+      }
+    }
+  }, [actions, currentSection])
 
   useFrame((state) => {
     if (groupRef.current) {
