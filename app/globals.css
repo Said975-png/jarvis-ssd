@@ -1923,24 +1923,88 @@ canvas {
   justify-content: center;
 }
 
-.chat-robot-container {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
+/* Modern AI Avatar Styles */
+.modern-ai-avatar {
+  position: relative;
+  animation: aiAvatarPulse 2s ease-in-out infinite;
 }
 
-/* Убираем фоновые эффекты для более чистого вида */
-
-.chat-robot-3d {
+.ai-avatar-container {
+  position: relative;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.ai-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: brightness(0.9) contrast(1.1);
+  transition: all 0.3s ease;
+}
+
+.ai-avatar-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
+  opacity: 0.8;
+}
+
+.ai-sparkle-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #ffffff;
+  animation: sparkle 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.ai-avatar-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  opacity: 0;
+  animation: avatarPulse 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes aiAvatarPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes avatarPulse {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
 }
 
 .fade-in {
