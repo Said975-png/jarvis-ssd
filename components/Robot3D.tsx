@@ -93,6 +93,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   // Handle successful model load
   useEffect(() => {
     if (gltf && gltf.scene && !modelError && !isRetrying) {
+      console.log('Model loaded successfully:', gltf.scene)
       setIsLoaded(true)
       setModelError(false)
     }
@@ -102,6 +103,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   useEffect(() => {
     if (isLoaded) {
       setRetryCount(0)
+      console.log('Model is loaded, retryCount reset')
     }
   }, [isLoaded])
 
@@ -109,6 +111,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   useEffect(() => {
     // Only run if we have actions and the model is loaded
     if (actions && isLoaded && !modelError && !isRetrying) {
+      console.log('Playing animations:', Object.keys(actions))
       Object.values(actions).forEach((action) => {
         if (action) {
           action.reset().play()
@@ -140,19 +143,20 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   }, [actions, currentSection, isLoaded, modelError, isRetrying])
 
-  // Make robot model transparent
+  // Make robot model MORE visible (higher opacity)
   useEffect(() => {
     if (gltf?.scene) {
+      console.log('Setting up materials for model visibility')
       gltf.scene.traverse((child) => {
         if (child.isMesh && child.material) {
           if (Array.isArray(child.material)) {
             child.material.forEach((mat) => {
               mat.transparent = true
-              mat.opacity = 0.4
+              mat.opacity = 0.8 // Much more visible than 0.4
             })
           } else {
             child.material.transparent = true
-            child.material.opacity = 0.4
+            child.material.opacity = 0.8 // Much more visible than 0.4
           }
         }
       })
