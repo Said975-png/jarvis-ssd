@@ -340,12 +340,12 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
     <group ref={fallbackRef} scale={[2, 2, 2]}>
       {/* Sparkles effect around fallback robot */}
       <Sparkles
-        count={30}
+        count={20}
         scale={[3, 3, 3]}
-        size={2}
+        size={1.5}
         speed={0.4}
         color="#0ea5e9"
-        opacity={0.9}
+        opacity={0.3}
       />
 
       {/* Fallback geometric robot body */}
@@ -354,9 +354,9 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshStandardMaterial
           color="#0ea5e9"
           emissive="#0ea5e9"
-          emissiveIntensity={0.3}
+          emissiveIntensity={0.1}
           transparent
-          opacity={0.9}
+          opacity={0.3}
         />
       </mesh>
       {/* Robot head */}
@@ -401,7 +401,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.25}
+          opacity={0.08}
           wireframe={true}
         />
       </mesh>
@@ -412,7 +412,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshBasicMaterial
           color="#3b82f6"
           transparent
-          opacity={0.15}
+          opacity={0.06}
         />
       </mesh>
     </group>
