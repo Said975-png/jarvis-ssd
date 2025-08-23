@@ -63,28 +63,12 @@ export default function CartModal() {
                         <span className="price-currency">{item.currency}</span>
                       </div>
                       <p className="cart-item-description">{item.description}</p>
-                      
-                      <div className="cart-item-features">
-                        <h4 className="features-title">Включено:</h4>
-                        <ul className="features-list">
-                          {item.features.slice(0, 3).map((feature, index) => (
-                            <li key={index} className="feature-item">
-                              {feature}
-                            </li>
-                          ))}
-                          {item.features.length > 3 && (
-                            <li className="feature-item more">
-                              +{item.features.length - 3} еще...
-                            </li>
-                          )}
-                        </ul>
-                      </div>
                     </div>
                     
                     <button
                       className="cart-item-remove"
                       onClick={() => removeItem(item.id)}
-                      aria-label="Удалить из корзины"
+                      aria-label="��далить из корзины"
                     >
                       <Trash2 className="remove-icon" />
                     </button>
