@@ -64,6 +64,7 @@ export default function JarvisChat() {
       recognition.lang = 'ru-RU'
       
       recognition.onstart = () => {
+        console.log('Speech recognition started')
         setIsListening(true)
       }
       
@@ -299,7 +300,7 @@ export default function JarvisChat() {
           <button
             onClick={toggleChat}
             className="chat-button"
-            aria-label="Открыт�� чат с Джарвисом"
+            aria-label="Открыть чат с Джарвисом"
           >
             <MessageCircle className="chat-button-icon" />
             <div className="chat-button-pulse"></div>
@@ -313,7 +314,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект ч��стиц при открытии */}
+          {/* Эффект ч���стиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
