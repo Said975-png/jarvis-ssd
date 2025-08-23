@@ -35,7 +35,9 @@ export default function AdminPage() {
     e.preventDefault()
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true)
-      localStorage.setItem('admin_authenticated', 'true')
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('admin_authenticated', 'true')
+      }
       setPassword('')
     } else {
       alert('Неверный пароль')
@@ -44,7 +46,9 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
-    localStorage.removeItem('admin_authenticated')
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('admin_authenticated')
+    }
   }
 
   const handleStatusUpdate = (orderId: string, newStatus: OrderStatus) => {
@@ -123,7 +127,7 @@ export default function AdminPage() {
             <button
               onClick={() => {
                 console.log('=== ОТЛАДКА АДМИН-ПАНЕЛИ ===')
-                console.log('localStorage jarvis_orders:', localStorage.getItem('jarvis_orders'))
+                console.log('localStorage jarvis_orders:', typeof window !== 'undefined' ? localStorage.getItem('jarvis_orders') : 'undefined')
                 const allOrders = getAllOrders()
                 console.log('getAllOrders() результат:', allOrders)
                 setOrders(allOrders)
@@ -174,9 +178,11 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => {
-                localStorage.removeItem('jarvis_orders')
-                setOrders([])
-                console.log('localStorage очищен')
+                if (typeof window !== 'undefined') {
+                  localStorage.removeItem('jarvis_orders')
+                  setOrders([])
+                  console.log('localStorage очищен')
+                }
               }}
               className="clear-button"
             >
