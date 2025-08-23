@@ -5859,14 +5859,25 @@ canvas {
 
 /* Dashboard Orders Styles */
 .dashboard-section {
-  padding: 2rem;
+  padding: 2.5rem 3rem;
+  max-width: none;
+  width: 100%;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 800;
   color: #ffffff;
-  margin: 0 0 2rem 0;
+  margin: 0 0 2.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  letter-spacing: -0.025em;
+}
+
+.section-title::before {
+  content: '📋';
+  font-size: 1.5rem;
 }
 
 .empty-orders {
