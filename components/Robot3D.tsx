@@ -143,20 +143,19 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   }, [actions, currentSection, isLoaded, modelError, isRetrying])
 
-  // Make robot model MORE visible (higher opacity)
+  // Make robot model transparent
   useEffect(() => {
     if (gltf?.scene) {
-      console.log('Setting up materials for model visibility')
       gltf.scene.traverse((child) => {
         if (child.isMesh && child.material) {
           if (Array.isArray(child.material)) {
             child.material.forEach((mat) => {
               mat.transparent = true
-              mat.opacity = 0.8 // Much more visible than 0.4
+              mat.opacity = 0.3 // More transparent and ethereal
             })
           } else {
             child.material.transparent = true
-            child.material.opacity = 0.8 // Much more visible than 0.4
+            child.material.opacity = 0.3 // More transparent and ethereal
           }
         }
       })
