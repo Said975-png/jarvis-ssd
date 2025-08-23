@@ -43,6 +43,146 @@ export default function JarvisChat() {
     }
   }, [isOpen])
 
+  // Инициализация Speech Recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+      const recognition = new SpeechRecognition()
+
+      recognition.continuous = true
+      recognition.interimResults = true
+      recognition.lang = 'ru-RU'
+
+      recognition.onstart = () => {
+        setIsListening(true)
+      }
+
+      recognition.onresult = (event) => {
+        let finalTranscript = ''
+        let interimTranscript = ''
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript
+          } else {
+            interimTranscript += transcript
+          }
+        }
+
+        if (finalTranscript) {
+          setInputMessage(finalTranscript.trim())
+
+          // Запускаем таймер на секунду молчания
+          if (silenceTimerRef.current) {
+            clearTimeout(silenceTimerRef.current)
+          }
+
+          silenceTimerRef.current = setTimeout(() => {
+            if (finalTranscript.trim()) {
+              stopRecording()
+              // Отправляем сообщение
+              setTimeout(() => {
+                const messageToSend = finalTranscript.trim()
+                if (messageToSend) {
+                  sendMessage(messageToSend)
+                }
+              }, 100)
+            }
+          }, 1000)
+        } else if (interimTranscript) {
+          setInputMessage(interimTranscript.trim())
+        }
+      }
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error)
+        setIsRecording(false)
+        setIsListening(false)
+      }
+
+      recognition.onend = () => {
+        setIsListening(false)
+        if (isRecording) {
+          // Если мы еще записываем, перезапускаем
+          recognition.start()
+        }
+      }
+
+      recognitionRef.current = recognition
+    }
+
+    return () => {
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current)
+      }
+    }
+  }, [isRecording])
+
+  const startRecording = () => {
+    if (recognitionRef.current && !isRecording) {
+      setIsRecording(true)
+      setInputMessage('')
+      recognitionRef.current.start()
+    }
+  }
+
+  const stopRecording = () => {
+    if (recognitionRef.current && isRecording) {
+      setIsRecording(false)
+      recognitionRef.current.stop()
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current)
+      }
+    }
+  }
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      stopRecording()
+    } else {
+      startRecording()
+    }
+  }
+
+  const sendMessage = (message: string) => {
+    if (!message.trim()) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: message,
+      sender: 'user',
+      timestamp: new Date()
+    }
+
+    setMessages(prev => [...prev, userMessage])
+    setInputMessage('')
+    setIsTyping(true)
+
+    // Имитация ответа Джарвиса
+    setTimeout(() => {
+      const jarvisResponses = [
+        'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
+        'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
+        'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
+        'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
+        'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
+      ]
+
+      const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
+
+      const jarvisMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: randomResponse,
+        sender: 'jarvis',
+        timestamp: new Date()
+      }
+
+      setMessages(prev => [...prev, jarvisMessage])
+      setIsTyping(false)
+    }, 1500)
+  }
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return
 
