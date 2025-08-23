@@ -1,17 +1,35 @@
 'use client'
 
+import { useEffect } from 'react'
 import { X, ShoppingCart, Trash2 } from 'lucide-react'
 import { useCart } from './CartContext'
 
 export default function CartModal() {
-  const { 
-    items, 
-    removeItem, 
-    clearCart, 
-    isCartOpen, 
+  const {
+    items,
+    removeItem,
+    clearCart,
+    isCartOpen,
     setIsCartOpen,
-    setIsOrderFormOpen 
+    setIsOrderFormOpen
   } = useCart()
+
+  // Блокировка скролла когда корзина открыта
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflow = 'unset'
+    }
+
+    // Cleanup функция для восстановления скролла
+    return () => {
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflow = 'unset'
+    }
+  }, [isCartOpen])
 
   if (!isCartOpen) return null
 
