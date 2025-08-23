@@ -110,10 +110,8 @@ export default function JarvisChat() {
       
       recognition.onend = () => {
         setIsListening(false)
-        if (isRecording) {
-          // Если мы еще записываем, перезапускаем
-          recognition.start()
-        }
+        // Не перезапускаем автоматически - только если пользователь активно записывает
+        // и запись не была остановлена вручную
       }
       
       recognitionRef.current = recognition
@@ -227,7 +225,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект частиц при открытии */}
+          {/* Эффект ч��стиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
