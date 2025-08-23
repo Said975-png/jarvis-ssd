@@ -216,64 +216,82 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
   })
 
   return (
-    <group ref={fallbackRef}>
+    <group ref={fallbackRef} scale={[2, 2, 2]}>
       {/* Sparkles effect around fallback robot */}
       <Sparkles
-        count={20}
-        scale={[2, 2, 2]}
-        size={1.5}
-        speed={0.3}
+        count={30}
+        scale={[3, 3, 3]}
+        size={2}
+        speed={0.4}
         color="#0ea5e9"
-        opacity={0.6}
+        opacity={0.8}
       />
 
       {/* Fallback geometric robot body */}
       <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[0.8, 1.2, 0.6]} />
+        <boxGeometry args={[1.0, 1.5, 0.8]} />
         <meshStandardMaterial
           color="#0ea5e9"
           emissive="#0ea5e9"
-          emissiveIntensity={0.1}
+          emissiveIntensity={0.3}
           transparent
-          opacity={0.8}
+          opacity={0.9}
         />
       </mesh>
       {/* Robot head */}
-      <mesh position={[0, 0.8, 0]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
+      <mesh position={[0, 1.0, 0]}>
+        <sphereGeometry args={[0.4, 16, 16]} />
         <meshStandardMaterial
           color="#3b82f6"
           emissive="#3b82f6"
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.4}
         />
       </mesh>
       {/* Robot eyes */}
-      <mesh position={[-0.1, 0.85, 0.25]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
+      <mesh position={[-0.15, 1.05, 0.35]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
         <meshBasicMaterial color="#ffffff" />
       </mesh>
-      <mesh position={[0.1, 0.85, 0.25]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
+      <mesh position={[0.15, 1.05, 0.35]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
         <meshBasicMaterial color="#ffffff" />
       </mesh>
       {/* Robot arms */}
-      <mesh position={[-0.7, 0.3, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.8]} />
-        <meshStandardMaterial color="#0ea5e9" />
+      <mesh position={[-0.9, 0.2, 0]}>
+        <cylinderGeometry args={[0.15, 0.15, 1.0]} />
+        <meshStandardMaterial
+          color="#0ea5e9"
+          emissive="#0ea5e9"
+          emissiveIntensity={0.2}
+        />
       </mesh>
-      <mesh position={[0.7, 0.3, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.8]} />
-        <meshStandardMaterial color="#0ea5e9" />
+      <mesh position={[0.9, 0.2, 0]}>
+        <cylinderGeometry args={[0.15, 0.15, 1.0]} />
+        <meshStandardMaterial
+          color="#0ea5e9"
+          emissive="#0ea5e9"
+          emissiveIntensity={0.2}
+        />
       </mesh>
 
       {/* Energy field effect */}
-      <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
-        <sphereGeometry args={[1, 16, 16]} />
+      <mesh position={[0, 0, 0]} scale={[2, 2, 2]}>
+        <sphereGeometry args={[1.2, 16, 16]} />
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.1}
+          opacity={0.15}
           wireframe={true}
+        />
+      </mesh>
+
+      {/* Additional glow effect */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[1.8, 8, 8]} />
+        <meshBasicMaterial
+          color="#3b82f6"
+          transparent
+          opacity={0.05}
         />
       </mesh>
     </group>
