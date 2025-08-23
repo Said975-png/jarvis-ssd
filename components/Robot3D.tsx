@@ -450,7 +450,7 @@ function Loader() {
 
 export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
   return (
-    <div className="robot-3d-container">
+    <div className={styles['robot-3d-container']}>
       <Canvas
         camera={{
           position: [0, 0, 4],
