@@ -2305,7 +2305,7 @@ canvas {
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 .reviews-header {
