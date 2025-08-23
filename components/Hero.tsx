@@ -54,7 +54,7 @@ export default function Hero() {
 
   // Lock scroll when panels are open
   useEffect(() => {
-    if (isContractPanelOpen || isFeaturesPanelOpen || isLoginModalOpen || isRegisterModalOpen) {
+    if (isContractPanelOpen || isFeaturesPanelOpen || isLoginModalOpen || isRegisterModalOpen || isDashboardOpen) {
       document.body.style.overflow = 'hidden'
       document.documentElement.style.overflow = 'hidden'
     } else {
@@ -67,7 +67,7 @@ export default function Hero() {
       document.body.style.overflow = 'unset'
       document.documentElement.style.overflow = 'unset'
     }
-  }, [isContractPanelOpen, isFeaturesPanelOpen, isLoginModalOpen, isRegisterModalOpen])
+  }, [isContractPanelOpen, isFeaturesPanelOpen, isLoginModalOpen, isRegisterModalOpen, isDashboardOpen])
 
   // Handle escape key for panels
   useEffect(() => {
@@ -85,17 +85,20 @@ export default function Hero() {
         if (isRegisterModalOpen) {
           setIsRegisterModalOpen(false)
         }
+        if (isDashboardOpen) {
+          setIsDashboardOpen(false)
+        }
       }
     }
 
-    if (isContractPanelOpen || isFeaturesPanelOpen || isLoginModalOpen || isRegisterModalOpen) {
+    if (isContractPanelOpen || isFeaturesPanelOpen || isLoginModalOpen || isRegisterModalOpen || isDashboardOpen) {
       document.addEventListener('keydown', handleEscape)
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape)
     }
-  }, [isContractPanelOpen, isFeaturesPanelOpen, isLoginModalOpen, isRegisterModalOpen])
+  }, [isContractPanelOpen, isFeaturesPanelOpen, isLoginModalOpen, isRegisterModalOpen, isDashboardOpen])
 
   return (
     <section className="hero-section">
@@ -242,7 +245,7 @@ export default function Hero() {
           <div className="card-icon">
             <MessageCircle className="icon" />
           </div>
-          <div className="card-text">ИИ-чат ��оддержка</div>
+          <div className="card-text">ИИ-чат поддержка</div>
         </div>
         <div className="floating-card card-2">
           <div className="card-icon">
@@ -289,7 +292,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Согласование и предоплата</h3>
                   <p className="step-description">
-                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
+                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам п��иступить к разработке с полной уверенностью.
                   </p>
                 </div>
               </div>
@@ -309,7 +312,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Тестирование и доработки</h3>
                   <p className="step-description">
-                    Проводим полное тестирование функционала, проверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем детали по вашим пожеланиям.
+                    Проводим полное тестирование функционала, ��роверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем детали по вашим пожеланиям.
                   </p>
                 </div>
               </div>
@@ -329,7 +332,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Поддержка и развитие</h3>
                   <p className="step-description">
-                    Предлагаем техническую поддержку проекта, обновления и добавление ��овых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
+                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
                   </p>
                 </div>
               </div>
@@ -367,7 +370,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
+                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с р��ботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
@@ -385,7 +388,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Увеличение продаж в 3 раза</h3>
                   <p className="feature-description">
-                    Магазины с ДЖАРВИС показывают фантастические результаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
+                    Магазины с ДЖАРВИС показывают фантастические результаты. Продажи вырастают в среднем ��а 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
                   </p>
                 </div>
               </div>
