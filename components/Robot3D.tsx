@@ -596,8 +596,8 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
           {/* Environment for reflections */}
           <Environment preset="night" />
 
-          {/* Robot Model with effects */}
-          <RobotModel scrollProgress={scrollProgress} currentSection={currentSection} />
+          {/* Only render robot when canvas is ready */}
+          {canvasReady && <RobotModel scrollProgress={scrollProgress} currentSection={currentSection} />}
 
           {/* Controls - disabled for background effect */}
           <OrbitControls
