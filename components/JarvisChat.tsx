@@ -22,8 +22,12 @@ export default function JarvisChat() {
   ])
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [isListening, setIsListening] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const silenceTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -90,7 +94,7 @@ export default function JarvisChat() {
 
   return (
     <>
-      {/* Кнопка чата в правом ��ижнем углу */}
+      {/* Кнопка чата в правом нижнем углу */}
       {!isOpen && (
         <div className="chat-button-container">
           <button
