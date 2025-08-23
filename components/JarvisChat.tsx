@@ -111,8 +111,17 @@ export default function JarvisChat() {
       
       recognition.onend = () => {
         setIsListening(false)
-        // Не перезапускаем автоматически - только если пользователь активно записывает
-        // и запись не была остановлена вручную
+        // Перезапускаем только если запись действительно активна
+        // и не была остановлена пользователем
+        if (isRecordingRef.current) {
+          try {
+            recognition.start()
+          } catch (error) {
+            console.log('Failed to restart recognition:', error)
+            setIsRecording(false)
+            isRecordingRef.current = false
+          }
+        }
       }
       
       recognitionRef.current = recognition
@@ -256,7 +265,7 @@ export default function JarvisChat() {
                 </div>
                 <div className="chat-header-text">
                   <h3 className="chat-title">Джарвис</h3>
-                  <p className="chat-status">ИИ-ассистент • Онлайн</p>
+                  <p className="chat-status">ИИ-ассис��ент • Онлайн</p>
                 </div>
               </div>
               <button
