@@ -178,6 +178,7 @@ export default function JarvisChat() {
   }, [isRecording])
 
   const startRecording = async () => {
+    console.log('startRecording called, current state:', { isRecording, isListening })
     if (recognitionRef.current && !isRecording && !isListening) {
       try {
         // Проверяем разрешения микрофона
@@ -191,6 +192,7 @@ export default function JarvisChat() {
           }
         }
 
+        console.log('Starting speech recognition...')
         setIsRecording(true)
         isRecordingRef.current = true
         setInputMessage('')
@@ -201,6 +203,8 @@ export default function JarvisChat() {
         isRecordingRef.current = false
         setIsListening(false)
       }
+    } else {
+      console.log('Cannot start recording - conditions not met')
     }
   }
 
@@ -254,7 +258,7 @@ export default function JarvisChat() {
     setTimeout(() => {
       const jarvisResponses = [
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
-        'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
+        'Я помогу вам создать умный интернет-магазин с персонализ��рованными рекомендациями.',
         'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
@@ -314,7 +318,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект ч���стиц при открытии */}
+          {/* Эффект ч��стиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
