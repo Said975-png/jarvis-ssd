@@ -22,7 +22,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я Д��арвис, ваш ИИ-ассистент. Как могу помочь с вашим проектом?',
+      text: 'Привет! Я Джарвис, ваш ИИ-ассистент. Как могу помочь с вашим проектом?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -124,7 +124,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // О��рабатываем специфичные ошибки
+        // Обрабатываем специфичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -200,7 +200,7 @@ export default function JarvisChat() {
     console.log('startRecording called, current state:', { isRecording, isListening })
     if (recognitionRef.current && !isRecording && !isListening) {
       try {
-        // Провер��ем разрешения микрофона
+        // Проверяем разрешения микрофона
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -236,7 +236,7 @@ export default function JarvisChat() {
       isRecordingRef.current = false
       setIsListening(false)
       
-      // Очищаем ��аймер
+      // Очищаем таймер
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
         silenceTimerRef.current = null
@@ -277,7 +277,7 @@ export default function JarvisChat() {
 
     // Настройки для естественного женского ИИ-голоса
     utterance.rate = 0.9  // Немного медленнее для более естественного звучания
-    utterance.pitch = 1.1  // Чуть выше для женского ��олоса
+    utterance.pitch = 1.1  // Чуть выше для женского голоса
     utterance.volume = 0.8  // Комфортная громкость
 
     // Пытаемся найти подходящий женский голос
@@ -365,9 +365,9 @@ export default function JarvisChat() {
         'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
         'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудить?',
         'Как интересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
-        'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
+        'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-реше��ия действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
-        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересу��т?',
+        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересует?',
         'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
       ]
       
@@ -387,7 +387,7 @@ export default function JarvisChat() {
       if (ttsSupported) {
         setTimeout(() => {
           speakText(randomResponse)
-        }, 500) // Небольшая задержка перед озвучиванием
+        }, 500) // Небольша�� задержка перед озвучиванием
       }
     }, 1500)
   }
@@ -404,8 +404,13 @@ export default function JarvisChat() {
   }
 
   const toggleChat = () => {
-    if (isOpen && isRecording) {
-      stopRecording()
+    if (isOpen) {
+      if (isRecording) {
+        stopRecording()
+      }
+      if (isSpeaking) {
+        stopSpeaking()
+      }
     }
     setIsOpen(!isOpen)
   }
@@ -418,7 +423,7 @@ export default function JarvisChat() {
           <button
             onClick={toggleChat}
             className="chat-button"
-            aria-label="Открыт�� чат с Джарвисом"
+            aria-label="Открыть чат с Джарвисом"
           >
             <MessageCircle className="chat-button-icon" />
             <div className="chat-button-pulse"></div>
