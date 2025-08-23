@@ -730,7 +730,71 @@ export default function Hero() {
               {/* Main Content */}
               <div className="dashboard-main">
                 <div className="main-content">
+                  <div className="dashboard-section">
+                    <h3 className="section-title">Мои заказы</h3>
 
+                    {user && (() => {
+                      const userOrders = getUserOrders(user.id)
+
+                      if (userOrders.length === 0) {
+                        return (
+                          <div className="empty-orders">
+                            <Package className="empty-icon" />
+                            <p className="empty-text">У вас пока нет заказов</p>
+                            <p className="empty-subtext">Выберите тариф и оформите ваш первый заказ</p>
+                          </div>
+                        )
+                      }
+
+                      return (
+                        <div className="orders-list">
+                          {userOrders.map((order) => (
+                            <div key={order.id} className="order-card">
+                              <div className="order-header">
+                                <div className="order-id">Заказ #{order.id.split('_')[1]}</div>
+                                <div className={`order-status status-${order.status}`}>
+                                  {order.status === 'pending' && (
+                                    <>
+                                      <Clock className="status-icon" />
+                                      <span>Ожидает подтверждения</span>
+                                    </>
+                                  )}
+                                  {order.status === 'confirmed' && (
+                                    <>
+                                      <CheckCircle className="status-icon" />
+                                      <span>Подтверждено</span>
+                                    </>
+                                  )}
+                                  {order.status === 'rejected' && (
+                                    <>
+                                      <XCircle className="status-icon" />
+                                      <span>Отклонено</span>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="order-items">
+                                <h4 className="items-title">Выбранные тарифы:</h4>
+                                {order.items.map((item, index) => (
+                                  <div key={index} className="order-item">
+                                    <span className="item-name">{item.name}</span>
+                                    <span className="item-price">{item.price} {item.currency}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="order-info">
+                                <p><strong>Контакт:</strong> {order.customerInfo.fullName}</p>
+                                <p><strong>Телефон:</strong> {order.customerInfo.phone}</p>
+                                <p><strong>Создан:</strong> {new Date(order.createdAt).toLocaleDateString('ru-RU')}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    })()}
+                  </div>
                 </div>
               </div>
             </div>
