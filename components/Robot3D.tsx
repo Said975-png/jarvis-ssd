@@ -93,7 +93,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   // Handle successful model load
   useEffect(() => {
     if (gltf && gltf.scene && !modelError && !isRetrying) {
-      console.log('Model loaded successfully:', gltf.scene)
       setIsLoaded(true)
       setModelError(false)
     }
@@ -103,7 +102,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   useEffect(() => {
     if (isLoaded) {
       setRetryCount(0)
-      console.log('Model is loaded, retryCount reset')
     }
   }, [isLoaded])
 
@@ -111,7 +109,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   useEffect(() => {
     // Only run if we have actions and the model is loaded
     if (actions && isLoaded && !modelError && !isRetrying) {
-      console.log('Playing animations:', Object.keys(actions))
       Object.values(actions).forEach((action) => {
         if (action) {
           action.reset().play()
