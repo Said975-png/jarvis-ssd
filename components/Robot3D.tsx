@@ -161,9 +161,9 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
         // Keep within safe bounds [-1.5, 1.5] for X and Y
         // Start robot visible from the beginning (even when scroll is 0)
-        targetX = Math.cos(orbitAngle) * (1.2 - progress * 0.3) + 1.0 // More visible
+        targetX = Math.cos(orbitAngle) * (0.8 - progress * 0.3) + 0.2 // Closer to center
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2 // Gentle vertical movement
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.2 // Move forward to be more visible
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.5 // Move forward to be more visible
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
         targetScale = 1.0 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else if (safeScrollProgress <= 2) {
@@ -301,9 +301,9 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
         // Positioned to be visible but not intrusive
-        targetX = Math.cos(orbitAngle) * (1.8 - progress * 0.3) + 1.2
+        targetX = Math.cos(orbitAngle) * (0.8 - progress * 0.3) + 0.2
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.3
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.5
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
         targetScale = 1.5 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else {
