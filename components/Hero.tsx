@@ -122,14 +122,28 @@ export default function Hero() {
                   <ShoppingCart className="cart-icon" />
                   <span className="cart-count">0</span>
                 </button>
-                <button className="auth-button login-button" onClick={() => setIsLoginModalOpen(true)}>
-                  <User className="auth-icon" />
-                  <span>Вход</span>
-                </button>
-                <button className="auth-button register-button" onClick={() => setIsRegisterModalOpen(true)}>
-                  <UserPlus className="auth-icon" />
-                  <span>Регистрация</span>
-                </button>
+                {user ? (
+                  <>
+                    <button className="auth-button user-button" onClick={() => setIsDashboardOpen(true)}>
+                      <User className="auth-icon" />
+                      <span>{user.name}</span>
+                    </button>
+                    <button className="auth-button logout-button" onClick={() => setUser(null)}>
+                      <span>Выход</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="auth-button login-button" onClick={() => setIsLoginModalOpen(true)}>
+                      <User className="auth-icon" />
+                      <span>Вход</span>
+                    </button>
+                    <button className="auth-button register-button" onClick={() => setIsRegisterModalOpen(true)}>
+                      <UserPlus className="auth-icon" />
+                      <span>Регистрация</span>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
@@ -292,7 +306,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Согласование и предоплата</h3>
                   <p className="step-description">
-                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам п��иступить к разработке с полной уверенностью.
+                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
                   </p>
                 </div>
               </div>
@@ -312,7 +326,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Тестирование и доработки</h3>
                   <p className="step-description">
-                    Проводим полное тестирование функционала, ��роверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем детали по вашим пожеланиям.
+                    Проводим полное тестирование функционала, проверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем детали по вашим пожеланиям.
                   </p>
                 </div>
               </div>
@@ -361,7 +375,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
-                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
+                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. ��н понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
                 </div>
               </div>
@@ -370,7 +384,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с р��ботом - настолько живое и понятное общение.
+                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
@@ -379,7 +393,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Персональные рекомендации</h3>
                   <p className="feature-description">
-                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
+                    ДЖАРВИС ��оздает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
                   </p>
                 </div>
               </div>
@@ -388,7 +402,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Увеличение продаж в 3 раза</h3>
                   <p className="feature-description">
-                    Магазины с ДЖАРВИС показывают фантастические результаты. Продажи вырастают в среднем ��а 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
+                    Магазины с ДЖАРВИС показывают фантастические результаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
                   </p>
                 </div>
               </div>
