@@ -3155,9 +3155,22 @@ canvas {
     padding: 1rem;
   }
 
+  .chat-messages {
+    min-height: 300px;
+    max-height: 400px;
+  }
+
+  .chat-messages::-webkit-scrollbar {
+    width: 8px;
+  }
+
   .message-text {
     padding: 0.875rem 1rem;
     font-size: 0.9rem;
+  }
+
+  .message-content {
+    max-width: 90%;
   }
 
   .comparison-title,
