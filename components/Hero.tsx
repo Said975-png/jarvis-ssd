@@ -135,7 +135,7 @@ export default function Hero() {
                       <User className="auth-icon" />
                       <span>{user.name}</span>
                     </button>
-                    <button className="auth-button logout-button" onClick={() => setUser(null)}>
+                    <button className="auth-button logout-button" onClick={() => logout()}>
                       <span>Выход</span>
                     </button>
                   </>
@@ -205,7 +205,7 @@ export default function Hero() {
                     </button>
                     <button className="mobile-nav-button auth-button logout" onClick={() => {
                       setIsMobileMenuOpen(false);
-                      setUser(null);
+                      logout();
                     }}>
                       <span>Выйти из аккаунта</span>
                     </button>
@@ -248,7 +248,7 @@ export default function Hero() {
             </h1>
             
             <p className="hero-description">
-              JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
+              JARVIS создает современные сайты с ИИ-ассистентами, которые превращ��ют
               обычные интернет-магазины в умные, клиентоориентированные платформы.
               Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
@@ -301,7 +301,7 @@ export default function Hero() {
           <div className="card-icon">
             <Target className="icon" />
           </div>
-          <div className="card-text">Умные рекомендации</div>
+          <div className="card-text">Умные рек��мендации</div>
         </div>
       </div>
 
@@ -356,7 +356,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Тестирование и доработки</h3>
                   <p className="step-description">
-                    Проводим полное тестирование функционала, проверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки �� дорабатываем детали по вашим пожеланиям.
+                    Проводим полное тестирование функционала, проверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем детали по вашим пожеланиям.
                   </p>
                 </div>
               </div>
@@ -450,7 +450,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких с��ожных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
                   </p>
                 </div>
               </div>
@@ -489,7 +489,7 @@ export default function Hero() {
                 email: email
               };
 
-              setUser(userData);
+              login(userData);
               setIsLoginModalOpen(false);
             }}>
               <div className="form-group">
@@ -586,7 +586,7 @@ export default function Hero() {
                 email: email
               };
 
-              setUser(userData);
+              login(userData);
               setIsRegisterModalOpen(false);
               setIsDashboardOpen(true); // Automatically open dashboard after registration
             }}>
@@ -717,7 +717,7 @@ export default function Hero() {
 
                 <div className="sidebar-footer">
                   <button className="logout-btn" onClick={() => {
-                    setUser(null);
+                    logout();
                     setIsDashboardOpen(false);
                   }}>
                     Выйти
