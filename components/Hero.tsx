@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus } from 'lucide-react'
+import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus, X } from 'lucide-react'
 
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
