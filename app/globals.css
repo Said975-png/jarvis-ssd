@@ -2060,8 +2060,8 @@ canvas {
 }
 
 .message-content {
-  flex: 1;
-  max-width: 45%;
+  flex: 0 1 auto;
+  max-width: 60%;
 }
 
 .message-user .message-content {
@@ -2074,6 +2074,9 @@ canvas {
   font-size: 0.9rem;
   line-height: 1.4;
   word-wrap: break-word;
+  display: inline-block;
+  width: fit-content;
+  min-width: 0;
 }
 
 .message-user .message-text {
@@ -2130,6 +2133,8 @@ canvas {
   padding: 1.5rem 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.02);
+  z-index: 10;
+  position: relative;
 }
 
 .chat-input-wrapper {
@@ -2148,6 +2153,8 @@ canvas {
   font-size: 0.95rem;
   outline: none;
   transition: all 0.3s ease;
+  pointer-events: auto;
+  z-index: 1;
 }
 
 .chat-input::placeholder {
