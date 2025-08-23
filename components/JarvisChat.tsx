@@ -70,7 +70,7 @@ export default function JarvisChat() {
       recognition.onresult = (event: any) => {
         let finalTranscript = ''
         let interimTranscript = ''
-        
+
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript
           if (event.results[i].isFinal) {
@@ -79,25 +79,22 @@ export default function JarvisChat() {
             interimTranscript += transcript
           }
         }
-        
+
         if (finalTranscript) {
-          setInputMessage(finalTranscript.trim())
-          
+          const trimmedTranscript = finalTranscript.trim()
+          setInputMessage(trimmedTranscript)
+
           // Запускаем таймер на секунду молчания
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current)
           }
-          
+
           silenceTimerRef.current = setTimeout(() => {
-            if (finalTranscript.trim() && isRecordingRef.current) {
+            // Проверяем, что мы все еще записываем и есть сообщение
+            if (isRecordingRef.current && trimmedTranscript) {
               stopRecording()
-              // Отправляем сообщение
-              setTimeout(() => {
-                const messageToSend = finalTranscript.trim()
-                if (messageToSend) {
-                  sendMessage(messageToSend)
-                }
-              }, 100)
+              // Отправляем сообщение сразу
+              sendMessage(trimmedTranscript)
             }
           }, 1000)
         } else if (interimTranscript) {
