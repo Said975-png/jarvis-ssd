@@ -87,7 +87,7 @@ export default function JarvisChat() {
           }
           
           silenceTimerRef.current = setTimeout(() => {
-            if (finalTranscript.trim()) {
+            if (finalTranscript.trim() && isRecordingRef.current) {
               stopRecording()
               // Отправляем сообщение
               setTimeout(() => {
@@ -186,7 +186,7 @@ export default function JarvisChat() {
       const jarvisResponses = [
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
-        'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
+        'Давай��е обсудим ваши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
@@ -265,7 +265,7 @@ export default function JarvisChat() {
                 </div>
                 <div className="chat-header-text">
                   <h3 className="chat-title">Джарвис</h3>
-                  <p className="chat-status">ИИ-ассис��ент • Онлайн</p>
+                  <p className="chat-status">ИИ-ассистент • Онлайн</p>
                 </div>
               </div>
               <button
