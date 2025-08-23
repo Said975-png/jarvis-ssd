@@ -4,32 +4,15 @@ import { useState, useEffect } from 'react'
 import { Zap, MessageCircle, BarChart3, Target } from 'lucide-react'
 
 export default function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
   return (
     <section className="hero-section">
-      {/* Animated background */}
-      <div className="hero-bg">
-        <div
-          className="mouse-gradient"
-          style={{
-            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(14, 165, 233, 0.15), transparent 40%)`
-          }}
-        />
-        <div className="grid-overlay" />
-      </div>
-
       {/* Content */}
       <div className={`hero-content ${isLoaded ? 'loaded' : ''}`}>
         <div className="hero-container">

@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 
 export default function Footer() {
   const [showScrollTop, setShowScrollTop] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,31 +15,12 @@ export default function Footer() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <footer className="footer-section">
-      {/* Animated background */}
-      <div className="hero-bg">
-        <div
-          className="mouse-gradient"
-          style={{
-            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(14, 165, 233, 0.15), transparent 40%)`
-          }}
-        />
-        <div className="grid-overlay" />
-      </div>
-
       <div className="footer-container">
         {/* Main Footer Content */}
         <div className="footer-content">

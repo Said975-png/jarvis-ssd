@@ -37,24 +37,15 @@ const advantages = [
   {
     icon: Shield,
     title: "Корпоративная безопасность",
-    description: "Безопасность банковского уровня с SSL шифрованием, соответствие GDPR и продвинутая за��ита от мошенничества для вашего спокойствия.",
+    description: "Безопасность банковского уровня с SSL шифрованием, соответствие GDPR и продвинутая защита от мошенничества для вашего спокойствия.",
     color: "from-red-500 to-rose-500"
   }
 ]
 
 export default function Advantages() {
   const [visibleItems, setVisibleItems] = useState<number[]>([])
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const sectionRef = useRef<HTMLElement>(null)
   const itemRefs = useRef<(HTMLDivElement | null)[]>([])
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -78,17 +69,6 @@ export default function Advantages() {
 
   return (
     <section ref={sectionRef} className="advantages-section" id="advantages">
-      {/* Animated background */}
-      <div className="hero-bg">
-        <div
-          className="mouse-gradient"
-          style={{
-            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(14, 165, 233, 0.15), transparent 40%)`
-          }}
-        />
-        <div className="grid-overlay" />
-      </div>
-
       <div className="advantages-container">
         <div className="advantages-header">
           <h2 className="advantages-title">
