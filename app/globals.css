@@ -3095,6 +3095,12 @@ canvas {
     margin-bottom: 4rem;
   }
 
+  .chat-messages {
+    min-height: 350px;
+    max-height: 500px;
+    padding-right: 0.25rem;
+  }
+
   .message-content {
     max-width: 85%;
   }
