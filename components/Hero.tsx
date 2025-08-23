@@ -9,6 +9,7 @@ import { useOrders, OrderStatus } from './OrdersContext'
 export default function Hero() {
   const { getTotalItems, setIsCartOpen } = useCart()
   const { user, login, logout, isAuthenticated } = useUser()
+  const { getUserOrders } = useOrders()
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isContractPanelOpen, setIsContractPanelOpen] = useState(false)
@@ -250,8 +251,8 @@ export default function Hero() {
             
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
-              обычные интернет-магазины в умные, клиентоори��нтированные платформы.
-              Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
+              обычные интернет-магазины в умные, клиентоориентированные платформы.
+              Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умным�� взаимодействиями.
             </p>
 
             <div className="hero-actions">
@@ -367,7 +368,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Сдача проекта</h3>
                   <p className="step-description">
-                    По��ле завершения разработки и получения окончательного платежа мы передаем вам готов��й проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
+                    По��ле завершения разработки и получения окончательного платежа мы передаем вам готовый проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
                   </p>
                 </div>
               </div>
@@ -442,7 +443,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, ��брабатывает сотни обращений одновременно и никогда не теря��т терпение даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теря��т терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
@@ -598,7 +599,7 @@ export default function Hero() {
                   id="register-name"
                   name="name"
                   className="form-input"
-                  placeholder="Введите ваше им��"
+                  placeholder="Введите ваше имя"
                   required
                 />
               </div>
