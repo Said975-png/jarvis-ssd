@@ -55,7 +55,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedOrders = localStorage.getItem('jarvis_orders')
-      console.log('Загрузка заказов из localStorage:', savedOrders)
+      console.log(`[${providerId}] Загрузка заказов из localStorage:`, savedOrders)
       if (savedOrders) {
         try {
           const parsedOrders = JSON.parse(savedOrders)
@@ -115,7 +115,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   }
 
   const updateOrderStatus = (orderId: string, status: OrderStatus): void => {
-    console.log('updateOrderStatus вызван для заказа:', orderId, 'новый статус:', status)
+    console.log('updateOrderStatus вызван для заказа:', orderId, 'новы�� статус:', status)
     setOrders(prevOrders => {
       const updatedOrders = prevOrders.map(order =>
         order.id === orderId
