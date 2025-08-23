@@ -113,7 +113,7 @@ export default function Hero() {
               <div className="mobile-nav-actions">
                 <button className="mobile-nav-button cart-button" onClick={() => setIsMobileMenuOpen(false)}>
                   <ShoppingCart className="mobile-nav-icon" />
-                  <span>Корзина</span>
+                  <span>Моя корзина</span>
                   <span className="mobile-cart-count">0</span>
                 </button>
                 <button className="mobile-nav-button auth-button login" onClick={() => setIsMobileMenuOpen(false)}>
@@ -122,7 +122,7 @@ export default function Hero() {
                 </button>
                 <button className="mobile-nav-button auth-button register" onClick={() => setIsMobileMenuOpen(false)}>
                   <UserPlus className="mobile-nav-icon" />
-                  <span>Регистрация</span>
+                  <span>Создать аккаунт</span>
                 </button>
               </div>
             </div>
@@ -140,7 +140,7 @@ export default function Hero() {
             <h1 className="hero-title">
               Мы создаем <span className="gradient-text">умные</span>
               <br />
-              интернет-магазины
+              интернет-магази��ы
             </h1>
             
             <p className="hero-description">
@@ -185,7 +185,7 @@ export default function Hero() {
           <div className="card-icon">
             <MessageCircle className="icon" />
           </div>
-          <div className="card-text">ИИ-чат под��ержка</div>
+          <div className="card-text">ИИ-чат поддержка</div>
         </div>
         <div className="floating-card card-2">
           <div className="card-icon">
