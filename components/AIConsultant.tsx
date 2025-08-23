@@ -25,7 +25,7 @@ const chatMessages = [
   {
     id: 4,
     type: 'ai',
-    message: 'Отличный выбор! У нас есть коллекция колец с сапфирами от 35 000₽ и изумрудами от 42 000₽. Также рекомендую обратить внимание на кольцо с танзанитом - очень редкий камень, 48 000₽. Какой камень она предпочитает?',
+    message: 'Отличный выбор! У нас есть коллекция колец с сапфирами от 35 000₽ и изумрудами от 42 000₽. Также рекомендую обратить вниман��е на кольцо с танзанитом - очень редкий камень, 48 000₽. Какой камень она предпочитает?',
     timestamp: '14:33'
   },
   {
@@ -64,7 +64,7 @@ const comparisonData = [
   {
     title: 'Персонализация',
     traditional: 'Базовая',
-    ai: 'ИИ-анализ предпочтений',
+    ai: 'ИИ-анализ ��редпочтений',
     improvement: '5x точнее'
   }
 ]
@@ -221,8 +221,8 @@ export default function AIConsultant() {
           
           <div ref={chatMessagesRef} className="chat-messages">
             {chatMessages.slice(0, visibleMessages).map((msg, index) => (
-              <div 
-                key={msg.id} 
+              <div
+                key={msg.id}
                 className={`message ${msg.type === 'ai' ? 'ai-message' : 'user-message'} message-${index}`}
               >
                 <div className="message-avatar">
@@ -234,7 +234,7 @@ export default function AIConsultant() {
                 </div>
               </div>
             ))}
-            
+
             {isTyping && (
               <div className="message ai-message typing-message">
                 <div className="message-avatar">
@@ -246,6 +246,15 @@ export default function AIConsultant() {
                     <span></span>
                     <span></span>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {visibleMessages > 3 && (
+              <div className="scroll-hint">
+                <div className="scroll-hint-text">
+                  <ArrowRight className="scroll-hint-icon" />
+                  Прокрутите, чтобы увидеть больше сообщений
                 </div>
               </div>
             )}
@@ -313,7 +322,7 @@ export default function AIConsultant() {
         {/* CTA */}
         <div className="consultant-cta">
           <div className="cta-content">
-            <h3 className="cta-title">Г��товы заменить целую команду продавцов на ДЖАРВИС?</h3>
+            <h3 className="cta-title">Готовы заменить целую команду продавцов на ДЖАРВИС?</h3>
             <p className="cta-subtitle">
               Запустите ИИ-консультанта и увеличьте продажи уже сегодня
             </p>
