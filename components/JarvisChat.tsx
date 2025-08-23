@@ -164,7 +164,17 @@ export default function JarvisChat() {
       setSpeechSupported(false)
       console.log('Speech Recognition not supported in this browser')
     }
-    
+
+    // Инициализация Text-to-Speech
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      setTtsSupported(true)
+      speechSynthesisRef.current = window.speechSynthesis
+      console.log('Text-to-Speech API is supported')
+    } else {
+      setTtsSupported(false)
+      console.log('Text-to-Speech not supported in this browser')
+    }
+
     return () => {
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
@@ -274,7 +284,7 @@ export default function JarvisChat() {
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
-        'У нас есть готовые решения ��ля любого масштаба бизнеса. Что именно вам нужно?'
+        'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
       
       const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
