@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useRef, useEffect, useMemo } from 'react'
+import { Suspense, useRef, useEffect, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations, OrbitControls, Environment, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
@@ -54,16 +54,70 @@ function RobotParticles({ position }: { position: [number, number, number] }) {
 
 function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: number; currentSection?: number }) {
   const groupRef = useRef<THREE.Group>(null)
+  const [modelError, setModelError] = useState<boolean>(false)
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
-  let scene, animations
-  try {
-    const gltf = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
-    scene = gltf.scene
-    animations = gltf.animations
-  } catch (error) {
-    console.error('Failed to load GLTF model:', error)
+  // Load GLTF model with error handling
+  const gltf = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c',
+    undefined, // onLoad callback - handled by useEffect
+    undefined, // onProgress callback
+    (error) => {
+      console.error('Failed to load GLTF model:', error)
+      setModelError(true)
+    }
+  )
+
+  // Handle successful model load
+  useEffect(() => {
+    if (gltf && gltf.scene && !modelError) {
+      setIsLoaded(true)
+      setModelError(false)
+    }
+  }, [gltf, modelError])
+
+  // Show fallback if model failed to load
+  if (modelError) {
+    return (
+      <group ref={groupRef}>
+        {/* Fallback geometric robot */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[0.8, 1.2, 0.6]} />
+          <meshStandardMaterial
+            color="#0ea5e9"
+            emissive="#0ea5e9"
+            emissiveIntensity={0.1}
+            transparent
+            opacity={0.8}
+          />
+        </mesh>
+        {/* Robot head */}
+        <mesh position={[0, 0.8, 0]}>
+          <sphereGeometry args={[0.3, 16, 16]} />
+          <meshStandardMaterial
+            color="#3b82f6"
+            emissive="#3b82f6"
+            emissiveIntensity={0.2}
+          />
+        </mesh>
+        {/* Robot eyes */}
+        <mesh position={[-0.1, 0.85, 0.25]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+        <mesh position={[0.1, 0.85, 0.25]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+      </group>
+    )
+  }
+
+  // Don't render if model hasn't loaded yet
+  if (!isLoaded || !gltf?.scene) {
     return null
   }
+
+  const { scene, animations } = gltf
 
   const { actions, mixer } = useAnimations(animations, groupRef)
 
@@ -180,6 +234,33 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
           transparent
           opacity={0.05}
           wireframe={true}
+        />
+      </mesh>
+    </group>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <group>
+      {/* Simple loading animation with geometric shapes */}
+      <mesh>
+        <boxGeometry args={[0.5, 0.5, 0.5]} />
+        <meshStandardMaterial
+          color="#0ea5e9"
+          transparent
+          opacity={0.6}
+          emissive="#0ea5e9"
+          emissiveIntensity={0.2}
+        />
+      </mesh>
+      {/* Spinning animation for loading state */}
+      <mesh>
+        <torusGeometry args={[1.2, 0.1, 8, 32]} />
+        <meshBasicMaterial
+          color="#3b82f6"
+          transparent
+          opacity={0.4}
         />
       </mesh>
     </group>
