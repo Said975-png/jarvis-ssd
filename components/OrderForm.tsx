@@ -22,6 +22,23 @@ export default function OrderForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
+  // Блокировка скролла когда форма заказа открыта
+  useEffect(() => {
+    if (isOrderFormOpen) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflow = 'unset'
+    }
+
+    // Cleanup функция для восстановления скролла
+    return () => {
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflow = 'unset'
+    }
+  }, [isOrderFormOpen])
+
   if (!isOrderFormOpen) return null
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -170,7 +187,7 @@ export default function OrderForm() {
                       value={formData.siteDescription}
                       onChange={handleInputChange}
                       className="form-textarea"
-                      placeholder="Опишите, какой сайт вы хотите: назначение, осн��вные функции, целевая аудитория..."
+                      placeholder="Опишите, какой сайт вы хотите: назначение, основные функции, целевая аудитория..."
                       rows={4}
                       required
                       disabled={isSubmitting}
