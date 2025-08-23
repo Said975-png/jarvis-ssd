@@ -769,11 +769,13 @@ body {
   }
 
   .auth-button span {
-    display: none;
+    display: inline;
+    font-size: 0.875rem;
   }
 
   .auth-button {
-    padding: 0.75rem;
+    padding: 0.75rem 1rem;
+    min-width: 100px;
   }
 }
 
