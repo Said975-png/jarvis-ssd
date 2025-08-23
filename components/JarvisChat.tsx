@@ -243,7 +243,11 @@ export default function JarvisChat() {
   }
 
   const sendMessage = (message: string) => {
-    if (!message.trim()) return
+    console.log('sendMessage called with:', message)
+    if (!message.trim()) {
+      console.log('Message is empty, not sending')
+      return
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -252,6 +256,7 @@ export default function JarvisChat() {
       timestamp: new Date()
     }
 
+    console.log('Sending message to chat:', userMessage.text)
     setMessages(prev => [...prev, userMessage])
     setInputMessage('')
     setIsTyping(true)
@@ -259,7 +264,7 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
+        'Отличный вопрос! Наша команда специализиру��тся на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
