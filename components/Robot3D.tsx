@@ -111,7 +111,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     if (actions && isLoaded && !modelError && !isRetrying) {
       Object.values(actions).forEach((action) => {
         if (action) {
-          action.reset().fadeIn(0.5).play()
+          action.reset().play()
           // Set animation speed based on section
           if (currentSection === 0) {
             action.timeScale = 1 // Hero - normal speed
@@ -133,7 +133,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       if (actions) {
         Object.values(actions).forEach((action) => {
           if (action) {
-            action.fadeOut(0.5)
+            action.stop()
           }
         })
       }
