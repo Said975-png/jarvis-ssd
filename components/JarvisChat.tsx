@@ -32,12 +32,15 @@ export default function JarvisChat() {
   const [isRecording, setIsRecording] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [speechSupported, setSpeechSupported] = useState(false)
+  const [ttsSupported, setTtsSupported] = useState(false)
+  const [isSpeaking, setIsSpeaking] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<any>(null)
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const isRecordingRef = useRef(false)
   const currentTranscriptRef = useRef('')
+  const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -271,7 +274,7 @@ export default function JarvisChat() {
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
-        'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
+        'У нас есть готовые решения ��ля любого масштаба бизнеса. Что именно вам нужно?'
       ]
       
       const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
