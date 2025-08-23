@@ -59,7 +59,7 @@ const statistics = [
   {
     icon: Users,
     value: '∞',
-    label: 'Клиентов одновременно',
+    label: 'Кл��ентов одновременно',
     description: 'Неограниченная пропускная способность'
   },
   {
@@ -73,12 +73,10 @@ const statistics = [
 export default function AIConsultant() {
   const [visibleMessages, setVisibleMessages] = useState<number>(0)
   const [isTyping, setIsTyping] = useState(false)
-  const [visibleComparisons, setVisibleComparisons] = useState<number[]>([])
   const [visibleStats, setVisibleStats] = useState<number[]>([])
   const sectionRef = useRef<HTMLElement>(null)
   const chatRef = useRef<HTMLDivElement>(null)
   const chatMessagesRef = useRef<HTMLDivElement>(null)
-  const comparisonRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
 
   // Анимация появления сообщений в чате
