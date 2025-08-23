@@ -163,7 +163,7 @@ export default function AIConsultant() {
           
           <p className="ai-consultant-subtitle">
             Персональный ИИ-помощник работает 24/7, общается с клиентами, отвечает на вопросы 
-            и предл��гает товары на основе индивидуальных предпочтений и истории покупок
+            и предлагает товары на основе индивидуальных предпочтений и истории покупок
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export default function AIConsultant() {
             </div>
           </div>
           
-          <div ref={chatMessagesRef} className="chat-messages">
+          <div ref={chatMessagesRef} className="chat-messages" style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {chatMessages.slice(0, visibleMessages).map((msg, index) => (
               <div
                 key={msg.id}
