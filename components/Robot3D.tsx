@@ -43,10 +43,10 @@ function RobotParticles({ position }: { position: [number, number, number] }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.02}
+        size={0.015}
         color="#0ea5e9"
         transparent
-        opacity={0.8}
+        opacity={0.35}
         sizeAttenuation={true}
       />
     </points>
@@ -251,12 +251,12 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     <group ref={groupRef}>
       {/* Sparkles effect around robot */}
       <Sparkles
-        count={30}
+        count={20}
         scale={[3, 3, 3]}
-        size={2}
+        size={1.5}
         speed={0.3}
         color="#0ea5e9"
-        opacity={0.6}
+        opacity={0.25}
       />
 
       {/* Floating particles */}
@@ -275,7 +275,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.15}
+          opacity={0.06}
           wireframe={true}
         />
       </mesh>
