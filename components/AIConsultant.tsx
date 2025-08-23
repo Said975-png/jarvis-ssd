@@ -59,7 +59,7 @@ const statistics = [
   {
     icon: Users,
     value: '∞',
-    label: 'Кл��ентов одновременно',
+    label: 'Клиентов одновременно',
     description: 'Неограниченная пропускная способность'
   },
   {
@@ -117,15 +117,7 @@ export default function AIConsultant() {
             if (element === chatRef.current && visibleMessages === 0) {
               setVisibleMessages(1)
             }
-            
-            if (element === comparisonRef.current) {
-              comparisonData.forEach((_, index) => {
-                setTimeout(() => {
-                  setVisibleComparisons(prev => [...prev, index])
-                }, index * 200)
-              })
-            }
-            
+
             if (element === statsRef.current) {
               statistics.forEach((_, index) => {
                 setTimeout(() => {
@@ -174,7 +166,7 @@ export default function AIConsultant() {
           
           <p className="ai-consultant-subtitle">
             Персональный ИИ-помощник работает 24/7, общается с клиентами, отвечает на вопросы 
-            и предлагает товары на основе индивидуальных предпочтений и истории покупок
+            и предлагает товары на основе индивидуальны�� предпочтений и истории покупок
           </p>
         </div>
 
@@ -272,7 +264,7 @@ export default function AIConsultant() {
 
         {/* Statistics */}
         <div ref={statsRef} className="stats-section">
-          <h3 className="stats-title">Результаты внедрения ДЖАРВИС</h3>
+          <h3 className="stats-title">��езультаты внедрения ДЖАРВИС</h3>
           
           <div className="stats-grid">
             {statistics.map((stat, index) => (
