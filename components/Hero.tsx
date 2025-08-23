@@ -52,7 +52,7 @@ export default function Hero() {
 
   // Lock scroll when panels are open
   useEffect(() => {
-    if (isContractPanelOpen || isFeaturesPanelOpen) {
+    if (isContractPanelOpen || isFeaturesPanelOpen || isLoginModalOpen || isRegisterModalOpen) {
       document.body.style.overflow = 'hidden'
       document.documentElement.style.overflow = 'hidden'
     } else {
@@ -65,7 +65,7 @@ export default function Hero() {
       document.body.style.overflow = 'unset'
       document.documentElement.style.overflow = 'unset'
     }
-  }, [isContractPanelOpen, isFeaturesPanelOpen])
+  }, [isContractPanelOpen, isFeaturesPanelOpen, isLoginModalOpen, isRegisterModalOpen])
 
   // Handle escape key for panels
   useEffect(() => {
@@ -77,17 +77,23 @@ export default function Hero() {
         if (isFeaturesPanelOpen) {
           setIsFeaturesPanelOpen(false)
         }
+        if (isLoginModalOpen) {
+          setIsLoginModalOpen(false)
+        }
+        if (isRegisterModalOpen) {
+          setIsRegisterModalOpen(false)
+        }
       }
     }
 
-    if (isContractPanelOpen || isFeaturesPanelOpen) {
+    if (isContractPanelOpen || isFeaturesPanelOpen || isLoginModalOpen || isRegisterModalOpen) {
       document.addEventListener('keydown', handleEscape)
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape)
     }
-  }, [isContractPanelOpen, isFeaturesPanelOpen])
+  }, [isContractPanelOpen, isFeaturesPanelOpen, isLoginModalOpen, isRegisterModalOpen])
 
   return (
     <section className="hero-section">
@@ -165,7 +171,7 @@ export default function Hero() {
                 </button>
                 <button className="mobile-nav-button auth-button register" onClick={() => setIsMobileMenuOpen(false)}>
                   <UserPlus className="mobile-nav-icon" />
-                  <span>Создать аккаун��</span>
+                  <span>Создать аккаунт</span>
                 </button>
               </div>
             </div>
@@ -249,7 +255,7 @@ export default function Hero() {
         <div className="contract-panel-overlay" onClick={() => setIsContractPanelOpen(false)}>
           <div className="contract-panel" onClick={(e) => e.stopPropagation()}>
             <div className="contract-panel-header">
-              <h2 className="contract-panel-title">Процесс работы с нами</h2>
+              <h2 className="contract-panel-title">Процес�� работы с нами</h2>
               <button
                 className="contract-panel-close"
                 onClick={() => setIsContractPanelOpen(false)}
@@ -273,9 +279,9 @@ export default function Hero() {
               <div className="contract-step">
                 <div className="step-number">2</div>
                 <div className="step-content">
-                  <h3 className="step-title">Согласование и предоплата</h3>
+                  <h3 className="step-title">С��гласование и предоплата</h3>
                   <p className="step-description">
-                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
+                    Если макет и техническое решение вас устраив��ет, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
                   </p>
                 </div>
               </div>
@@ -353,7 +359,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
+                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопр��сы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
@@ -371,7 +377,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Увеличение продаж в 3 раза</h3>
                   <p className="feature-description">
-                    Магазины с ДЖАРВИС показывают ��антастические результаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
+                    Магазины с ДЖАРВИС показывают фантастические результаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
                   </p>
                 </div>
               </div>
