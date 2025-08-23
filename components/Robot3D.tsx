@@ -206,10 +206,11 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       targetY = Math.max(-2, Math.min(2, targetY))
       targetZ = Math.max(-1, Math.min(1, targetZ))
 
-      // Smooth interpolation with organic feel
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.04)
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.05)
-      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.045)
+      // Smooth interpolation with organic feel - faster for initial positioning
+      const lerpSpeed = safeScrollProgress === 0 ? 0.15 : 0.04 // Faster on initial load
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, lerpSpeed)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, lerpSpeed + 0.01)
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, lerpSpeed + 0.005)
 
       // Engaging rotation with personality
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
