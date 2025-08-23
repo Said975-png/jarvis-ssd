@@ -27,7 +27,21 @@ export default function Hero() {
               <a href="#services" className="nav-link">Услуги</a>
               <a href="#about" className="nav-link">О нас</a>
               <a href="#contact" className="nav-link">Контакты</a>
-              <button className="cta-button">Начать</button>
+
+              <div className="nav-actions">
+                <button className="cart-button" aria-label="Корзина">
+                  <ShoppingCart className="cart-icon" />
+                  <span className="cart-count">0</span>
+                </button>
+                <button className="auth-button login-button">
+                  <User className="auth-icon" />
+                  <span>Вход</span>
+                </button>
+                <button className="auth-button register-button">
+                  <UserPlus className="auth-icon" />
+                  <span>Ре��истрация</span>
+                </button>
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
