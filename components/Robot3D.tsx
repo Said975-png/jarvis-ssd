@@ -159,6 +159,15 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   }, [gltf?.scene])
 
+  // Set initial position when model first loads
+  useEffect(() => {
+    if (groupRef.current && isLoaded && !modelError && !isRetrying) {
+      // Set initial visible position immediately
+      groupRef.current.position.set(0.8, -0.8, 0.6)
+      groupRef.current.scale.setScalar(1.0)
+    }
+  }, [isLoaded, modelError, isRetrying])
+
   // CRITICAL: useFrame must also be called before any conditional returns!
   useFrame((state) => {
     // Only animate if we have a valid ref and the model is loaded
@@ -182,7 +191,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         // Start robot visible from the beginning (even when scroll is 0)
         targetX = Math.cos(orbitAngle) * (1.0 - progress * 0.3) + 0.8 // More visible and closer
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2 // Gentle vertical movement
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.4 // Move even more forward to be clearly visible
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.6 // Move even more forward to be clearly visible
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
         targetScale = 1.0 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else if (safeScrollProgress <= 2) {
@@ -193,7 +202,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         // Dancing motion with bounds
         targetX = Math.sin(danceTime) * 0.6 + Math.cos(danceTime * 0.7) * 0.3 // Dancing left-right
         targetY = baseY + Math.sin(danceTime * 1.3) * 0.25 + Math.cos(secondProgress * Math.PI) * 0.3 // Up-down dance
-        targetZ = Math.cos(danceTime * 0.9) * 0.4 + secondProgress * 0.2 // Forward-back rhythm
+        targetZ = Math.cos(danceTime * 0.9) * 0.4 + secondProgress * 0.2 + 0.4 // Forward-back rhythm
         targetRotationY = danceTime * 0.4 + Math.sin(danceTime * 0.6) * 0.3
         targetScale = 0.8 + Math.sin(danceTime * 2) * 0.1 // Rhythmic pulsing
       } else if (safeScrollProgress <= 3) {
@@ -204,7 +213,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         // Consultant-like movement - more professional and focused
         targetX = Math.sin(presentationTime * 0.8) * 0.4 + Math.cos(thirdProgress * Math.PI * 0.5) * 0.2 // Subtle side movement
         targetY = baseY + Math.sin(presentationTime * 0.6) * 0.15 + thirdProgress * 0.3 // Rising motion for authority
-        targetZ = Math.cos(presentationTime * 0.5) * 0.3 + Math.sin(thirdProgress * Math.PI) * 0.25 // Forward presentation stance
+        targetZ = Math.cos(presentationTime * 0.5) * 0.3 + Math.sin(thirdProgress * Math.PI) * 0.25 + 0.4 // Forward presentation stance
         targetRotationY = presentationTime * 0.2 + Math.sin(thirdProgress * Math.PI) * 0.1 // Gentle rotation
         targetScale = 0.85 + Math.sin(presentationTime * 1.5) * 0.08 + thirdProgress * 0.1 // Authoritative scale
       } else {
@@ -215,7 +224,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         // Victory dance - confident and celebratory
         targetX = Math.sin(finaleTime) * 0.5 + Math.cos(finaleTime * 1.2) * 0.2 // Triumphant movement
         targetY = baseY + Math.sin(finaleTime * 1.1) * 0.2 + Math.cos(fourthProgress * Math.PI) * 0.4 // Elevated position
-        targetZ = Math.cos(finaleTime * 0.8) * 0.35 + fourthProgress * 0.15 // Forward confident stance
+        targetZ = Math.cos(finaleTime * 0.8) * 0.35 + fourthProgress * 0.15 + 0.4 // Forward confident stance
         targetRotationY = finaleTime * 0.3 + Math.sin(fourthProgress * Math.PI) * 0.2 // Confident rotation
         targetScale = 0.9 + Math.sin(finaleTime * 1.8) * 0.12 + fourthProgress * 0.05 // Larger, more confident
       }
@@ -223,24 +232,26 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       // Extra safety clamps to ensure robot stays visible
       targetX = Math.max(-1.5, Math.min(1.5, targetX))
       targetY = Math.max(-2, Math.min(2, targetY))
-      targetZ = Math.max(-1, Math.min(1, targetZ))
+      targetZ = Math.max(-0.2, Math.min(1.2, targetZ)) // Ensure Z never goes too far back
 
-      // Smooth interpolation with organic feel - faster for initial positioning
-      const lerpSpeed = safeScrollProgress === 0 ? 0.15 : 0.04 // Faster on initial load
+      // Much faster interpolation for immediate visibility, slower for smooth movement
+      const isFirstFrame = Math.abs(groupRef.current.position.x) < 0.1 && Math.abs(groupRef.current.position.y) < 0.1
+      const lerpSpeed = isFirstFrame ? 1.0 : (safeScrollProgress === 0 ? 0.3 : 0.08) // Instant first position, then smooth
+
       groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, lerpSpeed)
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, lerpSpeed + 0.01)
-      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, lerpSpeed + 0.005)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, lerpSpeed)
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, lerpSpeed)
 
       // Engaging rotation with personality
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY + personalityRotation, 0.03)
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY + personalityRotation, 0.05)
       groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.04 + Math.cos(safeScrollProgress * 2) * 0.02
       groupRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.15) * 0.03
 
       // Breathing scale animation
       const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
       const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
-      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, finalScale, 0.04))
+      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, finalScale, 0.08))
     }
   })
 
