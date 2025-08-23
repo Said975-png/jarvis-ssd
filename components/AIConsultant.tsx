@@ -42,32 +42,6 @@ const chatMessages = [
   }
 ]
 
-const comparisonData = [
-  {
-    title: 'Время ответа',
-    traditional: '5-15 минут',
-    ai: 'Мгновенно',
-    improvement: '900% быстрее'
-  },
-  {
-    title: 'Доступность',
-    traditional: '8 часов в день',
-    ai: '24/7/365',
-    improvement: '3x больше'
-  },
-  {
-    title: 'Обработка клиентов',
-    traditional: '1 клиент за раз',
-    ai: 'Неограниченно',
-    improvement: '∞'
-  },
-  {
-    title: 'Персонализация',
-    traditional: 'Базовая',
-    ai: 'ИИ-анализ ��редпочтений',
-    improvement: '5x точнее'
-  }
-]
 
 const statistics = [
   {
