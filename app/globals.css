@@ -865,6 +865,14 @@ main {
   overflow: visible !important;
 }
 
+html, body {
+  overflow-x: visible !important;
+}
+
+.hero-section, .hero-container, .hero-content {
+  overflow: visible !important;
+}
+
 canvas {
   overflow: visible !important;
 }
