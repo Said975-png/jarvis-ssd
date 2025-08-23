@@ -43,11 +43,14 @@ const nextConfig = {
   // Disable source maps in development to improve performance
   productionBrowserSourceMaps: false,
 
-  // Better error handling
-  onDemandEntries: {
-    maxInactiveAge: 25 * 1000,
-    pagesBufferLength: 2,
-  }
+  // Images optimization for better Vercel deployment
+  images: {
+    domains: ['cdn.builder.io'],
+    formats: ['image/webp', 'image/avif'],
+  },
+
+  // Output configuration for Vercel
+  output: 'standalone',
 }
 
 module.exports = nextConfig
