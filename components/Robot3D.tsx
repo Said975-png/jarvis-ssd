@@ -228,6 +228,12 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   })
 
+  // Always show fallback robot for now to debug
+  console.log('Robot3D render state:', { modelError, isRetrying, isLoaded, hasScene: !!gltf?.scene })
+
+  // Force show fallback robot to make sure component is working
+  return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
+
   // Show fallback if model failed to load
   if (modelError) {
     return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
