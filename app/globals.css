@@ -2556,7 +2556,7 @@ canvas {
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .chat-demo-container::before {
