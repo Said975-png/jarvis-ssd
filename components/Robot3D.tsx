@@ -540,7 +540,12 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
       clearTimeout(timer)
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [isClient])
+
+  // Don't render on server side
+  if (!isClient) {
+    return <Loader />
+  }
 
   return (
     <div className={styles['robot-3d-container']}>
