@@ -106,7 +106,28 @@ export default function JarvisChat() {
       recognition.onerror = (event: any) => {
         console.error('Speech recognition error:', event.error)
         setIsRecording(false)
+        isRecordingRef.current = false
         setIsListening(false)
+
+        // Очищаем таймер при ошибке
+        if (silenceTimerRef.current) {
+          clearTimeout(silenceTimerRef.current)
+        }
+
+        // Обрабатываем специфичные ошибки
+        switch (event.error) {
+          case 'aborted':
+            console.log('Speech recognition was aborted')
+            break
+          case 'not-allowed':
+            console.log('Microphone access denied')
+            break
+          case 'no-speech':
+            console.log('No speech detected')
+            break
+          default:
+            console.log('Speech recognition error:', event.error)
+        }
       }
       
       recognition.onend = () => {
