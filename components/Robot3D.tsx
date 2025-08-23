@@ -77,9 +77,70 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
   // Show fallback if model failed to load
   if (modelError) {
+    const fallbackRef = useRef<THREE.Group>(null)
+
+    useFrame((state) => {
+      if (fallbackRef.current) {
+        // Same animation logic as the real robot
+        const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
+        const baseY = -1 + floatY
+
+        const safeScrollProgress = Math.max(0, Math.min(scrollProgress, 2))
+
+        let targetX, targetY, targetZ, targetRotationY, targetScale
+
+        if (safeScrollProgress <= 1) {
+          const progress = safeScrollProgress
+          const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
+
+          targetX = Math.cos(orbitAngle) * (0.8 - progress * 0.3)
+          targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2
+          targetZ = Math.sin(progress * Math.PI) * 0.4
+          targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
+          targetScale = 0.7 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
+        } else {
+          const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
+          const danceTime = state.clock.elapsedTime * 0.3 + secondProgress * 2
+
+          targetX = Math.sin(danceTime) * 0.6 + Math.cos(danceTime * 0.7) * 0.3
+          targetY = baseY + Math.sin(danceTime * 1.3) * 0.25 + Math.cos(secondProgress * Math.PI) * 0.3
+          targetZ = Math.cos(danceTime * 0.9) * 0.4 + secondProgress * 0.2
+          targetRotationY = danceTime * 0.4 + Math.sin(danceTime * 0.6) * 0.3
+          targetScale = 0.8 + Math.sin(danceTime * 2) * 0.1
+        }
+
+        targetX = Math.max(-1.5, Math.min(1.5, targetX))
+        targetY = Math.max(-2, Math.min(2, targetY))
+        targetZ = Math.max(-1, Math.min(1, targetZ))
+
+        fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, 0.04)
+        fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, 0.05)
+        fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, 0.045)
+
+        const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
+        fallbackRef.current.rotation.y = THREE.MathUtils.lerp(fallbackRef.current.rotation.y, targetRotationY + personalityRotation, 0.03)
+        fallbackRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.04
+        fallbackRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.15) * 0.03
+
+        const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
+        const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
+        fallbackRef.current.scale.setScalar(THREE.MathUtils.lerp(fallbackRef.current.scale.x, finalScale, 0.04))
+      }
+    })
+
     return (
-      <group ref={groupRef}>
-        {/* Fallback geometric robot */}
+      <group ref={fallbackRef}>
+        {/* Sparkles effect around fallback robot */}
+        <Sparkles
+          count={20}
+          scale={[2, 2, 2]}
+          size={1.5}
+          speed={0.3}
+          color="#0ea5e9"
+          opacity={0.6}
+        />
+
+        {/* Fallback geometric robot body */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[0.8, 1.2, 0.6]} />
           <meshStandardMaterial
@@ -107,6 +168,26 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         <mesh position={[0.1, 0.85, 0.25]}>
           <sphereGeometry args={[0.05, 8, 8]} />
           <meshBasicMaterial color="#ffffff" />
+        </mesh>
+        {/* Robot arms */}
+        <mesh position={[-0.7, 0.3, 0]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.8]} />
+          <meshStandardMaterial color="#0ea5e9" />
+        </mesh>
+        <mesh position={[0.7, 0.3, 0]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.8]} />
+          <meshStandardMaterial color="#0ea5e9" />
+        </mesh>
+
+        {/* Energy field effect */}
+        <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
+          <sphereGeometry args={[1, 16, 16]} />
+          <meshBasicMaterial
+            color="#0ea5e9"
+            transparent
+            opacity={0.1}
+            wireframe={true}
+          />
         </mesh>
       </group>
     )
@@ -241,8 +322,17 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 }
 
 function LoadingFallback() {
+  const loadingRef = useRef<THREE.Group>(null)
+
+  useFrame((state) => {
+    if (loadingRef.current) {
+      loadingRef.current.rotation.y = state.clock.elapsedTime * 0.5
+      loadingRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.2
+    }
+  })
+
   return (
-    <group>
+    <group ref={loadingRef}>
       {/* Simple loading animation with geometric shapes */}
       <mesh>
         <boxGeometry args={[0.5, 0.5, 0.5]} />
@@ -292,7 +382,7 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
         }}
         dpr={[1, 2]}
       >
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingFallback />}>
           {/* Enhanced Lighting */}
           <ambientLight intensity={0.3} />
 
