@@ -214,42 +214,6 @@ export default function AIConsultant() {
           </div>
         </div>
 
-        {/* Comparison Section */}
-        <div ref={comparisonRef} className="comparison-section">
-          <h3 className="comparison-title">Обычная команда vs ДЖАРВИС</h3>
-          
-          <div className="comparison-grid">
-            <div className="comparison-header">
-              <div className="comparison-col traditional">
-                <Users className="header-icon" />
-                <span>Команда продавцов</span>
-              </div>
-              <div className="comparison-col ai">
-                <Bot className="header-icon" />
-                <span>ДЖАРВИС ИИ</span>
-              </div>
-              <div className="comparison-col improvement">
-                <Zap className="header-icon" />
-                <span>Улучшение</span>
-              </div>
-            </div>
-            
-            {comparisonData.map((item, index) => (
-              <div 
-                key={index} 
-                className={`comparison-row ${visibleComparisons.includes(index) ? 'visible' : ''}`}
-              >
-                <div className="comparison-label">{item.title}</div>
-                <div className="comparison-traditional">{item.traditional}</div>
-                <div className="comparison-ai">{item.ai}</div>
-                <div className="comparison-improvement">
-                  <ArrowRight className="improvement-icon" />
-                  {item.improvement}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* Statistics */}
         <div ref={statsRef} className="stats-section">
