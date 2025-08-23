@@ -46,7 +46,7 @@ function RobotParticles({ position }: { position: [number, number, number] }) {
         size={0.02}
         color="#0ea5e9"
         transparent
-        opacity={0.6}
+        opacity={0.8}
         sizeAttenuation={true}
       />
     </points>
@@ -256,7 +256,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         size={2}
         speed={0.3}
         color="#0ea5e9"
-        opacity={0.4}
+        opacity={0.6}
       />
 
       {/* Floating particles */}
@@ -345,7 +345,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         size={2}
         speed={0.4}
         color="#0ea5e9"
-        opacity={0.8}
+        opacity={0.9}
       />
 
       {/* Fallback geometric robot body */}
