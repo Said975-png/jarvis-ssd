@@ -11,6 +11,10 @@ export default function Hero() {
     setIsLoaded(true)
   }, [])
 
+  useEffect(() => {
+    console.log('Mobile menu state changed:', isMobileMenuOpen);
+  }, [isMobileMenuOpen])
+
   return (
     <section className="hero-section">
       {/* Content */}
@@ -26,7 +30,7 @@ export default function Hero() {
             <div className="nav-links desktop-nav">
               <a href="#services" className="nav-link">Услуги</a>
               <a href="#about" className="nav-link">О нас</a>
-              <a href="#contact" className="nav-link">Контакты</a>
+              <a href="#contact" className="nav-link">��онтакты</a>
 
               <div className="nav-actions">
                 <button className="cart-button" aria-label="Корзина">
