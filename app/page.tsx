@@ -19,6 +19,7 @@ export default function Home() {
         <AIConsultant />
         <Reviews />
       </main>
+      <Footer />
       <JarvisChat />
     </>
   )
