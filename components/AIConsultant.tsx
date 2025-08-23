@@ -132,16 +132,13 @@ export default function AIConsultant() {
     )
 
     const currentChatRef = chatRef.current
-    const currentComparisonRef = comparisonRef.current
     const currentStatsRef = statsRef.current
 
     if (currentChatRef) observer.observe(currentChatRef)
-    if (currentComparisonRef) observer.observe(currentComparisonRef)
     if (currentStatsRef) observer.observe(currentStatsRef)
 
     return () => {
       if (currentChatRef) observer.unobserve(currentChatRef)
-      if (currentComparisonRef) observer.unobserve(currentComparisonRef)
       if (currentStatsRef) observer.unobserve(currentStatsRef)
     }
   }, [])
@@ -166,7 +163,7 @@ export default function AIConsultant() {
           
           <p className="ai-consultant-subtitle">
             Персональный ИИ-помощник работает 24/7, общается с клиентами, отвечает на вопросы 
-            и предлагает товары на основе индивидуальны�� предпочтений и истории покупок
+            и предл��гает товары на основе индивидуальных предпочтений и истории покупок
           </p>
         </div>
 
@@ -264,7 +261,7 @@ export default function AIConsultant() {
 
         {/* Statistics */}
         <div ref={statsRef} className="stats-section">
-          <h3 className="stats-title">��езультаты внедрения ДЖАРВИС</h3>
+          <h3 className="stats-title">Результаты внедрения ДЖАРВИС</h3>
           
           <div className="stats-grid">
             {statistics.map((stat, index) => (
