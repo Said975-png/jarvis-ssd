@@ -42,9 +42,9 @@ const reviews = [
   {
     id: 6,
     rating: 5,
-    text: "Мой магазин ювели��ных изделий стал более удобным благодаря Jarvis. Бот помогает клиентам выбрать подходящие украшения и отвечает на все вопросы.",
+    text: "Мой магазин ювелирных изделий стал более удобным благодаря Jarvis. Бот помогает клиентам выбрать подходящие украшения и отвечает на все вопросы.",
     author: "Васильева О.",
-    location: "Набережные Челны, Freelance"
+    location: "Набережные Челн��, Freelance"
   },
   {
     id: 7,
@@ -99,38 +99,42 @@ export default function Reviews() {
 
     let animationId: number
     let isPaused = false
-    const scrollSpeed = 1
+    const scrollSpeed = 0.8
 
     const animate = () => {
       if (scrollContainer && !isPaused) {
         scrollContainer.scrollLeft += scrollSpeed
 
-        // Когда доходим до конца первого набора, возвращаемся в начало
-        const maxScroll = scrollContainer.scrollWidth / 2
-        if (scrollContainer.scrollLeft >= maxScroll) {
+        // Проверяем достигли ли половины контента (начало второго набора)
+        const halfWidth = scrollContainer.scrollWidth / 2
+        if (scrollContainer.scrollLeft >= halfWidth) {
           scrollContainer.scrollLeft = 0
         }
       }
       animationId = requestAnimationFrame(animate)
     }
 
-    // Небольшая задержка перед началом анимации
-    const startAnimation = () => {
-      setTimeout(() => {
-        animationId = requestAnimationFrame(animate)
-      }, 1000)
-    }
-
-    startAnimation()
+    // Запускаем анимацию с задержкой для загрузки DOM
+    const timer = setTimeout(() => {
+      console.log('Starting reviews animation') // Для отладки
+      animationId = requestAnimationFrame(animate)
+    }, 2000)
 
     // Останавливаем анимацию при наведении
-    const handleMouseEnter = () => { isPaused = true }
-    const handleMouseLeave = () => { isPaused = false }
+    const handleMouseEnter = () => {
+      isPaused = true
+      console.log('Animation paused')
+    }
+    const handleMouseLeave = () => {
+      isPaused = false
+      console.log('Animation resumed')
+    }
 
     scrollContainer.addEventListener('mouseenter', handleMouseEnter)
     scrollContainer.addEventListener('mouseleave', handleMouseLeave)
 
     return () => {
+      clearTimeout(timer)
       cancelAnimationFrame(animationId)
       scrollContainer?.removeEventListener('mouseenter', handleMouseEnter)
       scrollContainer?.removeEventListener('mouseleave', handleMouseLeave)
