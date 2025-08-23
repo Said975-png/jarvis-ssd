@@ -17,6 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src="https://js.puter.com/v2/"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body>
         <UserProvider>
           <OrdersProvider>
