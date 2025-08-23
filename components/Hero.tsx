@@ -15,6 +15,11 @@ export default function Hero() {
     console.log('Mobile menu state changed:', isMobileMenuOpen);
   }, [isMobileMenuOpen])
 
+  // Ensure menu is closed on component mount
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [])
+
   return (
     <section className="hero-section">
       {/* Content */}
