@@ -185,10 +185,13 @@ export default function Hero() {
               }}>Контакты</a>
 
               <div className="mobile-nav-actions">
-                <button className="mobile-nav-button cart-button" onClick={() => setIsMobileMenuOpen(false)}>
+                <button className="mobile-nav-button cart-button" onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setIsCartOpen(true);
+                }}>
                   <ShoppingCart className="mobile-nav-icon" />
                   <span>Моя корзина</span>
-                  <span className="mobile-cart-count">0</span>
+                  <span className="mobile-cart-count">{getTotalItems()}</span>
                 </button>
                 {user ? (
                   <>
@@ -213,7 +216,7 @@ export default function Hero() {
                       setIsLoginModalOpen(true);
                     }}>
                       <User className="mobile-nav-icon" />
-                      <span>Войт�� в аккаунт</span>
+                      <span>Войти в аккаунт</span>
                     </button>
                     <button className="mobile-nav-button auth-button register" onClick={() => {
                       setIsMobileMenuOpen(false);
@@ -245,7 +248,7 @@ export default function Hero() {
             
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
-              обычные интернет-ма��азины в умные, клиентоориентированные платформы.
+              обычные интернет-магазины в умные, клиентоориентированные платформы.
               Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
@@ -322,7 +325,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Создание макета</h3>
                   <p className="step-description">
-                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этап�� вы видите как будет выглядеть конечный результат.
+                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизай�� всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный резуль��ат.
                   </p>
                 </div>
               </div>
@@ -342,7 +345,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Разработка проекта</h3>
                   <p className="step-description">
-                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем м��кет по несколько раз без весомых оснований.
+                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в пр��цессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
                   </p>
                 </div>
               </div>
@@ -362,7 +365,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Сдача проекта</h3>
                   <p className="step-description">
-                    После завершения разработки и получения окончательного платежа мы п��редаем вам готовый проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
+                    По��ле завершения разработки и получения окончательного платежа мы передаем вам готовый проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
                   </p>
                 </div>
               </div>
@@ -419,7 +422,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Персональные рекомендации</h3>
                   <p className="feature-description">
-                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение ��лиента по его сообщениям.
+                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
                   </p>
                 </div>
               </div>
