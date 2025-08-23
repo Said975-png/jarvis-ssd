@@ -291,7 +291,7 @@ export default function Hero() {
           <div className="card-icon">
             <Target className="icon" />
           </div>
-          <div className="card-text">Умные рекомендации</div>
+          <div className="card-text">Умные рекомендац��и</div>
         </div>
       </div>
 
@@ -336,7 +336,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Разработка проекта</h3>
                   <p className="step-description">
-                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
+                    Приступаем к программированию и ��озданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
                   </p>
                 </div>
               </div>
@@ -587,7 +587,7 @@ export default function Hero() {
                   id="register-name"
                   name="name"
                   className="form-input"
-                  placeholder="Введите ваше имя"
+                  placeholder="Введи��е ваше имя"
                   required
                 />
               </div>
@@ -672,75 +672,73 @@ export default function Hero() {
               </button>
             </div>
 
-            <div className="dashboard-content">
-              <div className="dashboard-section">
-                <div className="user-info">
-                  <div className="user-avatar">
-                    <User className="avatar-icon" />
-                  </div>
-                  <div className="user-details">
-                    <h3 className="user-name">{user.name}</h3>
-                    <p className="user-email">{user.email}</p>
-                    <span className="user-status">Активный пользователь</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="dashboard-section">
-                <h4 className="section-title">Мои проекты</h4>
-                <div className="projects-list">
-                  <div className="project-item">
-                    <div className="project-info">
-                      <h5 className="project-name">Интернет-магазин одежды</h5>
-                      <p className="project-status">В разработке</p>
+            <div className="dashboard-layout">
+              {/* Sidebar */}
+              <div className="dashboard-sidebar">
+                <div className="sidebar-header">
+                  <div className="user-profile">
+                    <div className="user-avatar-v0">
+                      <span className="user-initials">{user.name.charAt(0).toUpperCase()}</span>
                     </div>
-                    <div className="project-actions">
-                      <button className="project-button">Открыть</button>
-                    </div>
-                  </div>
-                  <div className="project-item">
-                    <div className="project-info">
-                      <h5 className="project-name">Мебельный каталог</h5>
-                      <p className="project-status">Завершен</p>
-                    </div>
-                    <div className="project-actions">
-                      <button className="project-button">Открыть</button>
+                    <div className="user-info-v0">
+                      <div className="user-name-v0">{user.name}</div>
+                      <div className="user-email-v0">{user.email}</div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="dashboard-section">
-                <h4 className="section-title">Статистика</h4>
-                <div className="stats-grid">
-                  <div className="stat-card">
-                    <div className="stat-number">3</div>
-                    <div className="stat-label">Проекта</div>
+                <nav className="sidebar-nav">
+                  <div className="nav-section">
+                    <div className="nav-section-title">Основное</div>
+                    <div className="nav-item active">
+                      <User className="nav-icon" />
+                      <span>Обзор</span>
+                    </div>
+                    <div className="nav-item">
+                      <Target className="nav-icon" />
+                      <span>Проекты</span>
+                    </div>
+                    <div className="nav-item">
+                      <BarChart3 className="nav-icon" />
+                      <span>Аналитика</span>
+                    </div>
                   </div>
-                  <div className="stat-card">
-                    <div className="stat-number">250%</div>
-                    <div className="stat-label">Рост продаж</div>
+
+                  <div className="nav-section">
+                    <div className="nav-section-title">Настройки</div>
+                    <div className="nav-item">
+                      <Zap className="nav-icon" />
+                      <span>Настройки</span>
+                    </div>
                   </div>
-                  <div className="stat-card">
-                    <div className="stat-number">24/7</div>
-                    <div className="stat-label">Поддержка ИИ</div>
-                  </div>
+                </nav>
+
+                <div className="sidebar-footer">
+                  <button className="logout-btn" onClick={() => {
+                    setUser(null);
+                    setIsDashboardOpen(false);
+                  }}>
+                    Выйти
+                  </button>
                 </div>
               </div>
 
-              <div className="dashboard-actions">
-                <button className="dashboard-action-button primary" onClick={() => setIsContractPanelOpen(true)}>
-                  Новый проект
-                </button>
-                <button className="dashboard-action-button secondary">
-                  Настройки
-                </button>
-                <button className="dashboard-action-button logout" onClick={() => {
-                  setUser(null);
-                  setIsDashboardOpen(false);
-                }}>
-                  Выйти
-                </button>
+              {/* Main Content */}
+              <div className="dashboard-main">
+                <div className="main-content">
+                  <div className="empty-state">
+                    <div className="empty-icon">
+                      <Zap className="empty-icon-svg" />
+                    </div>
+                    <h3 className="empty-title">Добро пожаловать в JARVIS</h3>
+                    <p className="empty-description">
+                      Ваш персональный кабинет готов к работе. Здесь будет отображаться содержимое, которое мы добавим позже.
+                    </p>
+                    <button className="empty-cta" onClick={() => setIsContractPanelOpen(true)}>
+                      Начать работу
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
