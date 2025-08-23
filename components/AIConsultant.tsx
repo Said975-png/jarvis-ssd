@@ -37,7 +37,7 @@ const chatMessages = [
   {
     id: 6,
     type: 'ai',
-    message: 'Идеально! У нас есть кольцо с синим сапфиром 2 карата в платиновой оправе за 45 000₽. Могу организовать примерку или доставку курьером с возможностью возврата. Хотите посмотреть фото?',
+    message: 'Идеально! У н��с есть кольцо с синим сапфиром 2 карата в платиновой оправе за 45 000₽. Могу организовать примерку или доставку курьером с возможностью возврата. Хотите посмотреть фото?',
     timestamp: '14:34'
   }
 ]
@@ -80,7 +80,7 @@ const statistics = [
     icon: Clock,
     value: '24/7',
     label: 'Круглосуточно',
-    description: 'Обслуживание клиентов без выходных и переры��ов'
+    description: 'Обслуживание клиентов без выходных и перерывов'
   },
   {
     icon: Users,
@@ -115,11 +115,24 @@ export default function AIConsultant() {
         setTimeout(() => {
           setVisibleMessages(prev => prev + 1)
           setIsTyping(false)
-        }, 1000)
-      }, 2000)
+        }, 1500)
+      }, 2500)
       return () => clearTimeout(timer)
     }
   }, [visibleMessages])
+
+  // Автоматическая прокрутка к последнему сообщению
+  useEffect(() => {
+    if (chatMessagesRef.current && (visibleMessages > 0 || isTyping)) {
+      const container = chatMessagesRef.current
+      setTimeout(() => {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: 'smooth'
+        })
+      }, 300)
+    }
+  }, [visibleMessages, isTyping])
 
   // Intersection Observer для элементов
   useEffect(() => {
@@ -188,7 +201,7 @@ export default function AIConsultant() {
           </h2>
           
           <p className="ai-consultant-subtitle">
-            Персональный ИИ-помощник работает 24/7, общается с клиентами, отвеч��ет на вопросы 
+            Персональный ИИ-помощник работает 24/7, общается с клиентами, отвечает на вопросы 
             и предлагает товары на основе индивидуальных предпочтений и истории покупок
           </p>
         </div>
