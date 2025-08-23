@@ -716,6 +716,11 @@ body {
     display: flex;
   }
 
+  /* Hide auth actions on mobile, they will be in the mobile menu */
+  .nav-actions {
+    display: none;
+  }
+
   .nav-logo .logo-text {
     font-size: 1.4rem;
     font-weight: 900;
