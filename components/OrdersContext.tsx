@@ -63,7 +63,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  // Сохранение заказов в localStorage при изменении (только после иници��лизации)
+  // Сохранение заказов в localStorage при изменении (только после инициализации)
   useEffect(() => {
     if (typeof window !== 'undefined' && isInitialized) {
       console.log('Сохранение заказов в localStorage:', orders)
@@ -99,7 +99,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
       // Принудительно сохраняем в localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem('jarvis_orders', JSON.stringify(updatedOrders))
-        console.log('OrdersContext: принудительное сохранение в localStorage')
+        console.log('OrdersContext: принудительное сох��анение в localStorage')
       }
       return updatedOrders
     })
@@ -107,13 +107,16 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   }
 
   const updateOrderStatus = (orderId: string, status: OrderStatus): void => {
-    setOrders(prevOrders => 
-      prevOrders.map(order => 
-        order.id === orderId 
+    console.log('updateOrderStatus вызван для заказа:', orderId, 'новый статус:', status)
+    setOrders(prevOrders => {
+      const updatedOrders = prevOrders.map(order =>
+        order.id === orderId
           ? { ...order, status, updatedAt: new Date().toISOString() }
           : order
       )
-    )
+      console.log('updateOrderStatus: обновленные заказы:', updatedOrders)
+      return updatedOrders
+    })
   }
 
   const getOrder = (orderId: string): Order | undefined => {
