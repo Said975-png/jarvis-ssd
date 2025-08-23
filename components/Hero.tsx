@@ -201,7 +201,7 @@ export default function Hero() {
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
               обычные интернет-магазины в умные, клиентоориентированные платформы.
-              Увеличьте продажи с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
+              Увеличьте продажи с автоматической поддержкой, персонализированным�� рекомендациями и умными взаимодействиями.
             </p>
 
             <div className="hero-actions">
@@ -374,7 +374,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Персональные рекомендации</h3>
                   <p className="feature-description">
-                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
+                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его с��общениям.
                   </p>
                 </div>
               </div>
@@ -406,6 +406,175 @@ export default function Hero() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Login Modal */}
+      {isLoginModalOpen && (
+        <div className="auth-modal-overlay" onClick={() => setIsLoginModalOpen(false)}>
+          <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="auth-modal-header">
+              <h2 className="auth-modal-title">Вход в аккаунт</h2>
+              <button
+                className="auth-modal-close"
+                onClick={() => setIsLoginModalOpen(false)}
+                aria-label="Закрыть"
+              >
+                <X className="close-icon" />
+              </button>
+            </div>
+
+            <form className="auth-form" onSubmit={(e) => {
+              e.preventDefault();
+              // TODO: Handle login logic
+              console.log('Login submitted');
+              setIsLoginModalOpen(false);
+            }}>
+              <div className="form-group">
+                <label htmlFor="login-email" className="form-label">Email</label>
+                <input
+                  type="email"
+                  id="login-email"
+                  className="form-input"
+                  placeholder="Введите ваш email"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="login-password" className="form-label">Пароль</label>
+                <input
+                  type="password"
+                  id="login-password"
+                  className="form-input"
+                  placeholder="Введите пароль"
+                  required
+                />
+              </div>
+
+              <div className="form-options">
+                <label className="checkbox-wrapper">
+                  <input type="checkbox" className="checkbox" />
+                  <span className="checkbox-label">Запомнить меня</span>
+                </label>
+                <button type="button" className="forgot-password">
+                  Забыли пароль?
+                </button>
+              </div>
+
+              <button type="submit" className="auth-submit-button">
+                Войти
+              </button>
+
+              <div className="auth-switch">
+                <span>Нет аккаунта? </span>
+                <button
+                  type="button"
+                  className="auth-switch-button"
+                  onClick={() => {
+                    setIsLoginModalOpen(false);
+                    setIsRegisterModalOpen(true);
+                  }}
+                >
+                  Зарегистрироваться
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Register Modal */}
+      {isRegisterModalOpen && (
+        <div className="auth-modal-overlay" onClick={() => setIsRegisterModalOpen(false)}>
+          <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="auth-modal-header">
+              <h2 className="auth-modal-title">Создать аккаунт</h2>
+              <button
+                className="auth-modal-close"
+                onClick={() => setIsRegisterModalOpen(false)}
+                aria-label="Закрыть"
+              >
+                <X className="close-icon" />
+              </button>
+            </div>
+
+            <form className="auth-form" onSubmit={(e) => {
+              e.preventDefault();
+              // TODO: Handle registration logic
+              console.log('Registration submitted');
+              setIsRegisterModalOpen(false);
+            }}>
+              <div className="form-group">
+                <label htmlFor="register-name" className="form-label">Имя</label>
+                <input
+                  type="text"
+                  id="register-name"
+                  className="form-input"
+                  placeholder="Введите ваше имя"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="register-email" className="form-label">Email</label>
+                <input
+                  type="email"
+                  id="register-email"
+                  className="form-input"
+                  placeholder="Введите ваш email"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="register-password" className="form-label">Пароль</label>
+                <input
+                  type="password"
+                  id="register-password"
+                  className="form-input"
+                  placeholder="Создайте пароль"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="register-confirm-password" className="form-label">Подтвердите пароль</label>
+                <input
+                  type="password"
+                  id="register-confirm-password"
+                  className="form-input"
+                  placeholder="Повторите пароль"
+                  required
+                />
+              </div>
+
+              <div className="form-options">
+                <label className="checkbox-wrapper">
+                  <input type="checkbox" className="checkbox" required />
+                  <span className="checkbox-label">Я согласен с условиями использования и политикой конфиденциальности</span>
+                </label>
+              </div>
+
+              <button type="submit" className="auth-submit-button">
+                Создать аккаунт
+              </button>
+
+              <div className="auth-switch">
+                <span>Уже есть аккаунт? </span>
+                <button
+                  type="button"
+                  className="auth-switch-button"
+                  onClick={() => {
+                    setIsRegisterModalOpen(false);
+                    setIsLoginModalOpen(true);
+                  }}
+                >
+                  Войти
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
