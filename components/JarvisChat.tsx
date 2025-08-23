@@ -177,6 +177,19 @@ export default function JarvisChat() {
       setTtsSupported(true)
       speechSynthesisRef.current = window.speechSynthesis
       console.log('Text-to-Speech API is supported')
+
+      // Инициализируем голоса (они могут загружаться асинхронно)
+      const initVoices = () => {
+        const voices = speechSynthesisRef.current?.getVoices() || []
+        console.log('Available voices:', voices.length)
+        if (voices.length > 0) {
+          console.log('Voices loaded:', voices.map(v => v.name))
+        }
+      }
+
+      // Вызываем сразу и при событии voiceschanged
+      initVoices()
+      speechSynthesisRef.current.addEventListener('voiceschanged', initVoices)
     } else {
       setTtsSupported(false)
       console.log('Text-to-Speech not supported in this browser')
@@ -369,8 +382,8 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеал��ное решение.',
-        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудить?',
+        'Прекра��но! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
+        '��амечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудить?',
         'Как интересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
