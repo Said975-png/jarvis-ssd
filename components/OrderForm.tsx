@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, User, Phone, FileText, Link, CheckCircle } from 'lucide-react'
 import { useCart } from './CartContext'
 
@@ -170,7 +170,7 @@ export default function OrderForm() {
                       value={formData.siteDescription}
                       onChange={handleInputChange}
                       className="form-textarea"
-                      placeholder="Опишите, какой сайт вы хотите: назначение, основные функции, целевая аудитория..."
+                      placeholder="Опишите, какой сайт вы хотите: назначение, осн��вные функции, целевая аудитория..."
                       rows={4}
                       required
                       disabled={isSubmitting}
