@@ -752,8 +752,8 @@ body {
   right: -10vw;
   width: 70vw;
   height: 120vh;
-  opacity: 1;
-  z-index: -1;
+  opacity: 0.6;
+  z-index: 5;
   pointer-events: none;
   transition: opacity 0.3s ease;
   overflow: visible;
