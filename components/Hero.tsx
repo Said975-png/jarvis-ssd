@@ -124,7 +124,7 @@ export default function Hero() {
                 </button>
                 <button className="mobile-nav-button auth-button register" onClick={() => setIsMobileMenuOpen(false)}>
                   <UserPlus className="mobile-nav-icon" />
-                  <span>Создать аккаун��</span>
+                  <span>Создать аккаунт</span>
                 </button>
               </div>
             </div>
@@ -288,7 +288,7 @@ export default function Hero() {
         <div className="features-panel-overlay" onClick={() => setIsFeaturesPanelOpen(false)}>
           <div className="features-panel" onClick={(e) => e.stopPropagation()}>
             <div className="features-panel-header">
-              <h2 className="features-panel-title">Возможности ДЖАРВИС</h2>
+              <h2 className="features-panel-title">Возможнос��и ДЖАРВИС</h2>
               <button
                 className="features-panel-close"
                 onClick={() => setIsFeaturesPanelOpen(false)}
@@ -300,7 +300,6 @@ export default function Hero() {
 
             <div className="features-panel-content">
               <div className="feature-item">
-                <div className="feature-emoji">🧠</div>
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
@@ -310,7 +309,6 @@ export default function Hero() {
               </div>
 
               <div className="feature-item">
-                <div className="feature-emoji">💭</div>
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
@@ -320,7 +318,6 @@ export default function Hero() {
               </div>
 
               <div className="feature-item">
-                <div className="feature-emoji">🎯</div>
                 <div className="feature-content">
                   <h3 className="feature-title">Персональные рекомендации</h3>
                   <p className="feature-description">
@@ -330,7 +327,6 @@ export default function Hero() {
               </div>
 
               <div className="feature-item">
-                <div className="feature-emoji">💹</div>
                 <div className="feature-content">
                   <h3 className="feature-title">Увеличение продаж в 3 раза</h3>
                   <p className="feature-description">
@@ -340,17 +336,15 @@ export default function Hero() {
               </div>
 
               <div className="feature-item">
-                <div className="feature-emoji">⚡</div>
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терп��ние даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не те��яет терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
 
               <div className="feature-item">
-                <div className="feature-emoji">🚀</div>
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
