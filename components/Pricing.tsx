@@ -87,10 +87,6 @@ export default function Pricing() {
 
   return (
     <section ref={sectionRef} className="pricing-section" id="pricing">
-      <div className="pricing-bg">
-        <div className="pricing-grid-overlay" />
-      </div>
-      
       <div className="pricing-container">
         <div className="pricing-header">
           <h2 className="pricing-title">
@@ -167,7 +163,7 @@ export default function Pricing() {
               <Headphones className="support-icon" />
               <div className="support-text">
                 <span className="support-label">Техническая поддержка</span>
-                <span className="support-detail">Помощь в настройке</span>
+                <span className="support-detail">Помощь в настройк��</span>
               </div>
             </div>
             <div className="support-item">

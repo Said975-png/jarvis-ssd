@@ -69,10 +69,6 @@ export default function Advantages() {
 
   return (
     <section ref={sectionRef} className="advantages-section" id="advantages">
-      <div className="advantages-bg">
-        <div className="advantages-grid-overlay" />
-      </div>
-      
       <div className="advantages-container">
         <div className="advantages-header">
           <h2 className="advantages-title">

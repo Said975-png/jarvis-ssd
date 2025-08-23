@@ -24,6 +24,7 @@ body {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  background: #000000;
   overflow: visible;
   z-index: 1;
 }
@@ -93,6 +94,8 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 10;
 }
 
 /* Navigation */
@@ -749,10 +752,9 @@ body {
   right: -10vw;
   width: 70vw;
   height: 120vh;
-  opacity: 1;
-  z-index: 10000;
+  opacity: 0.4;
+  z-index: 2;
   pointer-events: none;
-  transition: opacity 0.3s ease;
   overflow: visible;
 }
 
@@ -971,26 +973,10 @@ canvas {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+  background: #000000;
   overflow: visible;
   padding: 6rem 0;
   z-index: 1;
-}
-
-.advantages-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.advantages-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 80px 80px;
-  opacity: 0.5;
 }
 
 .advantages-container {
@@ -1260,26 +1246,10 @@ canvas {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #0a0a0a 0%, #000000 50%, #0a0a0a 100%);
+  background: #000000;
   overflow: visible;
   padding: 6rem 0;
   z-index: 1;
-}
-
-.pricing-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.pricing-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.7;
 }
 
 .pricing-container {
@@ -2310,29 +2280,7 @@ canvas {
   overflow: hidden;
   position: relative;
   min-height: 100vh;
-}
-
-.reviews-bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
-  overflow: hidden;
-}
-
-.reviews-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 80px 80px;
-  opacity: 0.5;
-  animation: reviewsGridMove 25s linear infinite;
-}
-
-@keyframes reviewsGridMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(80px, 80px); }
+  z-index: 1;
 }
 
 .reviews-container {
@@ -2475,32 +2423,10 @@ canvas {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #0a0a0a 0%, #000000 50%, #0a0a0a 100%);
+  background: #000000;
   overflow: visible;
   padding: 8rem 0;
   z-index: 1;
-}
-
-.ai-consultant-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.ai-consultant-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
-  background-size: 100px 100px;
-  opacity: 0.5;
-  animation: gridFloat 20s linear infinite;
-}
-
-@keyframes gridFloat {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(100px, 100px); }
 }
 
 .ai-consultant-container {
@@ -3280,23 +3206,7 @@ canvas {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 4rem 0 2rem;
   margin-top: 6rem;
-}
-
-.footer-bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
-  overflow: hidden;
-}
-
-.footer-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 80px 80px;
-  animation: gridMove 25s linear infinite reverse;
+  z-index: 1;
 }
 
 .footer-container {

@@ -13,11 +13,6 @@ export default function ScrollAnimatedRobot() {
   const [currentSection, setCurrentSection] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
 
-  // Ensure robot is visible immediately
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY
@@ -61,8 +56,7 @@ export default function ScrollAnimatedRobot() {
 
   return (
     <div className="scroll-animated-robot" style={{
-      opacity: isVisible ? 1 : 0,
-      transition: 'opacity 0.3s ease'
+      opacity: isVisible ? 1 : 0
     }}>
       <Robot3D scrollProgress={scrollProgress} currentSection={currentSection} />
     </div>

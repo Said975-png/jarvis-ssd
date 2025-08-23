@@ -43,10 +43,10 @@ function RobotParticles({ position }: { position: [number, number, number] }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.02}
+        size={0.015}
         color="#0ea5e9"
         transparent
-        opacity={0.6}
+        opacity={0.35}
         sizeAttenuation={true}
       />
     </points>
@@ -111,7 +111,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     if (actions && isLoaded && !modelError && !isRetrying) {
       Object.values(actions).forEach((action) => {
         if (action) {
-          action.reset().fadeIn(0.5).play()
+          action.reset().play()
           // Set animation speed based on section
           if (currentSection === 0) {
             action.timeScale = 1 // Hero - normal speed
@@ -133,7 +133,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       if (actions) {
         Object.values(actions).forEach((action) => {
           if (action) {
-            action.fadeOut(0.5)
+            action.stop()
           }
         })
       }
@@ -161,9 +161,9 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
         // Keep within safe bounds [-1.5, 1.5] for X and Y
         // Start robot visible from the beginning (even when scroll is 0)
-        targetX = Math.cos(orbitAngle) * (1.2 - progress * 0.3) + 1.0 // More visible
+        targetX = Math.cos(orbitAngle) * (1.0 - progress * 0.3) + 0.8 // More visible and closer
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2 // Gentle vertical movement
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.2 // Move forward to be more visible
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.4 // Move even more forward to be clearly visible
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
         targetScale = 1.0 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else if (safeScrollProgress <= 2) {
@@ -206,10 +206,11 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       targetY = Math.max(-2, Math.min(2, targetY))
       targetZ = Math.max(-1, Math.min(1, targetZ))
 
-      // Smooth interpolation with organic feel
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.04)
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.05)
-      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.045)
+      // Smooth interpolation with organic feel - faster for initial positioning
+      const lerpSpeed = safeScrollProgress === 0 ? 0.15 : 0.04 // Faster on initial load
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, lerpSpeed)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, lerpSpeed + 0.01)
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, lerpSpeed + 0.005)
 
       // Engaging rotation with personality
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
@@ -245,18 +246,37 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
   const { scene } = gltf
 
+  // Make robot model transparent
+  useEffect(() => {
+    if (scene) {
+      scene.traverse((child) => {
+        if (child.isMesh && child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((mat) => {
+              mat.transparent = true
+              mat.opacity = 0.4
+            })
+          } else {
+            child.material.transparent = true
+            child.material.opacity = 0.4
+          }
+        }
+      })
+    }
+  }, [scene])
+
   // Now we can safely use the scene since we've passed all the early returns and all hooks are called
 
   return (
     <group ref={groupRef}>
       {/* Sparkles effect around robot */}
       <Sparkles
-        count={30}
+        count={20}
         scale={[3, 3, 3]}
-        size={2}
+        size={1.5}
         speed={0.3}
         color="#0ea5e9"
-        opacity={0.4}
+        opacity={0.25}
       />
 
       {/* Floating particles */}
@@ -275,7 +295,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.05}
+          opacity={0.06}
           wireframe={true}
         />
       </mesh>
@@ -301,9 +321,9 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
         // Positioned to be visible but not intrusive
-        targetX = Math.cos(orbitAngle) * (1.8 - progress * 0.3) + 1.2
+        targetX = Math.cos(orbitAngle) * (1.0 - progress * 0.3) + 0.8
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.3
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.4
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
         targetScale = 1.5 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else {
@@ -321,9 +341,10 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
       targetY = Math.max(-2, Math.min(2, targetY))
       targetZ = Math.max(-1, Math.min(1, targetZ))
 
-      fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, 0.04)
-      fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, 0.05)
-      fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, 0.045)
+      const lerpSpeed = safeScrollProgress === 0 ? 0.15 : 0.04 // Faster on initial load
+      fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, lerpSpeed)
+      fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, lerpSpeed + 0.01)
+      fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, lerpSpeed + 0.005)
 
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
       fallbackRef.current.rotation.y = THREE.MathUtils.lerp(fallbackRef.current.rotation.y, targetRotationY + personalityRotation, 0.03)
@@ -340,12 +361,12 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
     <group ref={fallbackRef} scale={[2, 2, 2]}>
       {/* Sparkles effect around fallback robot */}
       <Sparkles
-        count={30}
+        count={20}
         scale={[3, 3, 3]}
-        size={2}
+        size={1.5}
         speed={0.4}
         color="#0ea5e9"
-        opacity={0.8}
+        opacity={0.3}
       />
 
       {/* Fallback geometric robot body */}
@@ -354,9 +375,9 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshStandardMaterial
           color="#0ea5e9"
           emissive="#0ea5e9"
-          emissiveIntensity={0.3}
+          emissiveIntensity={0.1}
           transparent
-          opacity={0.9}
+          opacity={0.3}
         />
       </mesh>
       {/* Robot head */}
@@ -401,7 +422,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.15}
+          opacity={0.08}
           wireframe={true}
         />
       </mesh>
@@ -412,7 +433,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshBasicMaterial
           color="#3b82f6"
           transparent
-          opacity={0.05}
+          opacity={0.06}
         />
       </mesh>
     </group>

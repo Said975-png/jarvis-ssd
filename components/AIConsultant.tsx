@@ -93,7 +93,7 @@ export default function AIConsultant() {
     }
   }, [visibleMessages])
 
-  // Автоматическая прокрутка к последнему сообщению
+  // Автоматическая прокр��тка к последнему сообщению
   useEffect(() => {
     if (chatMessagesRef.current && (visibleMessages > 0 || isTyping)) {
       const container = chatMessagesRef.current
@@ -145,10 +145,6 @@ export default function AIConsultant() {
 
   return (
     <section ref={sectionRef} className="ai-consultant-section">
-      <div className="ai-consultant-bg">
-        <div className="ai-consultant-grid-overlay" />
-      </div>
-      
       <div className="ai-consultant-container">
         {/* Header */}
         <div className="ai-consultant-header">
