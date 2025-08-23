@@ -46,6 +46,41 @@ export default function OrderForm() {
 
   if (!isOrderFormOpen) return null
 
+  // Проверяем авторизацию пользователя
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="order-form-overlay" onClick={() => setIsOrderFormOpen(false)}>
+        <div className="order-form-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="order-form-header">
+            <h2 className="order-form-title">Необходима авторизация</h2>
+            <button
+              className="order-form-close"
+              onClick={() => setIsOrderFormOpen(false)}
+              aria-label="Закрыть форму"
+            >
+              <X className="close-icon" />
+            </button>
+          </div>
+          <div className="order-form-content">
+            <div className="auth-required">
+              <User className="auth-icon-large" />
+              <h3 className="auth-title">Войдите в систему</h3>
+              <p className="auth-message">
+                Для оформления заказа необходимо войти в систему или зарегистрироваться.
+              </p>
+              <button
+                className="auth-action-button"
+                onClick={() => setIsOrderFormOpen(false)}
+              >
+                Понятно
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
@@ -227,7 +262,7 @@ export default function OrderForm() {
                       value={formData.siteDescription}
                       onChange={handleInputChange}
                       className="form-textarea"
-                      placeholder="Опишите, какой сайт вы хотите: назначение, основные функци��, целевая аудитория..."
+                      placeholder="Опишите, какой сайт вы хотите: назначение, основные функции, целевая аудитория..."
                       rows={4}
                       required
                       disabled={isSubmitting}
