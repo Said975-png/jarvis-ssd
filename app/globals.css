@@ -23,7 +23,6 @@ body {
 main {
   position: relative;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.3);
 }
 
 /* Hero Section */
@@ -753,10 +752,10 @@ main {
 .scroll-animated-robot {
   position: fixed;
   top: 0;
-  right: -10vw;
-  width: 70vw;
+  right: -5vw;
+  width: 50vw;
   height: 100vh;
-  opacity: 0.6;
+  opacity: 0.4;
   z-index: 1;
   pointer-events: none;
   transition: opacity 0.3s ease;
