@@ -268,7 +268,7 @@ body {
   padding: 1rem;
   gap: 0.25rem;
   position: relative;
-  z-index: 10001;
+  z-index: 10005;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
   outline: none;
@@ -970,6 +970,10 @@ body {
   overflow: visible;
 }
 
+.scroll-animated-robot * {
+  pointer-events: none !important;
+}
+
 .robot-loading {
   position: absolute;
   top: 50%;
@@ -1062,8 +1066,8 @@ body {
   }
 
   .scroll-animated-robot {
-    width: 100vw;
-    right: -40vw;
+    width: 80vw;
+    right: -30vw;
     top: -20vh;
     height: 120vh;
     opacity: 0.3;
