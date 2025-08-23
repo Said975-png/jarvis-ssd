@@ -207,7 +207,7 @@ export default function Hero() {
                       setIsLoginModalOpen(true);
                     }}>
                       <User className="mobile-nav-icon" />
-                      <span>Войти �� аккаунт</span>
+                      <span>Войти в аккаунт</span>
                     </button>
                     <button className="mobile-nav-button auth-button register" onClick={() => {
                       setIsMobileMenuOpen(false);
@@ -232,7 +232,7 @@ export default function Hero() {
             </div>
             
             <h1 className="hero-title">
-              Мы создаем <span className="gradient-text">умные</span>
+              Мы создаем <span className="gradient-text">��мные</span>
               <br />
               интернет-магази��ы
             </h1>
@@ -314,9 +314,9 @@ export default function Hero() {
               <div className="contract-step">
                 <div className="step-number">1</div>
                 <div className="step-content">
-                  <h3 className="step-title">Создание макета</h3>
+                  <h3 className="step-title">Созда��ие макета</h3>
                   <p className="step-description">
-                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
+                    Сначала мы создаем детальный макет вашего проекта. Это вклю��ает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
                   </p>
                 </div>
               </div>
@@ -395,7 +395,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
-                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
+                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, ��оторые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
                 </div>
               </div>
@@ -431,7 +431,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое вре��я дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терпение даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
@@ -440,7 +440,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результат�� роста продаж.
                   </p>
                 </div>
               </div>
@@ -487,6 +487,7 @@ export default function Hero() {
                 <input
                   type="email"
                   id="login-email"
+                  name="email"
                   className="form-input"
                   placeholder="Введите ваш email"
                   required
@@ -498,6 +499,7 @@ export default function Hero() {
                 <input
                   type="password"
                   id="login-password"
+                  name="password"
                   className="form-input"
                   placeholder="Введите пароль"
                   required
