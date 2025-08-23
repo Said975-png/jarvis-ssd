@@ -117,11 +117,11 @@ export default function Hero() {
                   <ShoppingCart className="cart-icon" />
                   <span className="cart-count">0</span>
                 </button>
-                <button className="auth-button login-button">
+                <button className="auth-button login-button" onClick={() => setIsLoginModalOpen(true)}>
                   <User className="auth-icon" />
                   <span>Вход</span>
                 </button>
-                <button className="auth-button register-button">
+                <button className="auth-button register-button" onClick={() => setIsRegisterModalOpen(true)}>
                   <UserPlus className="auth-icon" />
                   <span>Регистрация</span>
                 </button>
@@ -255,7 +255,7 @@ export default function Hero() {
         <div className="contract-panel-overlay" onClick={() => setIsContractPanelOpen(false)}>
           <div className="contract-panel" onClick={(e) => e.stopPropagation()}>
             <div className="contract-panel-header">
-              <h2 className="contract-panel-title">Процес�� работы с нами</h2>
+              <h2 className="contract-panel-title">Процесс работы с нами</h2>
               <button
                 className="contract-panel-close"
                 onClick={() => setIsContractPanelOpen(false)}
@@ -279,9 +279,9 @@ export default function Hero() {
               <div className="contract-step">
                 <div className="step-number">2</div>
                 <div className="step-content">
-                  <h3 className="step-title">С��гласование и предоплата</h3>
+                  <h3 className="step-title">Согласование и предоплата</h3>
                   <p className="step-description">
-                    Если макет и техническое решение вас устраив��ет, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
+                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
                   </p>
                 </div>
               </div>
@@ -350,7 +350,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
-                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
+                    ДЖАРВИС анализирует поведение каждого клиента �� реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
                 </div>
               </div>
@@ -359,14 +359,14 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопр��сы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
+                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
 
               <div className="feature-item">
                 <div className="feature-content">
-                  <h3 className="feature-title">Персональные рекомендации</h3>
+                  <h3 className="feature-title">Персональные ��екомендации</h3>
                   <p className="feature-description">
                     ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
                   </p>
