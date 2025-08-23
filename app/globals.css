@@ -752,7 +752,7 @@ body {
   right: -10vw;
   width: 70vw;
   height: 120vh;
-  opacity: 0.8;
+  opacity: 0.4;
   z-index: 2;
   pointer-events: none;
   transition: opacity 0.3s ease;
