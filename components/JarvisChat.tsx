@@ -31,6 +31,7 @@ export default function JarvisChat() {
   const [isTyping, setIsTyping] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
   const [isListening, setIsListening] = useState(false)
+  const [speechSupported, setSpeechSupported] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<any>(null)
@@ -114,7 +115,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
 
-        // Обрабатываем специфичные ошибки
+        // Обрабатываем специ��ичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -288,7 +289,7 @@ export default function JarvisChat() {
 
   return (
     <>
-      {/* Кнопка чата в пр��вом нижнем углу */}
+      {/* Кнопка чата в правом нижнем углу */}
       {!isOpen && (
         <div className="chat-button-container">
           <button
