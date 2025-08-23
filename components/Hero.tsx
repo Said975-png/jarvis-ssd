@@ -51,25 +51,13 @@ export default function Hero() {
             {/* Mobile Menu Button */}
             <button
               className="mobile-menu-button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Mobile menu button clicked!', {
-                  current: isMobileMenuOpen,
-                  target: e.target,
-                  timestamp: new Date().toISOString()
-                });
-                setIsMobileMenuOpen(!isMobileMenuOpen);
-              }}
-              onTouchStart={(e) => {
-                console.log('Touch start on mobile menu button');
+              onClick={() => {
+                const newState = !isMobileMenuOpen;
+                console.log('Mobile menu toggle:', { from: isMobileMenuOpen, to: newState });
+                setIsMobileMenuOpen(newState);
               }}
               aria-label="Toggle mobile menu"
-              style={{
-                position: 'relative',
-                zIndex: 10002,
-                pointerEvents: 'auto'
-              }}
+              type="button"
             >
               <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
               <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
