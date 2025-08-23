@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Zap, MessageCircle, BarChart3, Target } from 'lucide-react'
+import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus } from 'lucide-react'
 
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -10,6 +10,10 @@ export default function Hero() {
   useEffect(() => {
     setIsLoaded(true)
   }, [])
+
+  useEffect(() => {
+    console.log('Mobile menu state changed:', isMobileMenuOpen);
+  }, [isMobileMenuOpen])
 
   return (
     <section className="hero-section">
@@ -26,14 +30,31 @@ export default function Hero() {
             <div className="nav-links desktop-nav">
               <a href="#services" className="nav-link">Услуги</a>
               <a href="#about" className="nav-link">О нас</a>
-              <a href="#contact" className="nav-link">Контакты</a>
-              <button className="cta-button">Начать</button>
+              <a href="#contact" className="nav-link">��онтакты</a>
+
+              <div className="nav-actions">
+                <button className="cart-button" aria-label="Корзина">
+                  <ShoppingCart className="cart-icon" />
+                  <span className="cart-count">0</span>
+                </button>
+                <button className="auth-button login-button">
+                  <User className="auth-icon" />
+                  <span>Вход</span>
+                </button>
+                <button className="auth-button register-button">
+                  <UserPlus className="auth-icon" />
+                  <span>Регистрация</span>
+                </button>
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
             <button
               className="mobile-menu-button"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                console.log('Mobile menu button clicked, current state:', isMobileMenuOpen);
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+              }}
               aria-label="Toggle mobile menu"
             >
               <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
@@ -46,7 +67,22 @@ export default function Hero() {
               <a href="#services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Услуги</a>
               <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>О нас</a>
               <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Контакты</a>
-              <button className="mobile-cta-button" onClick={() => setIsMobileMenuOpen(false)}>Начать</button>
+
+              <div className="mobile-nav-actions">
+                <button className="mobile-nav-button cart-button" onClick={() => setIsMobileMenuOpen(false)}>
+                  <ShoppingCart className="mobile-nav-icon" />
+                  <span>Корзина</span>
+                  <span className="mobile-cart-count">0</span>
+                </button>
+                <button className="mobile-nav-button auth-button" onClick={() => setIsMobileMenuOpen(false)}>
+                  <User className="mobile-nav-icon" />
+                  <span>Вход</span>
+                </button>
+                <button className="mobile-nav-button auth-button register" onClick={() => setIsMobileMenuOpen(false)}>
+                  <UserPlus className="mobile-nav-icon" />
+                  <span>Регистрация</span>
+                </button>
+              </div>
             </div>
           </nav>
 
