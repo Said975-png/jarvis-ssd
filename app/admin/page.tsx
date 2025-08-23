@@ -115,6 +115,16 @@ export default function AdminPage() {
           <h1 className="admin-title">Админ-панель</h1>
           <div className="header-actions">
             <span className="orders-count">{orders.length} заказов</span>
+            <button
+              onClick={() => {
+                const allOrders = getAllOrders()
+                console.log('Принудительное обновление заказов:', allOrders)
+                setOrders(allOrders)
+              }}
+              className="refresh-button"
+            >
+              Обновить
+            </button>
             <button onClick={handleLogout} className="logout-button">
               Выйти
             </button>
@@ -125,7 +135,7 @@ export default function AdminPage() {
       <div className="admin-content">
         <div className="orders-section">
           <div className="section-header">
-            <h2 className="section-title">Управление зака��ами</h2>
+            <h2 className="section-title">Управление заказами</h2>
           </div>
 
           {orders.length === 0 ? (
@@ -181,7 +191,7 @@ export default function AdminPage() {
                           className="reject-button"
                         >
                           <XCircle className="button-icon" />
-                          Отклон��ть
+                          Отклонить
                         </button>
                       </div>
                     )}
