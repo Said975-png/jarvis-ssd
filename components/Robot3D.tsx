@@ -317,13 +317,21 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: number; currentSection: number }) {
   const fallbackRef = useRef<THREE.Group>(null)
 
+  // Set initial position immediately for fallback robot
+  useEffect(() => {
+    if (fallbackRef.current) {
+      fallbackRef.current.position.set(0.8, -0.8, 0.6)
+      fallbackRef.current.scale.setScalar(0.8)
+    }
+  }, [])
+
   useFrame((state) => {
     if (fallbackRef.current) {
       // Same animation logic as the real robot
       const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
       const baseY = -1 + floatY
 
-      const safeScrollProgress = Math.max(0, Math.min(scrollProgress, 2))
+      const safeScrollProgress = Math.max(0, Math.min(scrollProgress, 4))
 
       let targetX, targetY, targetZ, targetRotationY, targetScale
 
@@ -334,37 +342,40 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         // Positioned to be visible but not intrusive
         targetX = Math.cos(orbitAngle) * (1.0 - progress * 0.3) + 0.8
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.4
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.6
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
-        targetScale = 1.5 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
+        targetScale = 0.8 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else {
         const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
         const danceTime = state.clock.elapsedTime * 0.3 + secondProgress * 2
 
         targetX = Math.sin(danceTime) * 0.6 + Math.cos(danceTime * 0.7) * 0.3
         targetY = baseY + Math.sin(danceTime * 1.3) * 0.25 + Math.cos(secondProgress * Math.PI) * 0.3
-        targetZ = Math.cos(danceTime * 0.9) * 0.4 + secondProgress * 0.2
+        targetZ = Math.cos(danceTime * 0.9) * 0.4 + secondProgress * 0.2 + 0.4
         targetRotationY = danceTime * 0.4 + Math.sin(danceTime * 0.6) * 0.3
-        targetScale = 0.8 + Math.sin(danceTime * 2) * 0.1
+        targetScale = 0.6 + Math.sin(danceTime * 2) * 0.1
       }
 
       targetX = Math.max(-1.5, Math.min(1.5, targetX))
       targetY = Math.max(-2, Math.min(2, targetY))
-      targetZ = Math.max(-1, Math.min(1, targetZ))
+      targetZ = Math.max(-0.2, Math.min(1.2, targetZ))
 
-      const lerpSpeed = safeScrollProgress === 0 ? 0.15 : 0.04 // Faster on initial load
+      // Faster interpolation for immediate visibility
+      const isFirstFrame = Math.abs(fallbackRef.current.position.x) < 0.1 && Math.abs(fallbackRef.current.position.y) < 0.1
+      const lerpSpeed = isFirstFrame ? 1.0 : 0.08
+
       fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, lerpSpeed)
-      fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, lerpSpeed + 0.01)
-      fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, lerpSpeed + 0.005)
+      fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, lerpSpeed)
+      fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, lerpSpeed)
 
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
-      fallbackRef.current.rotation.y = THREE.MathUtils.lerp(fallbackRef.current.rotation.y, targetRotationY + personalityRotation, 0.03)
+      fallbackRef.current.rotation.y = THREE.MathUtils.lerp(fallbackRef.current.rotation.y, targetRotationY + personalityRotation, 0.05)
       fallbackRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.04
       fallbackRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.15) * 0.03
 
       const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
       const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
-      fallbackRef.current.scale.setScalar(THREE.MathUtils.lerp(fallbackRef.current.scale.x, finalScale, 0.04))
+      fallbackRef.current.scale.setScalar(THREE.MathUtils.lerp(fallbackRef.current.scale.x, finalScale, 0.08))
     }
   })
 
