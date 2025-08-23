@@ -7,6 +7,7 @@ export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isContractPanelOpen, setIsContractPanelOpen] = useState(false)
+  const [isFeaturesPanel, setIsFeaturesPanel] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
@@ -221,7 +222,7 @@ export default function Hero() {
               <div className="contract-step">
                 <div className="step-number">1</div>
                 <div className="step-content">
-                  <h3 className="step-title">Создание макета</h3>
+                  <h3 className="step-title">Создание мак��та</h3>
                   <p className="step-description">
                     Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
                   </p>
@@ -233,7 +234,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Согласование и предоплата</h3>
                   <p className="step-description">
-                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости про��кта. Это позволяет нам приступить к разработке с полной уверенностью.
+                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
                   </p>
                 </div>
               </div>
@@ -253,7 +254,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Тестирование и доработки</h3>
                   <p className="step-description">
-                    Проводим полное те��тирование функционала, проверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем детали по вашим пожеланиям.
+                    Проводим полное тестирование функционала, проверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем дет��ли по вашим пожеланиям.
                   </p>
                 </div>
               </div>
@@ -273,7 +274,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Поддержка и развитие</h3>
                   <p className="step-description">
-                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
+                    Предлагаем техническую поддержку проекта, обновления и добавление новы�� функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
                   </p>
                 </div>
               </div>
