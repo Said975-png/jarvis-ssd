@@ -154,8 +154,11 @@ export default function JarvisChat() {
       }
       
       recognitionRef.current = recognition
+    } else {
+      setSpeechSupported(false)
+      console.log('Speech Recognition not supported in this browser')
     }
-    
+
     return () => {
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
