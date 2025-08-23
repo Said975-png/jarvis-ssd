@@ -63,7 +63,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  // Сохранение заказов в localStorage при изменении (только после инициализации)
+  // Сохранение заказов в localStorage при изменении (только после иници��лизации)
   useEffect(() => {
     if (typeof window !== 'undefined' && isInitialized) {
       console.log('Сохранение заказов в localStorage:', orders)
@@ -76,6 +76,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   }
 
   const getAllOrders = (): Order[] => {
+    console.log('getAllOrders() вызван, текущие заказы:', orders)
     return orders
   }
 
