@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Check, Star, Mail, Headphones, Clock } from 'lucide-react'
+import { useCart } from './CartContext'
 
 const pricingPlans = [
   {
