@@ -47,7 +47,10 @@ export default function Hero() {
             {/* Mobile Menu Button */}
             <button
               className="mobile-menu-button"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                console.log('Mobile menu button clicked, current state:', isMobileMenuOpen);
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+              }}
               aria-label="Toggle mobile menu"
             >
               <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
