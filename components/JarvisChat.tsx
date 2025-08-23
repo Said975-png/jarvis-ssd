@@ -183,16 +183,24 @@ export default function JarvisChat() {
 
   const stopRecording = () => {
     if (recognitionRef.current) {
+      // Сначала обновляем состояние
       setIsRecording(false)
       isRecordingRef.current = false
       setIsListening(false)
-      try {
-        recognitionRef.current.stop()
-      } catch (error) {
-        console.log('Recognition already stopped')
-      }
+
+      // Очищаем таймер
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
+        silenceTimerRef.current = null
+      }
+
+      // Затем останавливаем recognition
+      try {
+        if (recognitionRef.current) {
+          recognitionRef.current.stop()
+        }
+      } catch (error) {
+        console.log('Recognition stop error:', error)
       }
     }
   }
@@ -226,7 +234,7 @@ export default function JarvisChat() {
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
-        'У нас есть готовые решени�� для любого масштаба бизнеса. Что именно вам нужно?'
+        'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
       
       const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
