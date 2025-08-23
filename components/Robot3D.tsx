@@ -344,69 +344,38 @@ function Loader() {
 }
 
 export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
+  console.log('Robot3D rendering with:', { scrollProgress, currentSection })
+
   return (
-    <div className={styles['robot-3d-container']}>
+    <div className={styles['robot-3d-container']} style={{
+      background: 'rgba(255, 0, 0, 0.1)', // Temporary red background to debug visibility
+      border: '2px solid red' // Temporary border to see container
+    }}>
       <Canvas
         camera={{
-          position: [0, 0, 4],
-          fov: 50,
+          position: [0, 0, 5],
+          fov: 75,
           near: 0.1,
           far: 1000
         }}
-        gl={{ 
-          antialias: true, 
+        gl={{
+          antialias: true,
           alpha: true,
-          powerPreference: "high-performance"
+          powerPreference: "default"
         }}
-        dpr={[1, 2]}
+        style={{ background: 'transparent' }}
       >
-        <Suspense fallback={<LoadingFallback />}>
-          {/* Enhanced Lighting */}
-          <ambientLight intensity={0.3} />
-
-          {/* Primary dramatic lighting */}
+        <Suspense fallback={null}>
+          {/* Simple lighting */}
+          <ambientLight intensity={0.8} />
           <directionalLight
-            position={[10, 10, 5]}
-            intensity={1.2}
-            color="#0ea5e9"
-            castShadow={true}
-          />
-
-          {/* Accent lights for depth */}
-          <pointLight
-            position={[-8, -8, -8]}
-            intensity={0.5}
-            color="#3b82f6"
-          />
-          <pointLight
-            position={[8, -5, 3]}
-            intensity={0.4}
-            color="#8b5cf6"
-          />
-
-          {/* Moving spotlight for drama */}
-          <spotLight
-            position={[5, 8, 5]}
-            angle={0.3}
-            intensity={0.8}
+            position={[5, 5, 5]}
+            intensity={1}
             color="#ffffff"
-            penumbra={0.5}
-            castShadow={true}
           />
-
-          {/* Environment for reflections */}
-          <Environment preset="night" />
 
           {/* Robot Model with effects */}
           <RobotModel scrollProgress={scrollProgress} currentSection={currentSection} />
-          
-          {/* Controls - disabled for background effect */}
-          <OrbitControls 
-            enabled={false}
-            enableZoom={false}
-            enablePan={false}
-            enableRotate={false}
-          />
         </Suspense>
       </Canvas>
     </div>
