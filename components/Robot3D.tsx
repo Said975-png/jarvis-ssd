@@ -60,7 +60,10 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   const [retryCount, setRetryCount] = useState<number>(0)
   const [isRetrying, setIsRetrying] = useState<boolean>(false)
 
-  const modelUrl = 'https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c&format=glb'
+  // Try different GLB URL variants
+  const modelUrl = 'https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c'
+
+  console.log('Attempting to load model from:', modelUrl)
 
   // Load GLTF model with error handling
   const gltf = useGLTF(modelUrl,
@@ -73,16 +76,20 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       // Loading progress tracking (optional)
     },
     (error) => {
+      console.error('Robot model loading error:', error)
       setModelError(true)
       setIsRetrying(false)
 
       // Retry up to 3 times
       if (retryCount < 3) {
+        console.log(`Retrying model load (attempt ${retryCount + 1}/3)`)
         setTimeout(() => {
           setRetryCount(prev => prev + 1)
           setIsRetrying(true)
           setModelError(false)
         }, 2000)
+      } else {
+        console.log('All retry attempts failed, using fallback')
       }
     }
   )
