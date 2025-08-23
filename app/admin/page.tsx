@@ -23,7 +23,9 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      setOrders(getAllOrders())
+      const allOrders = getAllOrders()
+      console.log('Админ-панель: загружено заказов:', allOrders.length, allOrders)
+      setOrders(allOrders)
     }
   }, [isAuthenticated, getAllOrders])
 
@@ -123,7 +125,7 @@ export default function AdminPage() {
       <div className="admin-content">
         <div className="orders-section">
           <div className="section-header">
-            <h2 className="section-title">Управление заказами</h2>
+            <h2 className="section-title">Управление зака��ами</h2>
           </div>
 
           {orders.length === 0 ? (
@@ -179,7 +181,7 @@ export default function AdminPage() {
                           className="reject-button"
                         >
                           <XCircle className="button-icon" />
-                          Отклонить
+                          Отклон��ть
                         </button>
                       </div>
                     )}
