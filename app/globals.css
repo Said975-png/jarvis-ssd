@@ -760,6 +760,8 @@ main {
   pointer-events: none;
   transition: opacity 0.3s ease;
   overflow: visible;
+  background: rgba(0, 255, 0, 0.2);
+  border: 2px solid red;
 }
 
 .robot-loading {
