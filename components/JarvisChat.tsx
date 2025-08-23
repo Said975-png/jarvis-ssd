@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Меня зовут Джарвис, и я ваша ИИ-помощница. Я очень рада нашему знакомству! Расскажите, чем могу помочь с вашим проектом?',
+      text: 'Привет! Меня зовут Джарвис, и я ваша ИИ-помощница. Я очень рада нашему зн��комству! Расскажите, чем могу помочь с вашим проектом?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -68,7 +68,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, ttsSupported])
 
-  // Инициализа��ия Speech Recognition
+  // Инициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -395,11 +395,24 @@ export default function JarvisChat() {
   }
 
   const stopSpeaking = () => {
+    // Останавливаем любое воспроизведение
+    setIsSpeaking(false)
+
+    // Останавливаем браузерный TTS
     if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
       speechSynthesisRef.current.cancel()
-      setIsSpeaking(false)
-      console.log('Speech stopped')
     }
+
+    // Останавливаем все аудио элементы (включая Puter.js)
+    const audioElements = document.querySelectorAll('audio')
+    audioElements.forEach(audio => {
+      if (!audio.paused) {
+        audio.pause()
+        audio.currentTime = 0
+      }
+    })
+
+    console.log('All speech stopped')
   }
 
   const sendMessage = (message: string) => {
@@ -421,7 +434,7 @@ export default function JarvisChat() {
     setInputMessage('')
     setIsTyping(true)
 
-    // Имитация ответа ��жарвиса
+    // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
         'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
@@ -429,7 +442,7 @@ export default function JarvisChat() {
         'Как интересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
-        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с прое��тами. Что именно вас интересует?',
+        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересует?',
         'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
       ]
       
