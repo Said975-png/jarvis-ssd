@@ -5701,6 +5701,57 @@ canvas {
   margin-bottom: 0;
 }
 
+/* Auth Required Styles */
+.auth-required {
+  text-align: center;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-icon-large {
+  width: 4rem;
+  height: 4rem;
+  color: #0ea5e9;
+  margin-bottom: 1rem;
+}
+
+.auth-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.auth-message {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 300px;
+}
+
+.auth-action-button {
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.875rem 2rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+  margin-top: 1rem;
+}
+
+.auth-action-button:hover {
+  background: linear-gradient(135deg, #0284c7, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(14, 165, 233, 0.4);
+}
+
 /* Responsive Design for Cart and Order Form */
 @media (max-width: 768px) {
   .cart-modal-overlay,
