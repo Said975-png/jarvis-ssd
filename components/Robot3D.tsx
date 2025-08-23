@@ -98,7 +98,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   }, [gltf, modelError, isRetrying])
 
-  // CRITICAL: Always call useAnimations hook BEFORE any conditional returns!
+  // CRITICAL: Always call ALL hooks BEFORE any conditional returns!
   const { actions, mixer } = useAnimations(gltf?.animations || [], groupRef)
 
   // Reset retry counter when model loads successfully
@@ -107,6 +107,31 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       setRetryCount(0)
     }
   }, [isLoaded])
+
+  // Play all available animations when they're ready
+  useEffect(() => {
+    // Only run if we have actions and the model is loaded
+    if (actions && isLoaded && !modelError && !isRetrying) {
+      Object.values(actions).forEach((action) => {
+        if (action) {
+          action.reset().fadeIn(0.5).play()
+          // Set animation speed based on section
+          action.timeScale = currentSection === 0 ? 1 : 0.7
+        }
+      })
+    }
+
+    return () => {
+      // Cleanup animations on unmount
+      if (actions) {
+        Object.values(actions).forEach((action) => {
+          if (action) {
+            action.fadeOut(0.5)
+          }
+        })
+      }
+    }
+  }, [actions, currentSection, isLoaded, modelError, isRetrying])
 
   // Show fallback if model failed to load
   if (modelError) {
@@ -130,31 +155,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
   const { scene } = gltf
 
-  // Now we can safely use the scene since we've passed all the early returns
-
-  useEffect(() => {
-    // Play all available animations
-    if (actions) {
-      Object.values(actions).forEach((action) => {
-        if (action) {
-          action.reset().fadeIn(0.5).play()
-          // Set animation speed based on section
-          action.timeScale = currentSection === 0 ? 1 : 0.7
-        }
-      })
-    }
-
-    return () => {
-      // Cleanup animations on unmount
-      if (actions) {
-        Object.values(actions).forEach((action) => {
-          if (action) {
-            action.fadeOut(0.5)
-          }
-        })
-      }
-    }
-  }, [actions, currentSection])
+  // Now we can safely use the scene since we've passed all the early returns and all hooks are called
 
   useFrame((state) => {
     if (groupRef.current) {
