@@ -209,6 +209,7 @@ export default function JarvisChat() {
   }
 
   const stopRecording = () => {
+    console.log('stopRecording called')
     if (recognitionRef.current) {
       // Сначала обновляем состояние
       setIsRecording(false)
@@ -224,6 +225,7 @@ export default function JarvisChat() {
       // Затем останавливаем recognition
       try {
         if (recognitionRef.current) {
+          console.log('Stopping speech recognition...')
           recognitionRef.current.stop()
         }
       } catch (error) {
@@ -258,7 +260,7 @@ export default function JarvisChat() {
     setTimeout(() => {
       const jarvisResponses = [
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
-        'Я помогу вам создать умный интернет-магазин с персонализ��рованными рекомендациями.',
+        'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
@@ -318,7 +320,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект ч��стиц при открытии */}
+          {/* Эффект ч��стиц при от��рытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
