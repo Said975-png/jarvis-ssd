@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus, X } from 'lucide-react'
+import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus, X, Package, Clock, CheckCircle, XCircle } from 'lucide-react'
 import { useCart } from './CartContext'
 import { useUser } from './UserContext'
+import { useOrders, OrderStatus } from './OrdersContext'
 
 export default function Hero() {
   const { getTotalItems, setIsCartOpen } = useCart()
@@ -248,8 +249,8 @@ export default function Hero() {
             </h1>
             
             <p className="hero-description">
-              JARVIS создает современные сайты с ИИ-ассистентами, которые превращ��ют
-              обычные интернет-магазины в умные, клиентоориентированные платформы.
+              JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
+              обычные интернет-магазины в умные, клиентоори��нтированные платформы.
               Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
@@ -301,7 +302,7 @@ export default function Hero() {
           <div className="card-icon">
             <Target className="icon" />
           </div>
-          <div className="card-text">Умные рек��мендации</div>
+          <div className="card-text">Умные рекомендации</div>
         </div>
       </div>
 
@@ -366,7 +367,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Сдача проекта</h3>
                   <p className="step-description">
-                    По��ле завершения разработки и получения окончательного платежа мы передаем вам готовый проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
+                    По��ле завершения разработки и получения окончательного платежа мы передаем вам готов��й проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
                   </p>
                 </div>
               </div>
@@ -441,7 +442,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теря��т терпение даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, ��брабатывает сотни обращений одновременно и никогда не теря��т терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
@@ -597,7 +598,7 @@ export default function Hero() {
                   id="register-name"
                   name="name"
                   className="form-input"
-                  placeholder="Введите ваше имя"
+                  placeholder="Введите ваше им��"
                   required
                 />
               </div>
