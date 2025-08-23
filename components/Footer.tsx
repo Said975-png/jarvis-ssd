@@ -62,7 +62,7 @@ export default function Footer() {
             <h3 className="footer-heading">Услуги</h3>
             <ul className="footer-links">
               <li><a href="#" className="footer-link">Создание интернет-магазина</a></li>
-              <li><a href="#" className="footer-link">Интег��ация ИИ-консультанта</a></li>
+              <li><a href="#" className="footer-link">Интеграция ИИ-консультанта</a></li>
               <li><a href="#" className="footer-link">Настройка оплаты</a></li>
               <li><a href="#" className="footer-link">SEO-оптимизация</a></li>
               <li><a href="#" className="footer-link">Техническая поддержка</a></li>
@@ -101,36 +101,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Integrations Section */}
-        <div className="integrations-section">
-          <h3 className="integrations-title">Интеграции и партнеры</h3>
-          <div className="integrations-grid">
-            <div className="integration-item">
-              <div className="integration-icon payment">💳</div>
-              <span>Платежные системы</span>
-            </div>
-            <div className="integration-item">
-              <div className="integration-icon delivery">🚚</div>
-              <span>Службы доставки</span>
-            </div>
-            <div className="integration-item">
-              <div className="integration-icon analytics">📊</div>
-              <span>Аналитика</span>
-            </div>
-            <div className="integration-item">
-              <div className="integration-icon crm">👥</div>
-              <span>CRM-системы</span>
-            </div>
-            <div className="integration-item">
-              <div className="integration-icon email">📧</div>
-              <span>Email-маркетинг</span>
-            </div>
-            <div className="integration-item">
-              <div className="integration-icon social">📱</div>
-              <span>Соцсети</span>
-            </div>
-          </div>
-        </div>
 
         {/* Bottom Bar */}
         <div className="footer-bottom">
