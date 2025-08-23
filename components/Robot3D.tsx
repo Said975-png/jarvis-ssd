@@ -251,12 +251,12 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     <group ref={groupRef}>
       {/* Sparkles effect around robot */}
       <Sparkles
-        count={30}
-        scale={[3, 3, 3]}
-        size={2}
-        speed={0.3}
+        count={50}
+        scale={[4, 4, 4]}
+        size={3}
+        speed={0.4}
         color="#0ea5e9"
-        opacity={0.4}
+        opacity={0.8}
       />
 
       {/* Floating particles */}
@@ -266,16 +266,16 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       <primitive
         object={scene}
         rotation={[0, Math.PI * 0.2, 0]}
-        scale={[0.8, 0.8, 0.8]}
+        scale={[1.2, 1.2, 1.2]}
       />
 
       {/* Energy field effect */}
-      <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
+      <mesh position={[0, 0, 0]} scale={[2.0, 2.0, 2.0]}>
         <sphereGeometry args={[1, 16, 16]} />
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.05}
+          opacity={0.15}
           wireframe={true}
         />
       </mesh>
@@ -340,12 +340,12 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
     <group ref={fallbackRef} scale={[2, 2, 2]}>
       {/* Sparkles effect around fallback robot */}
       <Sparkles
-        count={30}
-        scale={[3, 3, 3]}
-        size={2}
+        count={50}
+        scale={[4, 4, 4]}
+        size={3}
         speed={0.4}
         color="#0ea5e9"
-        opacity={0.8}
+        opacity={0.9}
       />
 
       {/* Fallback geometric robot body */}
@@ -396,12 +396,12 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
       </mesh>
 
       {/* Energy field effect */}
-      <mesh position={[0, 0, 0]} scale={[2, 2, 2]}>
+      <mesh position={[0, 0, 0]} scale={[2.5, 2.5, 2.5]}>
         <sphereGeometry args={[1.2, 16, 16]} />
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.15}
+          opacity={0.2}
           wireframe={true}
         />
       </mesh>
