@@ -14,7 +14,7 @@ const reviews = [
   {
     id: 2,
     rating: 5,
-    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работать стало легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только получаю заказы. Очень довольна!",
+    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работать стало легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только пол��чаю заказы. Очень довольна!",
     author: "Алимова М.",
     location: "Чебоксары, Freelance"
   },
@@ -49,7 +49,7 @@ const reviews = [
   {
     id: 7,
     rating: 5,
-    text: "Создала сайт для своего магазина с Jarvis. Клиенты часто обращаются за помощ��ю, и бот всегда подскажет им нужную информацию.",
+    text: "Создала сайт для своего магазина с Jarvis. Клиенты часто обращаются за помощью, и бот всегда подскажет им нужную информацию.",
     author: "Зах��рова Т.",
     location: "Самара, Freelance"
   },
@@ -63,14 +63,14 @@ const reviews = [
   {
     id: 9,
     rating: 5,
-    text: "С Jarvis сайт для моего магазина одежды стал суперудобным. Бот помогает клиентам найти нужный товар и оформить заказ без проблем.",
+    text: "С Jarvis сайт для моего магазина одежды стал суперудобным. Бот помогает клиентам найти нужный товар и офор��ить заказ без проблем.",
     author: "Петрова М.",
     location: "Нижний Новгород, Freelance"
   },
   {
     id: 10,
     rating: 5,
-    text: "Заказал сайт от Jarvis Intercoma онлайн-магазин с ИИ Джарвисом, и не пожалел! Всё сделали быстро, магазин сразу начал приносить заказы. Особенно понравилось, что бот отвечает клиентам мгно��енно, даже ночью.",
+    text: "Заказал сайт от Jarvis Intercoma онлайн-магазин с ИИ Джарвисом, и не пожалел! Всё сделали быстро, магазин сразу начал приносить заказы. Особенно понравилось, что бот отвечает клиентам мгновенно, даже ночью.",
     author: "Карим",
     location: "Ташкент, Freelance"
   },
@@ -92,8 +92,15 @@ const reviews = [
 
 export default function Reviews() {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) return
+
     const scrollContainer = scrollRef.current
     if (!scrollContainer) return
 
@@ -116,13 +123,13 @@ export default function Reviews() {
     // Запускаем анимацию с задержкой для загрузки DOM
     const timer = setTimeout(() => {
       animationId = requestAnimationFrame(animate)
-    }, 2000)
+    }, 1000)
 
     return () => {
       clearTimeout(timer)
       cancelAnimationFrame(animationId)
     }
-  }, [])
+  }, [isMounted])
 
   // Дублируем отзывы для бесконечной прокрутки
   const duplicatedReviews = [...reviews, ...reviews]
