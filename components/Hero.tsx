@@ -6,6 +6,7 @@ import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus } f
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isContractPanelOpen, setIsContractPanelOpen] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
