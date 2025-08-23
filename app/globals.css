@@ -2325,11 +2325,10 @@ canvas {
 }
 
 .dashboard-content {
-  padding: 2rem 2.5rem 2.5rem;
-  max-height: calc(90vh - 120px);
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
 }
 
 .dashboard-content::-webkit-scrollbar {
