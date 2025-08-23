@@ -231,23 +231,16 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   })
 
-  // Show fallback if model failed to load after all retries
-  if (modelError && retryCount >= 3) {
+  // Show fallback immediately if model fails to load or takes too long
+  if (modelError || (!isLoaded && retryCount >= 1)) {
+    console.log('Using fallback robot due to model loading issues')
     return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
   }
 
-  // Show retry message if retrying
-  if (isRetrying && !isLoaded) {
-    return (
-      <group>
-        <LoadingFallback />
-      </group>
-    )
-  }
-
-  // Don't render if model hasn't loaded yet
+  // Don't render if model hasn't loaded yet - show fallback after short delay
   if (!isLoaded || !gltf?.scene) {
-    return <LoadingFallback />
+    console.log('Model not loaded yet, using fallback')
+    return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
   }
 
   const { scene } = gltf
