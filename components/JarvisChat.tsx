@@ -177,43 +177,40 @@ export default function JarvisChat() {
       console.log('Speech Recognition not supported in this browser')
     }
 
-    // Инициализация Text-to-Speech
+    // Инициализация Web Speech API TTS (приоритет согласно промпту)
     const initTTS = () => {
-      // Проверяем Puter.js AI TTS
-      if (typeof window !== 'undefined' && window.puter && window.puter.ai) {
-        setTtsSupported(true)
-        console.log('Puter.js AI TTS is available')
-      } else if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         setTtsSupported(true)
         speechSynthesisRef.current = window.speechSynthesis
-        console.log('Browser Text-to-Speech API is supported')
+        console.log('Web Speech API TTS is supported')
 
-        // Инициализируем голоса для fallback
+        // Инициализируем голоса
         const initVoices = () => {
           const voices = speechSynthesisRef.current?.getVoices() || []
-          console.log('Available fallback voices:', voices.length)
+          console.log('Available voices:', voices.length)
+
+          // Логируем доступные русские голоса
+          const russianVoices = voices.filter(v => v.lang.startsWith('ru'))
+          console.log('Russian voices available:', russianVoices.map(v => `${v.name} (${v.lang})`).join(', '))
+
+          // Логируем женские голоса
+          const femaleVoices = voices.filter(v =>
+            v.name.toLowerCase().includes('female') ||
+            v.name.toLowerCase().includes('woman') ||
+            v.name.toLowerCase().includes('женский')
+          )
+          console.log('Female voices available:', femaleVoices.map(v => `${v.name} (${v.lang})`).join(', '))
         }
 
         initVoices()
         speechSynthesisRef.current.addEventListener('voiceschanged', initVoices)
       } else {
         setTtsSupported(false)
-        console.log('No TTS support available')
+        console.log('Web Speech API TTS not supported')
       }
     }
 
-    // Проверяем сразу и через небольшой интервал (Puter.js может загружаться)
     initTTS()
-    const ttsCheckInterval = setInterval(() => {
-      if (window.puter && window.puter.ai) {
-        console.log('Puter.js AI TTS detected!')
-        setTtsSupported(true)
-        clearInterval(ttsCheckInterval)
-      }
-    }, 1000)
-
-    // Очищаем интервал через 10 секунд
-    setTimeout(() => clearInterval(ttsCheckInterval), 10000)
 
     return () => {
       if (silenceTimerRef.current) {
@@ -302,130 +299,145 @@ export default function JarvisChat() {
     }
   }
 
-  const speakText = async (text: string) => {
-    // Проверяем доступность Puter.js AI TTS
-    if (typeof window !== 'undefined' && window.puter && window.puter.ai) {
-      try {
-        console.log('Using Puter.js AI TTS for:', text)
-        setIsSpeaking(true)
-
-        // Останавливаем предыдущее воспроизведение если есть
-        if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
-          speechSynthesisRef.current.cancel()
-        }
-
-        // Используем Puter.js AI для более естественного голоса
-        const audio = await window.puter.ai.txt2speech(text)
-
-        audio.onplay = () => {
-          console.log('Puter.js AI voice started')
-        }
-
-        audio.onended = () => {
-          setIsSpeaking(false)
-          console.log('Puter.js AI voice finished')
-        }
-
-        audio.onerror = () => {
-          setIsSpeaking(false)
-          console.error('Puter.js AI voice error, falling back to browser TTS')
-          fallbackToWebSpeech(text)
-        }
-
-        await audio.play()
-      } catch (error) {
-        console.error('Puter.js AI TTS error:', error)
-        setIsSpeaking(false)
-        fallbackToWebSpeech(text)
-      }
-    } else {
-      console.log('Puter.js not available, using fallback TTS')
-      fallbackToWebSpeech(text)
-    }
-  }
-
-  const fallbackToWebSpeech = (text: string) => {
+  const speakWithWebSpeech = (text: string) => {
     if (!ttsSupported || !speechSynthesisRef.current) {
       console.log('TTS not supported')
       return
     }
 
-    // Останавливаем предыдущее воспроизведение если есть
+    // Останавливаем предыдущее воспроизведение
     if (speechSynthesisRef.current.speaking) {
       speechSynthesisRef.current.cancel()
     }
 
-    const utterance = new SpeechSynthesisUtterance(text)
+    // Очищаем текст от технических элементов
+    const cleanText = cleanTextForSpeech(text)
 
-    // Настройки для естественного женского ИИ-голоса
-    utterance.rate = 0.9
-    utterance.pitch = 1.1
-    utterance.volume = 0.8
+    // Разбиваем на короткие предложения для плавной озвучки
+    const sentences = splitIntoSentences(cleanText)
 
-    // Пытаемся найти подходящий женский голос
-    const voices = speechSynthesisRef.current.getVoices()
+    setIsSpeaking(true)
+    speakSentences(sentences, 0)
+  }
 
-    let selectedVoice = voices.find(voice =>
-      voice.lang.includes('ru') &&
-      (voice.name.toLowerCase().includes('female') ||
-       voice.name.toLowerCase().includes('woman') ||
-       voice.name.toLowerCase().includes('алина') ||
-       voice.name.toLowerCase().includes('катя') ||
-       voice.name.toLowerCase().includes('женский'))
-    )
+  const cleanTextForSpeech = (text: string): string => {
+    return text
+      // Убираем URL
+      .replace(/https?:\/\/[^\s]+/g, 'ссылка')
+      // Убираем технические коды в скобках
+      .replace(/\([A-Z0-9_]+\)/g, '')
+      // Убираем хештеги и специальные символы
+      .replace(/#\w+/g, '')
+      // Убираем множественные пробелы
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
 
-    if (!selectedVoice) {
-      selectedVoice = voices.find(voice => voice.lang.includes('ru'))
+  const splitIntoSentences = (text: string): string[] => {
+    // Разбиваем на предложения по знакам препинания
+    return text
+      .split(/[.!?]+/)
+      .map(sentence => sentence.trim())
+      .filter(sentence => sentence.length > 0)
+      .map(sentence => {
+        // Ограничиваем длину предложений для плавности
+        if (sentence.length > 100) {
+          const parts = sentence.split(/[,;:]/).map(part => part.trim()).filter(part => part.length > 0)
+          return parts.length > 1 ? parts : [sentence.substring(0, 100) + '...']
+        }
+        return [sentence]
+      })
+      .flat()
+  }
+
+  const speakSentences = (sentences: string[], index: number) => {
+    if (index >= sentences.length) {
+      setIsSpeaking(false)
+      console.log('Finished speaking all sentences')
+      return
     }
 
-    if (!selectedVoice) {
-      selectedVoice = voices.find(voice =>
-        voice.lang.includes('en') &&
-        (voice.name.toLowerCase().includes('female') ||
-         voice.name.toLowerCase().includes('woman'))
+    const sentence = sentences[index]
+    if (!sentence) {
+      speakSentences(sentences, index + 1)
+      return
+    }
+
+    const synth = window.speechSynthesis
+    const voices = synth.getVoices()
+
+    // Ищем женский русский голос согласно промпту
+    let voice = voices.find(v =>
+      v.lang.startsWith("ru") && (
+        v.name.toLowerCase().includes("female") ||
+        v.name.toLowerCase().includes("женский") ||
+        v.name.toLowerCase().includes("google") ||
+        v.name.toLowerCase().includes("алина") ||
+        v.name.toLowerCase().includes("катя")
+      )
+    ) || voices.find(v => v.lang.startsWith("ru"))
+
+    // Если русского нет, берем женский английский
+    if (!voice) {
+      voice = voices.find(v =>
+        v.lang.startsWith("en") && (
+          v.name.toLowerCase().includes("female") ||
+          v.name.toLowerCase().includes("woman")
+        )
       )
     }
 
-    if (selectedVoice) {
-      utterance.voice = selectedVoice
-      console.log('Selected fallback voice:', selectedVoice.name)
+    const utterance = new SpeechSynthesisUtterance(sentence)
+
+    if (voice) {
+      utterance.voice = voice
+      console.log('Selected voice:', voice.name)
     }
 
+    // Настройки для дружелюбного женского голоса
+    utterance.rate = 1 // нормальная скорость
+    utterance.pitch = 1.1 // немного выше, чтобы звучало женственнее
+    utterance.volume = 0.9
+
     utterance.onstart = () => {
-      setIsSpeaking(true)
-      console.log('Started fallback speaking:', text)
+      console.log('Speaking sentence:', sentence)
     }
 
     utterance.onend = () => {
-      setIsSpeaking(false)
-      console.log('Finished fallback speaking')
+      // Переходим к следующему предложению с небольшой паузой
+      setTimeout(() => {
+        speakSentences(sentences, index + 1)
+      }, 200)
     }
 
     utterance.onerror = (event) => {
+      console.error('Speech synthesis error:', event.error)
       setIsSpeaking(false)
-      console.error('Fallback speech synthesis error:', event.error)
     }
 
-    speechSynthesisRef.current.speak(utterance)
+    synth.speak(utterance)
+  }
+
+  const speakText = async (text: string) => {
+    // Приоритет Web Speech API согласно промпту пользователя
+    console.log('Using Web Speech API for:', text)
+    speakWithWebSpeech(text)
+  }
+
+  // Оставляем функцию для совместимости, но теперь она не используется
+  const fallbackToWebSpeech = (text: string) => {
+    console.log('Fallback method deprecated, using main Web Speech API')
+    speakWithWebSpeech(text)
   }
 
   const stopSpeaking = () => {
     // Останавливаем любое воспроизведение
     setIsSpeaking(false)
 
-    // Останавливаем браузерный TTS
+    // Останавливаем Web Speech API
     if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
       speechSynthesisRef.current.cancel()
     }
-
-    // Останавливаем все аудио элементы (включая Puter.js)
-    const audioElements = document.querySelectorAll('audio')
-    audioElements.forEach(audio => {
-      if (!audio.paused) {
-        audio.pause()
-        audio.currentTime = 0
-      }
-    })
 
     console.log('All speech stopped')
   }
