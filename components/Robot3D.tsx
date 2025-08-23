@@ -347,10 +347,7 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
   console.log('Robot3D rendering with:', { scrollProgress, currentSection })
 
   return (
-    <div className={styles['robot-3d-container']} style={{
-      background: 'rgba(255, 0, 0, 0.1)', // Temporary red background to debug visibility
-      border: '2px solid red' // Temporary border to see container
-    }}>
+    <div className={styles['robot-3d-container']}>
       <Canvas
         camera={{
           position: [0, 0, 5],
