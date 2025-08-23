@@ -8,6 +8,8 @@ export default function Hero() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isContractPanelOpen, setIsContractPanelOpen] = useState(false)
   const [isFeaturesPanelOpen, setIsFeaturesPanelOpen] = useState(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
@@ -163,7 +165,7 @@ export default function Hero() {
                 </button>
                 <button className="mobile-nav-button auth-button register" onClick={() => setIsMobileMenuOpen(false)}>
                   <UserPlus className="mobile-nav-icon" />
-                  <span>Создать аккаунт</span>
+                  <span>Создать аккаун��</span>
                 </button>
               </div>
             </div>
@@ -186,7 +188,7 @@ export default function Hero() {
             
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
-              обычные интернет-магазины в умные, клиентоориентиров��нные платформы.
+              обычные интернет-магазины в умные, клиентоориентированные платформы.
               Увеличьте продажи с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
@@ -263,7 +265,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Создание макета</h3>
                   <p className="step-description">
-                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть коне��ный результат.
+                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
                   </p>
                 </div>
               </div>
@@ -283,7 +285,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Разработка проекта</h3>
                   <p className="step-description">
-                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых ос��ований.
+                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
                   </p>
                 </div>
               </div>
@@ -369,7 +371,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Увеличение продаж в 3 раза</h3>
                   <p className="feature-description">
-                    Магазины с ДЖАРВИС показывают фантастические результаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
+                    Магазины с ДЖАРВИС показывают ��антастические результаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
                   </p>
                 </div>
               </div>
