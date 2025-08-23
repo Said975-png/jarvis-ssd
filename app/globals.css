@@ -2141,6 +2141,8 @@ canvas {
   display: flex;
   gap: 1rem;
   align-items: center;
+  z-index: 10;
+  position: relative;
 }
 
 .chat-input {
