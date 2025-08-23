@@ -14,7 +14,7 @@ const reviews = [
   {
     id: 2,
     rating: 5,
-    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работать ста��о легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только получаю заказы. Очень довольна!",
+    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работать стало легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только получаю заказы. Очень довольна!",
     author: "Алимова М.",
     location: "Чебоксары, Freelance"
   },
@@ -36,13 +36,13 @@ const reviews = [
     id: 5,
     rating: 5,
     text: "Решил попробовать Jarvis для создания сайта магазина бытовой техники. Результат впечатлил: бот быстро и точно помогает клиентам выбрать товар.",
-    author: "��арипов М.",
+    author: "Шарипов М.",
     location: "Бухара, Freelance"
   },
   {
     id: 6,
     rating: 5,
-    text: "Мой магазин ювелирных изделий стал более удобным благодаря Jarvis. Бот помогает клиентам выбрать подходящие украшения и отвечает на все вопросы.",
+    text: "Мой магазин ювели��ных изделий стал более удобным благодаря Jarvis. Бот помогает клиентам выбрать подходящие украшения и отвечает на все вопросы.",
     author: "Васильева О.",
     location: "Набережные Челны, Freelance"
   },
@@ -63,7 +63,7 @@ const reviews = [
   {
     id: 9,
     rating: 5,
-    text: "С Jarvis сайт для моего магаз��на одежды стал суперудобным. Бот помогает клиентам найти нужный товар и оформить заказ без проблем.",
+    text: "С Jarvis сайт для моего магазина одежды стал суперудобным. Бот помогает клиентам найти нужный товар и оформить заказ без проблем.",
     author: "Петрова М.",
     location: "Нижний Новгород, Freelance"
   },
@@ -98,27 +98,34 @@ export default function Reviews() {
     if (!scrollContainer) return
 
     let animationId: number
-    const scrollSpeed = 0.5
+    let isPaused = false
+    const scrollSpeed = 1
 
     const animate = () => {
-      if (scrollContainer) {
+      if (scrollContainer && !isPaused) {
         scrollContainer.scrollLeft += scrollSpeed
-        
-        // Когда доходим до конца, возвращаемся в начало для бесконечной прокрутки
-        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+
+        // Когда доходим до конца первого набора, возвращаемся в начало
+        const maxScroll = scrollContainer.scrollWidth / 2
+        if (scrollContainer.scrollLeft >= maxScroll) {
           scrollContainer.scrollLeft = 0
         }
       }
       animationId = requestAnimationFrame(animate)
     }
 
-    animationId = requestAnimationFrame(animate)
+    // Небольшая задержка перед началом анимации
+    const startAnimation = () => {
+      setTimeout(() => {
+        animationId = requestAnimationFrame(animate)
+      }, 1000)
+    }
+
+    startAnimation()
 
     // Останавливаем анимацию при наведении
-    const handleMouseEnter = () => cancelAnimationFrame(animationId)
-    const handleMouseLeave = () => {
-      animationId = requestAnimationFrame(animate)
-    }
+    const handleMouseEnter = () => { isPaused = true }
+    const handleMouseLeave = () => { isPaused = false }
 
     scrollContainer.addEventListener('mouseenter', handleMouseEnter)
     scrollContainer.addEventListener('mouseleave', handleMouseLeave)
@@ -135,6 +142,9 @@ export default function Reviews() {
 
   return (
     <section className="reviews-section">
+      <div className="reviews-bg">
+        <div className="reviews-grid-overlay" />
+      </div>
       <div className="reviews-container">
         <div className="reviews-header">
           <h2 className="reviews-title">Наши отзывы</h2>
@@ -142,8 +152,8 @@ export default function Reviews() {
             Истории успеха наших клиентов со всего мира
           </p>
         </div>
-        
-        <div 
+
+        <div
           ref={scrollRef}
           className="reviews-scroll-container"
         >
