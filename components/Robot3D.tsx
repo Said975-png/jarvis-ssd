@@ -245,6 +245,25 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
   const { scene } = gltf
 
+  // Make robot model transparent
+  useEffect(() => {
+    if (scene) {
+      scene.traverse((child) => {
+        if (child.isMesh && child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((mat) => {
+              mat.transparent = true
+              mat.opacity = 0.4
+            })
+          } else {
+            child.material.transparent = true
+            child.material.opacity = 0.4
+          }
+        }
+      })
+    }
+  }, [scene])
+
   // Now we can safely use the scene since we've passed all the early returns and all hooks are called
 
   return (
