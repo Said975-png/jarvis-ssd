@@ -51,7 +51,7 @@ export default function JarvisChat() {
     }
   }, [isOpen])
 
-  // Инициализация Speech Recognition
+  // И��ициализация Speech Recognition
   useEffect(() => {
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
@@ -197,7 +197,7 @@ export default function JarvisChat() {
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
-        'Наши ИИ-а��систенты увеличивают конверсию на 40%. Расскажу подробнее?',
+        'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
       
@@ -227,6 +227,9 @@ export default function JarvisChat() {
   }
 
   const toggleChat = () => {
+    if (isOpen && isRecording) {
+      stopRecording()
+    }
     setIsOpen(!isOpen)
   }
 
