@@ -1,9 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus, X } from 'lucide-react'
+import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus, X, Package, Clock, CheckCircle, XCircle } from 'lucide-react'
+import { useCart } from './CartContext'
+import { useUser } from './UserContext'
+import { useOrders, OrderStatus } from './OrdersContext'
 
 export default function Hero() {
+  const { getTotalItems, setIsCartOpen } = useCart()
+  const { user, login, logout, isAuthenticated } = useUser()
+  const { getUserOrders } = useOrders()
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isContractPanelOpen, setIsContractPanelOpen] = useState(false)
@@ -11,7 +17,6 @@ export default function Hero() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
   const [isDashboardOpen, setIsDashboardOpen] = useState(false)
-  const [user, setUser] = useState<{name: string, email: string} | null>(null)
 
   useEffect(() => {
     setIsLoaded(true)
@@ -118,9 +123,13 @@ export default function Hero() {
               <a href="#contact" className="nav-link">��онтакты</a>
 
               <div className="nav-actions">
-                <button className="cart-button" aria-label="Корзина">
+                <button
+                  className="cart-button"
+                  aria-label="Корзина"
+                  onClick={() => setIsCartOpen(true)}
+                >
                   <ShoppingCart className="cart-icon" />
-                  <span className="cart-count">0</span>
+                  <span className="cart-count">{getTotalItems()}</span>
                 </button>
                 {user ? (
                   <>
@@ -128,7 +137,7 @@ export default function Hero() {
                       <User className="auth-icon" />
                       <span>{user.name}</span>
                     </button>
-                    <button className="auth-button logout-button" onClick={() => setUser(null)}>
+                    <button className="auth-button logout-button" onClick={() => logout()}>
                       <span>Выход</span>
                     </button>
                   </>
@@ -179,10 +188,13 @@ export default function Hero() {
               }}>Контакты</a>
 
               <div className="mobile-nav-actions">
-                <button className="mobile-nav-button cart-button" onClick={() => setIsMobileMenuOpen(false)}>
+                <button className="mobile-nav-button cart-button" onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setIsCartOpen(true);
+                }}>
                   <ShoppingCart className="mobile-nav-icon" />
                   <span>Моя корзина</span>
-                  <span className="mobile-cart-count">0</span>
+                  <span className="mobile-cart-count">{getTotalItems()}</span>
                 </button>
                 {user ? (
                   <>
@@ -195,7 +207,7 @@ export default function Hero() {
                     </button>
                     <button className="mobile-nav-button auth-button logout" onClick={() => {
                       setIsMobileMenuOpen(false);
-                      setUser(null);
+                      logout();
                     }}>
                       <span>Выйти из аккаунта</span>
                     </button>
@@ -240,7 +252,7 @@ export default function Hero() {
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
               обычные интернет-магазины в умные, клиентоориентированные платформы.
-              Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
+              Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умным�� взаимодействиями.
             </p>
 
             <div className="hero-actions">
@@ -316,7 +328,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Создание макета</h3>
                   <p className="step-description">
-                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
+                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизай�� всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный резуль��ат.
                   </p>
                 </div>
               </div>
@@ -336,7 +348,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Разработка проекта</h3>
                   <p className="step-description">
-                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
+                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в пр��цессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
                   </p>
                 </div>
               </div>
@@ -356,7 +368,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Сдача проекта</h3>
                   <p className="step-description">
-                    После завершения разработки и получения окончательного платежа мы передаем вам готовый проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
+                    По��ле завершения разработки и получения окончательного платежа мы передаем вам готовый проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
                   </p>
                 </div>
               </div>
@@ -479,7 +491,7 @@ export default function Hero() {
                 email: email
               };
 
-              setUser(userData);
+              login(userData);
               setIsLoginModalOpen(false);
             }}>
               <div className="form-group">
@@ -576,7 +588,7 @@ export default function Hero() {
                 email: email
               };
 
-              setUser(userData);
+              login(userData);
               setIsRegisterModalOpen(false);
               setIsDashboardOpen(true); // Automatically open dashboard after registration
             }}>
@@ -707,7 +719,7 @@ export default function Hero() {
 
                 <div className="sidebar-footer">
                   <button className="logout-btn" onClick={() => {
-                    setUser(null);
+                    logout();
                     setIsDashboardOpen(false);
                   }}>
                     Выйти
@@ -718,7 +730,71 @@ export default function Hero() {
               {/* Main Content */}
               <div className="dashboard-main">
                 <div className="main-content">
+                  <div className="dashboard-section">
+                    <h3 className="section-title">Мои заказы</h3>
 
+                    {user && (() => {
+                      const userOrders = getUserOrders(user.id)
+
+                      if (userOrders.length === 0) {
+                        return (
+                          <div className="empty-orders">
+                            <Package className="empty-icon" />
+                            <p className="empty-text">У вас пока нет заказов</p>
+                            <p className="empty-subtext">Выберите тариф и оформите ваш первый заказ</p>
+                          </div>
+                        )
+                      }
+
+                      return (
+                        <div className="orders-list">
+                          {userOrders.map((order) => (
+                            <div key={order.id} className="order-card">
+                              <div className="order-header">
+                                <div className="order-id">Заказ #{order.id.split('_')[1]}</div>
+                                <div className={`order-status status-${order.status}`}>
+                                  {order.status === 'pending' && (
+                                    <>
+                                      <Clock className="status-icon" />
+                                      <span>Ожидает подтверждения</span>
+                                    </>
+                                  )}
+                                  {order.status === 'confirmed' && (
+                                    <>
+                                      <CheckCircle className="status-icon" />
+                                      <span>Подтверждено</span>
+                                    </>
+                                  )}
+                                  {order.status === 'rejected' && (
+                                    <>
+                                      <XCircle className="status-icon" />
+                                      <span>Отклонено</span>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="order-items">
+                                <h4 className="items-title">Выбранные тарифы:</h4>
+                                {order.items.map((item, index) => (
+                                  <div key={index} className="order-item">
+                                    <span className="item-name">{item.name}</span>
+                                    <span className="item-price">{item.price} {item.currency}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="order-info">
+                                <p><strong>Контакт:</strong> {order.customerInfo.fullName}</p>
+                                <p><strong>Телефон:</strong> {order.customerInfo.phone}</p>
+                                <p><strong>Создан:</strong> {new Date(order.createdAt).toLocaleDateString('ru-RU')}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    })()}
+                  </div>
                 </div>
               </div>
             </div>

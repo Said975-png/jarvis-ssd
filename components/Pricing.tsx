@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Check, Star, Mail, Headphones, Clock } from 'lucide-react'
+import { useCart } from './CartContext'
 
 const pricingPlans = [
   {
@@ -61,6 +62,7 @@ const pricingPlans = [
 ]
 
 export default function Pricing() {
+  const { addItem } = useCart()
   const [visibleCards, setVisibleCards] = useState<string[]>([])
   const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -84,6 +86,18 @@ export default function Pricing() {
 
     return () => observer.disconnect()
   }, [])
+
+  const handleAddToCart = (plan: typeof pricingPlans[0]) => {
+    addItem({
+      id: plan.id,
+      name: plan.name,
+      subtitle: plan.subtitle,
+      price: plan.price,
+      currency: plan.currency,
+      description: plan.description,
+      features: plan.features
+    })
+  }
 
   return (
     <section ref={sectionRef} className="pricing-section" id="pricing">
@@ -135,7 +149,10 @@ export default function Pricing() {
               </div>
 
               <div className="pricing-card-footer">
-                <button className={`pricing-button ${plan.highlighted ? 'primary' : 'secondary'}`}>
+                <button
+                  className={`pricing-button ${plan.highlighted ? 'primary' : 'secondary'}`}
+                  onClick={() => handleAddToCart(plan)}
+                >
                   <span>Выбрать план</span>
                   <svg className="button-arrow" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
