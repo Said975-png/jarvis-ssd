@@ -62,6 +62,7 @@ const pricingPlans = [
 ]
 
 export default function Pricing() {
+  const { addItem } = useCart()
   const [visibleCards, setVisibleCards] = useState<string[]>([])
   const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -85,6 +86,18 @@ export default function Pricing() {
 
     return () => observer.disconnect()
   }, [])
+
+  const handleAddToCart = (plan: typeof pricingPlans[0]) => {
+    addItem({
+      id: plan.id,
+      name: plan.name,
+      subtitle: plan.subtitle,
+      price: plan.price,
+      currency: plan.currency,
+      description: plan.description,
+      features: plan.features
+    })
+  }
 
   return (
     <section ref={sectionRef} className="pricing-section" id="pricing">
