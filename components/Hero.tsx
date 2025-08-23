@@ -197,7 +197,7 @@ export default function Hero() {
                       setIsMobileMenuOpen(false);
                       setUser(null);
                     }}>
-                      <span>Выйти из а��каунта</span>
+                      <span>Выйти из аккаунта</span>
                     </button>
                   </>
                 ) : (
@@ -240,7 +240,7 @@ export default function Hero() {
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
               обычные интернет-магазины в умные, клиентоориентированные платформы.
-              Увеличьте продажи с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
+              Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
             <div className="hero-actions">
@@ -395,7 +395,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
-                    ДЖАРВИС анализирует поведение каждого клиента в реальн��м времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
+                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
                 </div>
               </div>
@@ -431,7 +431,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терпение даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теря��т терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
@@ -440,7 +440,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Че��ез неделю вы уже видите первые результаты роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
                   </p>
                 </div>
               </div>
@@ -617,7 +617,7 @@ export default function Hero() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="register-confirm-password" className="form-label">Подтв��рдите пароль</label>
+                <label htmlFor="register-confirm-password" className="form-label">Подтвердите пароль</label>
                 <input
                   type="password"
                   id="register-confirm-password"
@@ -718,18 +718,7 @@ export default function Hero() {
               {/* Main Content */}
               <div className="dashboard-main">
                 <div className="main-content">
-                  <div className="empty-state">
-                    <div className="empty-icon">
-                      <Zap className="empty-icon-svg" />
-                    </div>
-                    <h3 className="empty-title">Добро пожаловать в JARVIS</h3>
-                    <p className="empty-description">
-                      Ваш персональный кабинет готов к работе. Здесь будет отображаться содержимое, которое мы добавим позже.
-                    </p>
-                    <button className="empty-cta" onClick={() => setIsContractPanelOpen(true)}>
-                      Начать работу
-                    </button>
-                  </div>
+
                 </div>
               </div>
             </div>
