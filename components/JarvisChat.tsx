@@ -83,6 +83,7 @@ export default function JarvisChat() {
         if (finalTranscript) {
           const trimmedTranscript = finalTranscript.trim()
           setInputMessage(trimmedTranscript)
+          console.log('Final transcript received:', trimmedTranscript)
 
           // Запускаем таймер на секунду молчания
           if (silenceTimerRef.current) {
@@ -90,10 +91,12 @@ export default function JarvisChat() {
           }
 
           silenceTimerRef.current = setTimeout(() => {
-            // Проверяем, что мы все еще записываем и есть сообщение
-            if (isRecordingRef.current && trimmedTranscript) {
+            console.log('Silence timer fired, isRecording:', isRecordingRef.current, 'transcript:', trimmedTranscript)
+            // Проверяем, что есть сообщение для отправки
+            if (trimmedTranscript) {
               stopRecording()
               // Отправляем сообщение сразу
+              console.log('Sending message:', trimmedTranscript)
               sendMessage(trimmedTranscript)
             }
           }, 1000)
@@ -296,7 +299,7 @@ export default function JarvisChat() {
           <button
             onClick={toggleChat}
             className="chat-button"
-            aria-label="Открыть чат с Джарвисом"
+            aria-label="Открыт�� чат с Джарвисом"
           >
             <MessageCircle className="chat-button-icon" />
             <div className="chat-button-pulse"></div>
