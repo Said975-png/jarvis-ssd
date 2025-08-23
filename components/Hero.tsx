@@ -197,7 +197,7 @@ export default function Hero() {
                       setIsMobileMenuOpen(false);
                       setUser(null);
                     }}>
-                      <span>Выйти из аккаунта</span>
+                      <span>Выйти из а��каунта</span>
                     </button>
                   </>
                 ) : (
@@ -291,7 +291,7 @@ export default function Hero() {
           <div className="card-icon">
             <Target className="icon" />
           </div>
-          <div className="card-text">Умные рекомендац��и</div>
+          <div className="card-text">Умные рекомендации</div>
         </div>
       </div>
 
@@ -336,7 +336,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Разработка проекта</h3>
                   <p className="step-description">
-                    Приступаем к программированию и ��озданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
+                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
                   </p>
                 </div>
               </div>
@@ -395,7 +395,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
-                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
+                    ДЖАРВИС анализирует поведение каждого клиента в реальн��м времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
                 </div>
               </div>
@@ -440,7 +440,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Че��ез неделю вы уже видите первые результаты роста продаж.
                   </p>
                 </div>
               </div>
@@ -587,7 +587,7 @@ export default function Hero() {
                   id="register-name"
                   name="name"
                   className="form-input"
-                  placeholder="Введи��е ваше имя"
+                  placeholder="Введите ваше имя"
                   required
                 />
               </div>
@@ -617,7 +617,7 @@ export default function Hero() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="register-confirm-password" className="form-label">Подтвердите пароль</label>
+                <label htmlFor="register-confirm-password" className="form-label">Подтв��рдите пароль</label>
                 <input
                   type="password"
                   id="register-confirm-password"
@@ -693,14 +693,6 @@ export default function Hero() {
                     <div className="nav-item active">
                       <User className="nav-icon" />
                       <span>Обзор</span>
-                    </div>
-                    <div className="nav-item">
-                      <Target className="nav-icon" />
-                      <span>Проекты</span>
-                    </div>
-                    <div className="nav-item">
-                      <BarChart3 className="nav-icon" />
-                      <span>Аналитика</span>
                     </div>
                   </div>
 
