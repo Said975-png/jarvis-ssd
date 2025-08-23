@@ -514,6 +514,29 @@ function Loader() {
 }
 
 export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
+  const [canvasReady, setCanvasReady] = useState(false)
+
+  // Force canvas to re-render and be ready
+  useEffect(() => {
+    // Set canvas as ready after a brief delay to ensure proper initialization
+    const timer = setTimeout(() => {
+      setCanvasReady(true)
+    }, 100)
+
+    // Add resize handler to force canvas refresh
+    const handleResize = () => {
+      setCanvasReady(false)
+      setTimeout(() => setCanvasReady(true), 50)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
     <div className={styles['robot-3d-container']}>
       <Canvas
@@ -529,6 +552,12 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
           powerPreference: "default"
         }}
         style={{ background: 'transparent' }}
+        resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
+        onCreated={(state) => {
+          // Force initial render when canvas is created
+          state.invalidate()
+          setCanvasReady(true)
+        }}
       >
         <Suspense fallback={<LoadingFallback />}>
           {/* Enhanced Lighting */}
