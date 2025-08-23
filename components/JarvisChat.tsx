@@ -135,13 +135,19 @@ export default function JarvisChat() {
         // Перезапускаем только если запись действительно активна
         // и не была остановлена пользователем
         if (isRecordingRef.current) {
-          try {
-            recognition.start()
-          } catch (error) {
-            console.log('Failed to restart recognition:', error)
-            setIsRecording(false)
-            isRecordingRef.current = false
-          }
+          // Небольшая задержка перед перезапуском для предотвращения конфликтов
+          setTimeout(() => {
+            if (isRecordingRef.current) {
+              try {
+                recognition.start()
+              } catch (error) {
+                console.log('Failed to restart recognition:', error)
+                setIsRecording(false)
+                isRecordingRef.current = false
+                setIsListening(false)
+              }
+            }
+          }, 100)
         }
       }
       
@@ -282,7 +288,7 @@ export default function JarvisChat() {
 
   return (
     <>
-      {/* Кнопка чата в правом нижнем углу */}
+      {/* Кнопка чата в пр��вом нижнем углу */}
       {!isOpen && (
         <div className="chat-button-container">
           <button
@@ -389,7 +395,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Гов��рите..." : "Напишите сообщение..."}
+                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
