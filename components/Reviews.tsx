@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Star } from 'lucide-react'
 
 const reviews = [
@@ -92,8 +92,15 @@ const reviews = [
 
 export default function Reviews() {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) return
+
     const scrollContainer = scrollRef.current
     if (!scrollContainer) return
 
@@ -116,13 +123,13 @@ export default function Reviews() {
     // Запускаем анимацию с задержкой для загрузки DOM
     const timer = setTimeout(() => {
       animationId = requestAnimationFrame(animate)
-    }, 2000)
+    }, 1000)
 
     return () => {
       clearTimeout(timer)
       cancelAnimationFrame(animationId)
     }
-  }, [])
+  }, [isMounted])
 
   // Дублируем отзывы для бесконечной прокрутки
   const duplicatedReviews = [...reviews, ...reviews]
@@ -143,6 +150,7 @@ export default function Reviews() {
         <div
           ref={scrollRef}
           className="reviews-scroll-container"
+          style={{ scrollLeft: 0 }}
         >
           <div className="reviews-track">
             {duplicatedReviews.map((review, index) => (

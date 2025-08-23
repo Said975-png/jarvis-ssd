@@ -4,6 +4,7 @@ import { Suspense, useRef, useEffect, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations, OrbitControls, Environment, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
+import styles from './Robot3D.module.css'
 
 interface Robot3DProps {
   scrollProgress: number
@@ -64,23 +65,20 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   // Load GLTF model with error handling
   const gltf = useGLTF(modelUrl,
     (loadedGltf) => {
-      console.log('Robot model loaded successfully:', loadedGltf)
       setIsLoaded(true)
       setModelError(false)
       setIsRetrying(false)
     },
     (progress) => {
-      console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%')
+      // Loading progress tracking (optional)
     },
     (error) => {
-      console.error('Failed to load GLTF model (attempt ' + (retryCount + 1) + '):', error)
       setModelError(true)
       setIsRetrying(false)
 
       // Retry up to 3 times
       if (retryCount < 3) {
         setTimeout(() => {
-          console.log('Retrying model load in 2 seconds...')
           setRetryCount(prev => prev + 1)
           setIsRetrying(true)
           setModelError(false)
@@ -92,7 +90,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   // Handle successful model load
   useEffect(() => {
     if (gltf && gltf.scene && !modelError && !isRetrying) {
-      console.log('Robot model ready to render')
       setIsLoaded(true)
       setModelError(false)
     }
@@ -163,11 +160,12 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
         // Keep within safe bounds [-1.5, 1.5] for X and Y
-        targetX = Math.cos(orbitAngle) * (0.8 - progress * 0.3) // Orbit movement, contained
+        // Start robot visible from the beginning (even when scroll is 0)
+        targetX = Math.cos(orbitAngle) * (1.2 - progress * 0.3) + 1.0 // More visible
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2 // Gentle vertical movement
-        targetZ = Math.sin(progress * Math.PI) * 0.4 // Forward and back
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.2 // Move forward to be more visible
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
-        targetScale = 0.7 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
+        targetScale = 1.0 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else if (safeScrollProgress <= 2) {
         // Advantages to Pricing - Interactive dance
         const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
@@ -226,8 +224,8 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   })
 
-  // Show fallback if model failed to load
-  if (modelError) {
+  // Show fallback if model failed to load after all retries
+  if (modelError && retryCount >= 3) {
     return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
   }
 
@@ -236,7 +234,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     return (
       <group>
         <LoadingFallback />
-        {/* Optional: Add text mesh for retry indication */}
       </group>
     )
   }
@@ -303,11 +300,12 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         const progress = safeScrollProgress
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
-        targetX = Math.cos(orbitAngle) * (0.8 - progress * 0.3)
+        // Positioned to be visible but not intrusive
+        targetX = Math.cos(orbitAngle) * (1.8 - progress * 0.3) + 1.2
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2
-        targetZ = Math.sin(progress * Math.PI) * 0.4
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.3
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
-        targetScale = 0.7 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
+        targetScale = 1.5 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else {
         const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
         const danceTime = state.clock.elapsedTime * 0.3 + secondProgress * 2
@@ -339,64 +337,82 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
   })
 
   return (
-    <group ref={fallbackRef}>
+    <group ref={fallbackRef} scale={[2, 2, 2]}>
       {/* Sparkles effect around fallback robot */}
       <Sparkles
-        count={20}
-        scale={[2, 2, 2]}
-        size={1.5}
-        speed={0.3}
+        count={30}
+        scale={[3, 3, 3]}
+        size={2}
+        speed={0.4}
         color="#0ea5e9"
-        opacity={0.6}
+        opacity={0.8}
       />
 
       {/* Fallback geometric robot body */}
       <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[0.8, 1.2, 0.6]} />
+        <boxGeometry args={[1.0, 1.5, 0.8]} />
         <meshStandardMaterial
           color="#0ea5e9"
           emissive="#0ea5e9"
-          emissiveIntensity={0.1}
+          emissiveIntensity={0.3}
           transparent
-          opacity={0.8}
+          opacity={0.9}
         />
       </mesh>
       {/* Robot head */}
-      <mesh position={[0, 0.8, 0]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
+      <mesh position={[0, 1.0, 0]}>
+        <sphereGeometry args={[0.4, 16, 16]} />
         <meshStandardMaterial
           color="#3b82f6"
           emissive="#3b82f6"
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.4}
         />
       </mesh>
       {/* Robot eyes */}
-      <mesh position={[-0.1, 0.85, 0.25]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
+      <mesh position={[-0.15, 1.05, 0.35]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
         <meshBasicMaterial color="#ffffff" />
       </mesh>
-      <mesh position={[0.1, 0.85, 0.25]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
+      <mesh position={[0.15, 1.05, 0.35]}>
+        <sphereGeometry args={[0.08, 8, 8]} />
         <meshBasicMaterial color="#ffffff" />
       </mesh>
       {/* Robot arms */}
-      <mesh position={[-0.7, 0.3, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.8]} />
-        <meshStandardMaterial color="#0ea5e9" />
+      <mesh position={[-0.9, 0.2, 0]}>
+        <cylinderGeometry args={[0.15, 0.15, 1.0]} />
+        <meshStandardMaterial
+          color="#0ea5e9"
+          emissive="#0ea5e9"
+          emissiveIntensity={0.2}
+        />
       </mesh>
-      <mesh position={[0.7, 0.3, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.8]} />
-        <meshStandardMaterial color="#0ea5e9" />
+      <mesh position={[0.9, 0.2, 0]}>
+        <cylinderGeometry args={[0.15, 0.15, 1.0]} />
+        <meshStandardMaterial
+          color="#0ea5e9"
+          emissive="#0ea5e9"
+          emissiveIntensity={0.2}
+        />
       </mesh>
 
       {/* Energy field effect */}
-      <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
-        <sphereGeometry args={[1, 16, 16]} />
+      <mesh position={[0, 0, 0]} scale={[2, 2, 2]}>
+        <sphereGeometry args={[1.2, 16, 16]} />
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.1}
+          opacity={0.15}
           wireframe={true}
+        />
+      </mesh>
+
+      {/* Additional glow effect */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[1.8, 8, 8]} />
+        <meshBasicMaterial
+          color="#3b82f6"
+          transparent
+          opacity={0.05}
         />
       </mesh>
     </group>
@@ -441,28 +457,28 @@ function LoadingFallback() {
 
 function Loader() {
   return (
-    <div className="robot-loader">
-      <div className="loader-spinner" />
+    <div className={styles['robot-loader']}>
+      <div className={styles['loader-spinner']} />
     </div>
   )
 }
 
 export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
   return (
-    <div className="robot-3d-container">
+    <div className={styles['robot-3d-container']}>
       <Canvas
         camera={{
-          position: [0, 0, 4],
-          fov: 50,
+          position: [0, 0, 5],
+          fov: 75,
           near: 0.1,
           far: 1000
         }}
-        gl={{ 
-          antialias: true, 
+        gl={{
+          antialias: true,
           alpha: true,
-          powerPreference: "high-performance"
+          powerPreference: "default"
         }}
-        dpr={[1, 2]}
+        style={{ background: 'transparent' }}
       >
         <Suspense fallback={<LoadingFallback />}>
           {/* Enhanced Lighting */}
@@ -503,9 +519,9 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
 
           {/* Robot Model with effects */}
           <RobotModel scrollProgress={scrollProgress} currentSection={currentSection} />
-          
+
           {/* Controls - disabled for background effect */}
-          <OrbitControls 
+          <OrbitControls
             enabled={false}
             enableZoom={false}
             enablePan={false}

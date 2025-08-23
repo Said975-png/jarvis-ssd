@@ -42,32 +42,6 @@ const chatMessages = [
   }
 ]
 
-const comparisonData = [
-  {
-    title: 'Время ответа',
-    traditional: '5-15 минут',
-    ai: 'Мгновенно',
-    improvement: '900% быстрее'
-  },
-  {
-    title: 'Доступность',
-    traditional: '8 часов в день',
-    ai: '24/7/365',
-    improvement: '3x больше'
-  },
-  {
-    title: 'Обработка клиентов',
-    traditional: '1 клиент за раз',
-    ai: 'Неограниченно',
-    improvement: '∞'
-  },
-  {
-    title: 'Персонализация',
-    traditional: 'Базовая',
-    ai: 'ИИ-анализ ��редпочтений',
-    improvement: '5x точнее'
-  }
-]
 
 const statistics = [
   {
@@ -99,12 +73,10 @@ const statistics = [
 export default function AIConsultant() {
   const [visibleMessages, setVisibleMessages] = useState<number>(0)
   const [isTyping, setIsTyping] = useState(false)
-  const [visibleComparisons, setVisibleComparisons] = useState<number[]>([])
   const [visibleStats, setVisibleStats] = useState<number[]>([])
   const sectionRef = useRef<HTMLElement>(null)
   const chatRef = useRef<HTMLDivElement>(null)
   const chatMessagesRef = useRef<HTMLDivElement>(null)
-  const comparisonRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
 
   // Анимация появления сообщений в чате
@@ -145,15 +117,7 @@ export default function AIConsultant() {
             if (element === chatRef.current && visibleMessages === 0) {
               setVisibleMessages(1)
             }
-            
-            if (element === comparisonRef.current) {
-              comparisonData.forEach((_, index) => {
-                setTimeout(() => {
-                  setVisibleComparisons(prev => [...prev, index])
-                }, index * 200)
-              })
-            }
-            
+
             if (element === statsRef.current) {
               statistics.forEach((_, index) => {
                 setTimeout(() => {
@@ -168,16 +132,13 @@ export default function AIConsultant() {
     )
 
     const currentChatRef = chatRef.current
-    const currentComparisonRef = comparisonRef.current
     const currentStatsRef = statsRef.current
 
     if (currentChatRef) observer.observe(currentChatRef)
-    if (currentComparisonRef) observer.observe(currentComparisonRef)
     if (currentStatsRef) observer.observe(currentStatsRef)
 
     return () => {
       if (currentChatRef) observer.unobserve(currentChatRef)
-      if (currentComparisonRef) observer.unobserve(currentComparisonRef)
       if (currentStatsRef) observer.unobserve(currentStatsRef)
     }
   }, [])
@@ -219,7 +180,7 @@ export default function AIConsultant() {
             </div>
           </div>
           
-          <div ref={chatMessagesRef} className="chat-messages">
+          <div ref={chatMessagesRef} className="chat-messages" style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {chatMessages.slice(0, visibleMessages).map((msg, index) => (
               <div
                 key={msg.id}
@@ -250,53 +211,9 @@ export default function AIConsultant() {
               </div>
             )}
 
-            {visibleMessages > 3 && (
-              <div className="scroll-hint">
-                <div className="scroll-hint-text">
-                  <ArrowRight className="scroll-hint-icon" />
-                  Прокрутите, чтобы увидеть больше сообщений
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Comparison Section */}
-        <div ref={comparisonRef} className="comparison-section">
-          <h3 className="comparison-title">Обычная команда vs ДЖАРВИС</h3>
-          
-          <div className="comparison-grid">
-            <div className="comparison-header">
-              <div className="comparison-col traditional">
-                <Users className="header-icon" />
-                <span>Команда продавцов</span>
-              </div>
-              <div className="comparison-col ai">
-                <Bot className="header-icon" />
-                <span>ДЖАРВИС ИИ</span>
-              </div>
-              <div className="comparison-col improvement">
-                <Zap className="header-icon" />
-                <span>Улучшение</span>
-              </div>
-            </div>
-            
-            {comparisonData.map((item, index) => (
-              <div 
-                key={index} 
-                className={`comparison-row ${visibleComparisons.includes(index) ? 'visible' : ''}`}
-              >
-                <div className="comparison-label">{item.title}</div>
-                <div className="comparison-traditional">{item.traditional}</div>
-                <div className="comparison-ai">{item.ai}</div>
-                <div className="comparison-improvement">
-                  <ArrowRight className="improvement-icon" />
-                  {item.improvement}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* Statistics */}
         <div ref={statsRef} className="stats-section">
@@ -319,19 +236,6 @@ export default function AIConsultant() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="consultant-cta">
-          <div className="cta-content">
-            <h3 className="cta-title">Готовы заменить целую команду продавцов на ДЖАРВИС?</h3>
-            <p className="cta-subtitle">
-              Запустите ИИ-консультанта и увеличьте продажи уже сегодня
-            </p>
-          </div>
-          <button className="cta-button primary">
-            <span>Попробовать ДЖАРВИС</span>
-            <ArrowRight className="button-arrow" />
-          </button>
-        </div>
       </div>
     </section>
   )

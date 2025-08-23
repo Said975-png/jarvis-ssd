@@ -5,6 +5,7 @@ import AIConsultant from '@/components/AIConsultant'
 import Reviews from '@/components/Reviews'
 import ScrollAnimatedRobot from '@/components/ScrollAnimatedRobot'
 import JarvisChat from '@/components/JarvisChat'
+import Footer from '@/components/Footer'
 import './globals.css'
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
         <AIConsultant />
         <Reviews />
       </main>
+      <Footer />
       <JarvisChat />
     </>
   )
