@@ -7,12 +7,15 @@ import { useOrders } from './OrdersContext'
 import { useUser } from './UserContext'
 
 export default function OrderForm() {
-  const { 
-    items, 
-    isOrderFormOpen, 
+  const {
+    items,
+    isOrderFormOpen,
     setIsOrderFormOpen,
-    clearCart 
+    clearCart
   } = useCart()
+
+  const { createOrder } = useOrders()
+  const { user, isAuthenticated } = useUser()
 
   const [formData, setFormData] = useState({
     fullName: '',
