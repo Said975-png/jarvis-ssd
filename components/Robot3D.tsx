@@ -54,7 +54,17 @@ function RobotParticles({ position }: { position: [number, number, number] }) {
 
 function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: number; currentSection?: number }) {
   const groupRef = useRef<THREE.Group>(null)
-  const { scene, animations } = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
+
+  let scene, animations
+  try {
+    const gltf = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c')
+    scene = gltf.scene
+    animations = gltf.animations
+  } catch (error) {
+    console.error('Failed to load GLTF model:', error)
+    return null
+  }
+
   const { actions, mixer } = useAnimations(animations, groupRef)
 
   useEffect(() => {
