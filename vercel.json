@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "regions": ["iad1"],
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next@latest"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/admin(.*)",
+      "dest": "/admin$1",
+      "headers": {
+        "cache-control": "no-cache"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "functions": {
+    "app/**/*.tsx": {
+      "maxDuration": 10
+    }
+  }
+}
