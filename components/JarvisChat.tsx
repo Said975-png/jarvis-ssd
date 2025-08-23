@@ -94,12 +94,11 @@ export default function JarvisChat() {
           }
 
           silenceTimerRef.current = setTimeout(() => {
-            console.log('Silence timer fired, isRecording:', isRecordingRef.current, 'transcript:', trimmedTranscript)
-            // Проверяем, что есть сообщение для отправки
-            if (trimmedTranscript) {
-              stopRecording()
-              // Отправляем сообщение сразу
+            console.log('Silence timer fired, transcript:', trimmedTranscript)
+            // Отправляем сообщение и останавливаем запись, если есть текст
+            if (trimmedTranscript && isRecordingRef.current) {
               console.log('Sending message:', trimmedTranscript)
+              stopRecording()
               sendMessage(trimmedTranscript)
             }
           }, 1000)
@@ -266,7 +265,7 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
+        'Отличный вопрос! Наша команда специал��зируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
