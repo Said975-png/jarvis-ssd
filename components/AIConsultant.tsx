@@ -236,19 +236,6 @@ export default function AIConsultant() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="consultant-cta">
-          <div className="cta-content">
-            <h3 className="cta-title">Готовы заменить целую команду продавцов на ДЖАРВИС?</h3>
-            <p className="cta-subtitle">
-              Запустите ИИ-консультанта и увеличьте продажи уже сегодня
-            </p>
-          </div>
-          <button className="cta-button primary">
-            <span>Попробовать ДЖАРВИС</span>
-            <ArrowRight className="button-arrow" />
-          </button>
-        </div>
       </div>
     </section>
   )
