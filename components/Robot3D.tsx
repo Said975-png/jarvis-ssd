@@ -256,23 +256,14 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   })
 
   // NOW we can safely use conditional logic after all hooks have been called
-  console.log('RobotModel render conditions:', {
-    modelError,
-    retryCount,
-    isRetrying,
-    isLoaded,
-    hasScene: !!gltf?.scene
-  })
 
   // Show fallback if model failed to load after all retries
   if (modelError && retryCount >= 3) {
-    console.log('Showing FallbackRobot due to model error')
     return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
   }
 
   // Show retry message if retrying
   if (isRetrying && !isLoaded) {
-    console.log('Showing retry LoadingFallback')
     return (
       <group>
         <LoadingFallback />
@@ -282,11 +273,9 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
   // Don't render if model hasn't loaded yet
   if (!isLoaded || !gltf?.scene) {
-    console.log('Showing LoadingFallback - isLoaded:', isLoaded, 'hasScene:', !!gltf?.scene)
     return <LoadingFallback />
   }
 
-  console.log('Rendering main robot model!')
   const { scene } = gltf
 
   return (
