@@ -14,6 +14,11 @@ declare global {
   interface Window {
     webkitSpeechRecognition: any
     SpeechRecognition: any
+    puter: {
+      ai: {
+        txt2speech: (text: string) => Promise<HTMLAudioElement>
+      }
+    }
   }
 }
 
@@ -178,7 +183,7 @@ export default function JarvisChat() {
       speechSynthesisRef.current = window.speechSynthesis
       console.log('Text-to-Speech API is supported')
 
-      // Инициали��ируем голоса (они могут загружаться асинхронно)
+      // Инициализируем голоса (они могут загружаться асинхронно)
       const initVoices = () => {
         const voices = speechSynthesisRef.current?.getVoices() || []
         console.log('Available voices:', voices.length)
@@ -387,7 +392,7 @@ export default function JarvisChat() {
         'Как интересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
-        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именн�� вас интересует?',
+        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересует?',
         'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
       ]
       
