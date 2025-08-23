@@ -134,7 +134,7 @@ export default function JarvisChat() {
       
       recognition.onend = () => {
         setIsListening(false)
-        // Перезапускаем только если запись действительно активна
+        // Перезапускаем только если запись д��йствительно активна
         // и не была остановлена пользователем
         if (isRecordingRef.current) {
           // Небольшая задержка перед перезапуском для предотвращения конфликтов
@@ -254,7 +254,7 @@ export default function JarvisChat() {
       const jarvisResponses = [
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
-        'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
+        'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
@@ -404,14 +404,16 @@ export default function JarvisChat() {
                   className="chat-input"
                   disabled={isRecording}
                 />
-                <button
-                  onClick={toggleRecording}
-                  className={`chat-mic-button ${isRecording ? 'recording' : ''}`}
-                  aria-label={isRecording ? "Остановить запись" : "Начать голосовую запись"}
-                >
-                  {isRecording ? <MicOff className="chat-mic-icon" /> : <Mic className="chat-mic-icon" />}
-                  {isListening && <div className="mic-pulse"></div>}
-                </button>
+                {speechSupported && (
+                  <button
+                    onClick={toggleRecording}
+                    className={`chat-mic-button ${isRecording ? 'recording' : ''}`}
+                    aria-label={isRecording ? "Остановить запись" : "Начать голосовую запись"}
+                  >
+                    {isRecording ? <MicOff className="chat-mic-icon" /> : <Mic className="chat-mic-icon" />}
+                    {isListening && <div className="mic-pulse"></div>}
+                  </button>
+                )}
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isRecording}
