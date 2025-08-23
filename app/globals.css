@@ -16,6 +16,7 @@ body {
   background: #000000;
   color: #ffffff;
   overflow-x: visible;
+  overflow-y: visible;
 }
 
 /* Hero Section */
