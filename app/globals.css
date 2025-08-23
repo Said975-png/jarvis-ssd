@@ -2061,7 +2061,7 @@ canvas {
 
 .message-content {
   flex: 1;
-  max-width: 70%;
+  max-width: 45%;
 }
 
 .message-user .message-content {
@@ -2069,15 +2069,15 @@ canvas {
 }
 
 .message-text {
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
   word-wrap: break-word;
 }
 
 .message-user .message-text {
-  background: linear-gradient(135deg, #8b5cf6, #a855f7);
+  background: #555555;
   color: white;
   border-bottom-right-radius: 0.25rem;
 }
@@ -2098,10 +2098,10 @@ canvas {
 .typing-indicator {
   display: flex;
   gap: 0.25rem;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1rem;
   background: transparent;
   border: none;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   border-bottom-left-radius: 0.25rem;
 }
 
