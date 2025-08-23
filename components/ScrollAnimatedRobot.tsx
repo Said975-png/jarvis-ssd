@@ -11,6 +11,7 @@ const Robot3D = dynamic(() => import('./Robot3D'), {
 export default function ScrollAnimatedRobot() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [currentSection, setCurrentSection] = useState(0)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
