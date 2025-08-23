@@ -19,6 +19,12 @@ body {
   overflow-y: visible;
 }
 
+/* Main content above robot background */
+main {
+  position: relative;
+  z-index: 10;
+}
+
 /* Hero Section */
 .hero-section {
   position: relative;
