@@ -316,16 +316,11 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: number; currentSection: number }) {
   const fallbackRef = useRef<THREE.Group>(null)
 
-  // Set initial position immediately for fallback robot
-  useEffect(() => {
-    if (fallbackRef.current) {
-      fallbackRef.current.position.set(0.8, -0.8, 0.6)
-      fallbackRef.current.scale.setScalar(0.8)
-    }
-  }, [])
-
   useFrame((state) => {
     if (fallbackRef.current) {
+      // Initialize position immediately on first frame if needed
+      const needsInitialPosition = fallbackRef.current.position.x === 0 && fallbackRef.current.position.y === 0 && fallbackRef.current.position.z === 0
+
       // Same animation logic as the real robot
       const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
       const baseY = -1 + floatY
@@ -359,22 +354,26 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
       targetY = Math.max(-2, Math.min(2, targetY))
       targetZ = Math.max(-0.2, Math.min(1.2, targetZ))
 
-      // Faster interpolation for immediate visibility
-      const isFirstFrame = Math.abs(fallbackRef.current.position.x) < 0.1 && Math.abs(fallbackRef.current.position.y) < 0.1
-      const lerpSpeed = isFirstFrame ? 1.0 : 0.08
+      // Set initial position immediately if needed, otherwise smooth interpolation
+      if (needsInitialPosition) {
+        fallbackRef.current.position.set(targetX, targetY, targetZ)
+        fallbackRef.current.scale.setScalar(targetScale)
+      } else {
+        // Smooth interpolation for ongoing animation
+        const lerpSpeed = 0.08
+        fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, lerpSpeed)
+        fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, lerpSpeed)
+        fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, lerpSpeed)
 
-      fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, lerpSpeed)
-      fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, lerpSpeed)
-      fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, lerpSpeed)
+        const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
+        const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
+        fallbackRef.current.scale.setScalar(THREE.MathUtils.lerp(fallbackRef.current.scale.x, finalScale, 0.08))
+      }
 
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
       fallbackRef.current.rotation.y = THREE.MathUtils.lerp(fallbackRef.current.rotation.y, targetRotationY + personalityRotation, 0.05)
       fallbackRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.04
       fallbackRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.15) * 0.03
-
-      const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
-      const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
-      fallbackRef.current.scale.setScalar(THREE.MathUtils.lerp(fallbackRef.current.scale.x, finalScale, 0.08))
     }
   })
 
