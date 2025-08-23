@@ -60,17 +60,44 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   const [retryCount, setRetryCount] = useState<number>(0)
   const [isRetrying, setIsRetrying] = useState<boolean>(false)
 
-  // For now, disable external model loading to avoid fetch errors
-  // const modelUrl = 'https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c'
+  const modelUrl = 'https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c'
 
   // Load GLTF model with error handling
-  const gltf = null // Temporarily disable external model loading
+  const gltf = useGLTF(modelUrl,
+    (loadedGltf) => {
+      console.log('Robot model loaded successfully:', loadedGltf)
+      setIsLoaded(true)
+      setModelError(false)
+      setIsRetrying(false)
+    },
+    (progress) => {
+      console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%')
+    },
+    (error) => {
+      console.error('Failed to load GLTF model (attempt ' + (retryCount + 1) + '):', error)
+      setModelError(true)
+      setIsRetrying(false)
 
-  // Set model as failed to force fallback robot
+      // Retry up to 3 times
+      if (retryCount < 3) {
+        setTimeout(() => {
+          console.log('Retrying model load in 2 seconds...')
+          setRetryCount(prev => prev + 1)
+          setIsRetrying(true)
+          setModelError(false)
+        }, 2000)
+      }
+    }
+  )
+
+  // Handle successful model load
   useEffect(() => {
-    setModelError(true)
-    setIsLoaded(false)
-  }, [])
+    if (gltf && gltf.scene && !modelError && !isRetrying) {
+      console.log('Robot model ready to render')
+      setIsLoaded(true)
+      setModelError(false)
+    }
+  }, [gltf, modelError, isRetrying])
 
   // Since we're using fallback robot, we don't need GLTF animations or useFrame
   const { actions, mixer } = useAnimations([], groupRef)
