@@ -15,9 +15,11 @@ export default function AdminPage() {
 
   useEffect(() => {
     // Проверяем аутентификацию из localStorage
-    const adminAuth = localStorage.getItem('admin_authenticated')
-    if (adminAuth === 'true') {
-      setIsAuthenticated(true)
+    if (typeof window !== 'undefined') {
+      const adminAuth = localStorage.getItem('admin_authenticated')
+      if (adminAuth === 'true') {
+        setIsAuthenticated(true)
+      }
     }
   }, [])
 
