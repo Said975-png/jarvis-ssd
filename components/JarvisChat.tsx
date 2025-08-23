@@ -131,6 +131,16 @@ export default function JarvisChat() {
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
       }
+      if (recognitionRef.current && isRecordingRef.current) {
+        isRecordingRef.current = false
+        setIsRecording(false)
+        setIsListening(false)
+        try {
+          recognitionRef.current.stop()
+        } catch (error) {
+          console.log('Recognition cleanup error:', error)
+        }
+      }
     }
   }, [isRecording])
 
@@ -186,8 +196,8 @@ export default function JarvisChat() {
       const jarvisResponses = [
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
-        'Давай��е обсудим ваши потребности. Какой тип проекта вас интересует?',
-        'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
+        'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
+        'Наши ИИ-а��систенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
       
