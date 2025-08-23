@@ -116,7 +116,17 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         if (action) {
           action.reset().fadeIn(0.5).play()
           // Set animation speed based on section
-          action.timeScale = currentSection === 0 ? 1 : 0.7
+          if (currentSection === 0) {
+            action.timeScale = 1 // Hero - normal speed
+          } else if (currentSection === 1) {
+            action.timeScale = 0.8 // Advantages - slightly slower
+          } else if (currentSection === 2) {
+            action.timeScale = 0.7 // Pricing - slower, more thoughtful
+          } else if (currentSection === 3) {
+            action.timeScale = 0.6 // AI Consultant - professional, measured
+          } else {
+            action.timeScale = 0.9 // Reviews - confident finale
+          }
         }
       })
     }
