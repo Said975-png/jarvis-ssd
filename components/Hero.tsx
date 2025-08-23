@@ -20,6 +20,32 @@ export default function Hero() {
     setIsMobileMenuOpen(false)
   }, [])
 
+  // Handle escape key and click outside to close menu
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element
+      if (isMobileMenuOpen && target && !target.closest('.mobile-menu-button') && !target.closest('.mobile-nav')) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('keydown', handleEscape)
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isMobileMenuOpen])
+
   return (
     <section className="hero-section">
       {/* Content */}
@@ -71,9 +97,18 @@ export default function Hero() {
 
             {/* Mobile Navigation */}
             <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
-              <a href="#services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Услуги</a>
-              <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>О нас</a>
-              <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Контакты</a>
+              <a href="#services" className="mobile-nav-link" onClick={() => {
+                console.log('Mobile nav link clicked - closing menu');
+                setIsMobileMenuOpen(false);
+              }}>Услуги</a>
+              <a href="#about" className="mobile-nav-link" onClick={() => {
+                console.log('Mobile nav link clicked - closing menu');
+                setIsMobileMenuOpen(false);
+              }}>О нас</a>
+              <a href="#contact" className="mobile-nav-link" onClick={() => {
+                console.log('Mobile nav link clicked - closing menu');
+                setIsMobileMenuOpen(false);
+              }}>Контакты</a>
 
               <div className="mobile-nav-actions">
                 <button className="mobile-nav-button cart-button" onClick={() => setIsMobileMenuOpen(false)}>
@@ -137,7 +172,7 @@ export default function Hero() {
               </div>
               <div className="stat-item">
                 <span className="stat-number">24/7</span>
-                <span className="stat-label">ИИ-поддержка</span>
+                <span className="stat-label">ИИ-подде��жка</span>
               </div>
             </div>
           </div>
