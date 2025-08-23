@@ -15,6 +15,37 @@ export default function Hero() {
     console.log('Mobile menu state changed:', isMobileMenuOpen);
   }, [isMobileMenuOpen])
 
+  // Ensure menu is closed on component mount
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [])
+
+  // Handle escape key and click outside to close menu
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element
+      if (isMobileMenuOpen && target && !target.closest('.mobile-menu-button') && !target.closest('.mobile-nav')) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('keydown', handleEscape)
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isMobileMenuOpen])
+
   return (
     <section className="hero-section">
       {/* Content */}
@@ -52,10 +83,12 @@ export default function Hero() {
             <button
               className="mobile-menu-button"
               onClick={() => {
-                console.log('Mobile menu button clicked, current state:', isMobileMenuOpen);
-                setIsMobileMenuOpen(!isMobileMenuOpen);
+                const newState = !isMobileMenuOpen;
+                console.log('Mobile menu toggle:', { from: isMobileMenuOpen, to: newState });
+                setIsMobileMenuOpen(newState);
               }}
               aria-label="Toggle mobile menu"
+              type="button"
             >
               <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
               <span className={`hamburger-line ${isMobileMenuOpen ? 'open' : ''}`}></span>
@@ -64,23 +97,32 @@ export default function Hero() {
 
             {/* Mobile Navigation */}
             <div className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
-              <a href="#services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Услуги</a>
-              <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>О нас</a>
-              <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Контакты</a>
+              <a href="#services" className="mobile-nav-link" onClick={() => {
+                console.log('Mobile nav link clicked - closing menu');
+                setIsMobileMenuOpen(false);
+              }}>Услуги</a>
+              <a href="#about" className="mobile-nav-link" onClick={() => {
+                console.log('Mobile nav link clicked - closing menu');
+                setIsMobileMenuOpen(false);
+              }}>О нас</a>
+              <a href="#contact" className="mobile-nav-link" onClick={() => {
+                console.log('Mobile nav link clicked - closing menu');
+                setIsMobileMenuOpen(false);
+              }}>Контакты</a>
 
               <div className="mobile-nav-actions">
                 <button className="mobile-nav-button cart-button" onClick={() => setIsMobileMenuOpen(false)}>
                   <ShoppingCart className="mobile-nav-icon" />
-                  <span>Корзина</span>
+                  <span>Моя корзина</span>
                   <span className="mobile-cart-count">0</span>
                 </button>
-                <button className="mobile-nav-button auth-button" onClick={() => setIsMobileMenuOpen(false)}>
+                <button className="mobile-nav-button auth-button login" onClick={() => setIsMobileMenuOpen(false)}>
                   <User className="mobile-nav-icon" />
-                  <span>Вход</span>
+                  <span>Войти в аккаунт</span>
                 </button>
                 <button className="mobile-nav-button auth-button register" onClick={() => setIsMobileMenuOpen(false)}>
                   <UserPlus className="mobile-nav-icon" />
-                  <span>Регистрация</span>
+                  <span>Создать аккаунт</span>
                 </button>
               </div>
             </div>
@@ -98,7 +140,7 @@ export default function Hero() {
             <h1 className="hero-title">
               Мы создаем <span className="gradient-text">умные</span>
               <br />
-              интернет-магазины
+              интернет-магази��ы
             </h1>
             
             <p className="hero-description">
