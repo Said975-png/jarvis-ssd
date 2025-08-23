@@ -69,10 +69,6 @@ export default function Advantages() {
 
   return (
     <section ref={sectionRef} className="advantages-section" id="advantages">
-      <div className="advantages-bg">
-        <div className="advantages-grid-overlay" />
-      </div>
-      
       <div className="advantages-container">
         <div className="advantages-header">
           <h2 className="advantages-title">
@@ -113,7 +109,7 @@ export default function Advantages() {
             </svg>
           </button>
           <div className="cta-text">
-            <span className="cta-label">Присоединяйтесь к 500+ успешным компаниям</span>
+            <span className="cta-label">Присоединяйтесь к 500+ успе��ным компаниям</span>
             <span className="cta-subtext">Начните свою ИИ-трансформацию сегодня</span>
           </div>
         </div>

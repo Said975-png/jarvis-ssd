@@ -21,10 +21,6 @@ export default function Footer() {
 
   return (
     <footer className="footer-section">
-      <div className="footer-bg">
-        <div className="footer-grid-overlay" />
-      </div>
-
       <div className="footer-container">
         {/* Main Footer Content */}
         <div className="footer-content">

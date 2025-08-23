@@ -46,7 +46,7 @@ const pricingPlans = [
     subtitle: 'Премиум решение',
     price: '5 000 000',
     currency: 'сум',
-    description: 'Максимум возможностей для крупного бизнеса',
+    description: 'Максимум возможностей для крупного бизн��са',
     features: [
       'Все из Pro',
       'Безлимитные страницы',
@@ -87,10 +87,6 @@ export default function Pricing() {
 
   return (
     <section ref={sectionRef} className="pricing-section" id="pricing">
-      <div className="pricing-bg">
-        <div className="pricing-grid-overlay" />
-      </div>
-      
       <div className="pricing-container">
         <div className="pricing-header">
           <h2 className="pricing-title">

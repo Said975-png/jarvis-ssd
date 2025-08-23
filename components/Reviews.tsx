@@ -28,7 +28,7 @@ const reviews = [
   {
     id: 4,
     rating: 5,
-    text: "Создала интернет-магазин с помощью Jarvis. Весь проц��сс автоматизирован, а бот отвечает на вопросы клиентов в любое время дня и ночи.",
+    text: "Создала интернет-магазин с помощью Jarvis. Весь проц��сс автоматизирован, а бот отвечает на вопросы клие��тов в любое время дня и ночи.",
     author: "Алексеева Л.",
     location: "Казань, Freelance"
   },
@@ -136,9 +136,6 @@ export default function Reviews() {
 
   return (
     <section className="reviews-section">
-      <div className="reviews-bg">
-        <div className="reviews-grid-overlay" />
-      </div>
       <div className="reviews-container">
         <div className="reviews-header">
           <h2 className="reviews-title">Наши отзывы</h2>
