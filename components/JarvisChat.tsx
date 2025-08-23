@@ -54,7 +54,9 @@ export default function JarvisChat() {
 
   // И��ициализация Speech Recognition
   useEffect(() => {
+    console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      console.log('Speech Recognition API is supported')
       setSpeechSupported(true)
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
       const recognition = new SpeechRecognition()
@@ -264,7 +266,7 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Отличный вопрос! Наша команда специализиру��тся на создании современных ИИ-решений для e-commerce.',
+        'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
