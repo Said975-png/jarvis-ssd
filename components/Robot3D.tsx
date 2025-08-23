@@ -512,9 +512,17 @@ function Loader() {
 
 export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
   const [canvasReady, setCanvasReady] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  // Ensure we're on the client side to avoid SSR issues
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Force canvas to re-render and be ready
   useEffect(() => {
+    if (!isClient) return
+
     // Set canvas as ready after a brief delay to ensure proper initialization
     const timer = setTimeout(() => {
       setCanvasReady(true)
