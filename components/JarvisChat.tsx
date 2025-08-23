@@ -37,6 +37,7 @@ export default function JarvisChat() {
   const recognitionRef = useRef<any>(null)
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const isRecordingRef = useRef(false)
+  const currentTranscriptRef = useRef('')
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -52,7 +53,7 @@ export default function JarvisChat() {
     }
   }, [isOpen])
 
-  // И��ициализация Speech Recognition
+  // Инициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -61,7 +62,7 @@ export default function JarvisChat() {
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
       const recognition = new SpeechRecognition()
       
-      recognition.continuous = true
+      recognition.continuous = false  // Изменено на false
       recognition.interimResults = true
       recognition.lang = 'ru-RU'
       
@@ -73,7 +74,7 @@ export default function JarvisChat() {
       recognition.onresult = (event: any) => {
         let finalTranscript = ''
         let interimTranscript = ''
-
+        
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript
           if (event.results[i].isFinal) {
@@ -82,17 +83,18 @@ export default function JarvisChat() {
             interimTranscript += transcript
           }
         }
-
+        
         if (finalTranscript) {
           const trimmedTranscript = finalTranscript.trim()
+          currentTranscriptRef.current = trimmedTranscript
           setInputMessage(trimmedTranscript)
           console.log('Final transcript received:', trimmedTranscript)
-
+          
           // Запускаем таймер на секунду молчания
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current)
           }
-
+          
           silenceTimerRef.current = setTimeout(() => {
             console.log('Silence timer fired, transcript:', trimmedTranscript)
             // Отправляем сообщение и останавливаем запись, если есть текст
@@ -103,6 +105,7 @@ export default function JarvisChat() {
             }
           }, 1000)
         } else if (interimTranscript) {
+          currentTranscriptRef.current = interimTranscript.trim()
           setInputMessage(interimTranscript.trim())
         }
       }
@@ -112,13 +115,13 @@ export default function JarvisChat() {
         setIsRecording(false)
         isRecordingRef.current = false
         setIsListening(false)
-
+        
         // Очищаем таймер при ошибке
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current)
         }
-
-        // Обрабатываем специ��ичные ошибки
+        
+        // Обрабатываем специфичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -135,11 +138,10 @@ export default function JarvisChat() {
       }
       
       recognition.onend = () => {
+        console.log('Speech recognition ended')
         setIsListening(false)
-        // Перезапускаем только если запись д��йствительно активна
-        // и не была остановлена пользователем
-        if (isRecordingRef.current) {
-          // Небольшая задержка перед перезапуском для предотвращения конфликтов
+        // Если мы еще записываем, перезапускаем только при необходимости
+        if (isRecordingRef.current && !currentTranscriptRef.current) {
           setTimeout(() => {
             if (isRecordingRef.current) {
               try {
@@ -148,7 +150,6 @@ export default function JarvisChat() {
                 console.log('Failed to restart recognition:', error)
                 setIsRecording(false)
                 isRecordingRef.current = false
-                setIsListening(false)
               }
             }
           }, 100)
@@ -160,7 +161,7 @@ export default function JarvisChat() {
       setSpeechSupported(false)
       console.log('Speech Recognition not supported in this browser')
     }
-
+    
     return () => {
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
@@ -192,10 +193,11 @@ export default function JarvisChat() {
             return
           }
         }
-
+        
         console.log('Starting speech recognition...')
         setIsRecording(true)
         isRecordingRef.current = true
+        currentTranscriptRef.current = ''
         setInputMessage('')
         recognitionRef.current.start()
       } catch (error) {
@@ -216,13 +218,13 @@ export default function JarvisChat() {
       setIsRecording(false)
       isRecordingRef.current = false
       setIsListening(false)
-
+      
       // Очищаем таймер
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
         silenceTimerRef.current = null
       }
-
+      
       // Затем останавливаем recognition
       try {
         if (recognitionRef.current) {
@@ -266,8 +268,8 @@ export default function JarvisChat() {
     setTimeout(() => {
       const jarvisResponses = [
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
-        'Я помогу вам ��оздать умный интернет-магазин с персонализированными рекомендациями.',
-        'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
+        'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
+        'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
@@ -326,7 +328,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект ч��стиц при от��рытии */}
+          {/* Эффект частиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
@@ -341,7 +343,7 @@ export default function JarvisChat() {
             ))}
           </div>
           <div className="chat-container">
-            {/* Загол��вок чата */}
+            {/* Заголовок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
                 <div className="chat-avatar">
@@ -361,7 +363,7 @@ export default function JarvisChat() {
               </button>
             </div>
 
-            {/* Сообщения */}
+            {/* Сооб��ения */}
             <div className="chat-messages">
               {messages.map((message) => (
                 <div
