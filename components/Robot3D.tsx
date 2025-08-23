@@ -465,10 +465,18 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
 function LoadingFallback() {
   const loadingRef = useRef<THREE.Group>(null)
 
+  // Set initial visible position for loading fallback
+  useEffect(() => {
+    if (loadingRef.current) {
+      loadingRef.current.position.set(0.8, -0.8, 0.6)
+      loadingRef.current.scale.setScalar(0.6)
+    }
+  }, [])
+
   useFrame((state) => {
     if (loadingRef.current) {
       loadingRef.current.rotation.y = state.clock.elapsedTime * 0.5
-      loadingRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.2
+      loadingRef.current.position.y = -0.8 + Math.sin(state.clock.elapsedTime * 2) * 0.2
     }
   })
 
