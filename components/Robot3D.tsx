@@ -164,11 +164,12 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
         // Keep within safe bounds [-1.5, 1.5] for X and Y
-        targetX = Math.cos(orbitAngle) * (0.8 - progress * 0.3) // Orbit movement, contained
+        // Start robot visible from the beginning (even when scroll is 0)
+        targetX = Math.cos(orbitAngle) * (1.2 - progress * 0.3) // Start more visible
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2 // Gentle vertical movement
-        targetZ = Math.sin(progress * Math.PI) * 0.4 // Forward and back
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.2 // Move forward to be more visible
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
-        targetScale = 0.7 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
+        targetScale = 1.0 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else if (safeScrollProgress <= 2) {
         // Advantages to Pricing - Interactive dance
         const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
