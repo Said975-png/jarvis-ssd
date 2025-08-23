@@ -56,24 +56,54 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   const groupRef = useRef<THREE.Group>(null)
   const [modelError, setModelError] = useState<boolean>(false)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const [retryCount, setRetryCount] = useState<number>(0)
+  const [isRetrying, setIsRetrying] = useState<boolean>(false)
+
+  const modelUrl = 'https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c'
 
   // Load GLTF model with error handling
-  const gltf = useGLTF('https://cdn.builder.io/o/assets%2F593c53d93bc14662856f5a8a16f9b13c%2F88fc216c7a7b4bb0a949e0ad51b7ddfb?alt=media&token=e170c830-eccc-4b42-bd56-2ee3b9a06c8e&apiKey=593c53d93bc14662856f5a8a16f9b13c',
-    undefined, // onLoad callback - handled by useEffect
-    undefined, // onProgress callback
+  const gltf = useGLTF(modelUrl,
+    (loadedGltf) => {
+      console.log('Robot model loaded successfully:', loadedGltf)
+      setIsLoaded(true)
+      setModelError(false)
+      setIsRetrying(false)
+    },
+    (progress) => {
+      console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%')
+    },
     (error) => {
-      console.error('Failed to load GLTF model:', error)
+      console.error('Failed to load GLTF model (attempt ' + (retryCount + 1) + '):', error)
       setModelError(true)
+      setIsRetrying(false)
+
+      // Retry up to 3 times
+      if (retryCount < 3) {
+        setTimeout(() => {
+          console.log('Retrying model load in 2 seconds...')
+          setRetryCount(prev => prev + 1)
+          setIsRetrying(true)
+          setModelError(false)
+        }, 2000)
+      }
     }
   )
 
   // Handle successful model load
   useEffect(() => {
-    if (gltf && gltf.scene && !modelError) {
+    if (gltf && gltf.scene && !modelError && !isRetrying) {
+      console.log('Robot model ready to render')
       setIsLoaded(true)
       setModelError(false)
     }
-  }, [gltf, modelError])
+  }, [gltf, modelError, isRetrying])
+
+  // Reset retry counter when model loads successfully
+  useEffect(() => {
+    if (isLoaded) {
+      setRetryCount(0)
+    }
+  }, [isLoaded])
 
   // Show fallback if model failed to load
   if (modelError) {
@@ -193,9 +223,19 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     )
   }
 
+  // Show retry message if retrying
+  if (isRetrying && !isLoaded) {
+    return (
+      <group>
+        <LoadingFallback />
+        {/* Optional: Add text mesh for retry indication */}
+      </group>
+    )
+  }
+
   // Don't render if model hasn't loaded yet
   if (!isLoaded || !gltf?.scene) {
-    return null
+    return <LoadingFallback />
   }
 
   const { scene, animations } = gltf
