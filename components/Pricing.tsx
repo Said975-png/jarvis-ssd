@@ -13,7 +13,7 @@ const pricingPlans = [
     description: 'Идеально для небольших проектов и стартапов',
     features: [
       'До 5 страниц сайта',
-      'Современный дизайн',
+      'Совре��енный дизайн',
       'Адаптивная верстка',
       'SEO оптимизация',
       'Техподдержка email'
@@ -46,7 +46,7 @@ const pricingPlans = [
     subtitle: 'Премиум решение',
     price: '5 000 000',
     currency: 'сум',
-    description: 'Максимум возможностей для крупного бизн��са',
+    description: 'Максимум возможностей для крупного бизнеса',
     features: [
       'Все из Pro',
       'Безлимитные страницы',
@@ -62,8 +62,17 @@ const pricingPlans = [
 
 export default function Pricing() {
   const [visibleCards, setVisibleCards] = useState<string[]>([])
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -87,6 +96,17 @@ export default function Pricing() {
 
   return (
     <section ref={sectionRef} className="pricing-section" id="pricing">
+      {/* Animated background */}
+      <div className="hero-bg">
+        <div
+          className="mouse-gradient"
+          style={{
+            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(14, 165, 233, 0.15), transparent 40%)`
+          }}
+        />
+        <div className="grid-overlay" />
+      </div>
+
       <div className="pricing-container">
         <div className="pricing-header">
           <h2 className="pricing-title">

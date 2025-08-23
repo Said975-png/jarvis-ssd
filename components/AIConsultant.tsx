@@ -74,10 +74,19 @@ export default function AIConsultant() {
   const [visibleMessages, setVisibleMessages] = useState<number>(0)
   const [isTyping, setIsTyping] = useState(false)
   const [visibleStats, setVisibleStats] = useState<number[]>([])
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const sectionRef = useRef<HTMLElement>(null)
   const chatRef = useRef<HTMLDivElement>(null)
   const chatMessagesRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   // Анимация появления сообщений в чате
   useEffect(() => {
@@ -145,6 +154,17 @@ export default function AIConsultant() {
 
   return (
     <section ref={sectionRef} className="ai-consultant-section">
+      {/* Animated background */}
+      <div className="hero-bg">
+        <div
+          className="mouse-gradient"
+          style={{
+            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(14, 165, 233, 0.15), transparent 40%)`
+          }}
+        />
+        <div className="grid-overlay" />
+      </div>
+
       <div className="ai-consultant-container">
         {/* Header */}
         <div className="ai-consultant-header">

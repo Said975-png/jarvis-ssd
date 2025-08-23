@@ -28,7 +28,7 @@ const reviews = [
   {
     id: 4,
     rating: 5,
-    text: "Создала интернет-магазин с помощью Jarvis. Весь проц��сс автоматизирован, а бот отвечает на вопросы клие��тов в любое время дня и ночи.",
+    text: "Создала интернет-магазин с помощью Jarvis. Весь проц��сс автоматизирован, а бот отвечает на вопросы клиентов в любое время дня и ночи.",
     author: "Алексеева Л.",
     location: "Казань, Freelance"
   },
@@ -77,7 +77,7 @@ const reviews = [
   {
     id: 11,
     rating: 5,
-    text: "Мне сделали сайт с Jarvis Intercoma под мою студию украшений. Красиво, удобно, и всё автоматизировано. Теперь я занимаюсь только заказами, а не сижу целый день в переписках с клиентами.",
+    text: "Мне сделали сайт с Jarvis Intercoma под м��ю студию украшений. Красиво, удобно, и всё автоматизировано. Теперь я занимаюсь только заказами, а не сижу целый день в переписках с клиентами.",
     author: "Мадина Р.",
     location: "Ташкент, Freelance"
   },
@@ -93,9 +93,18 @@ const reviews = [
 export default function Reviews() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
   useEffect(() => {
@@ -136,6 +145,17 @@ export default function Reviews() {
 
   return (
     <section className="reviews-section">
+      {/* Animated background */}
+      <div className="hero-bg">
+        <div
+          className="mouse-gradient"
+          style={{
+            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(14, 165, 233, 0.15), transparent 40%)`
+          }}
+        />
+        <div className="grid-overlay" />
+      </div>
+
       <div className="reviews-container">
         <div className="reviews-header">
           <h2 className="reviews-title">Наши отзывы</h2>
