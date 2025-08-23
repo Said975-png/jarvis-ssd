@@ -72,59 +72,8 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     setIsLoaded(false)
   }, [])
 
-  // Handle successful model load
-  useEffect(() => {
-    if (gltf && gltf.scene && !modelError && !isRetrying) {
-      console.log('Robot model ready to render')
-      setIsLoaded(true)
-      setModelError(false)
-    }
-  }, [gltf, modelError, isRetrying])
-
-  // CRITICAL: Always call ALL hooks BEFORE any conditional returns!
-  const { actions, mixer } = useAnimations(gltf?.animations || [], groupRef)
-
-  // Reset retry counter when model loads successfully
-  useEffect(() => {
-    if (isLoaded) {
-      setRetryCount(0)
-    }
-  }, [isLoaded])
-
-  // Play all available animations when they're ready
-  useEffect(() => {
-    // Only run if we have actions and the model is loaded
-    if (actions && isLoaded && !modelError && !isRetrying) {
-      Object.values(actions).forEach((action) => {
-        if (action) {
-          action.reset().fadeIn(0.5).play()
-          // Set animation speed based on section
-          if (currentSection === 0) {
-            action.timeScale = 1 // Hero - normal speed
-          } else if (currentSection === 1) {
-            action.timeScale = 0.8 // Advantages - slightly slower
-          } else if (currentSection === 2) {
-            action.timeScale = 0.7 // Pricing - slower, more thoughtful
-          } else if (currentSection === 3) {
-            action.timeScale = 0.6 // AI Consultant - professional, measured
-          } else {
-            action.timeScale = 0.9 // Reviews - confident finale
-          }
-        }
-      })
-    }
-
-    return () => {
-      // Cleanup animations on unmount
-      if (actions) {
-        Object.values(actions).forEach((action) => {
-          if (action) {
-            action.fadeOut(0.5)
-          }
-        })
-      }
-    }
-  }, [actions, currentSection, isLoaded, modelError, isRetrying])
+  // Since we're using fallback robot, we don't need GLTF animations
+  const { actions, mixer } = useAnimations([], groupRef)
 
   // CRITICAL: useFrame must also be called before any conditional returns!
   useFrame((state) => {
