@@ -184,20 +184,40 @@ export default function Hero() {
                   <span>Моя корзина</span>
                   <span className="mobile-cart-count">0</span>
                 </button>
-                <button className="mobile-nav-button auth-button login" onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setIsLoginModalOpen(true);
-                }}>
-                  <User className="mobile-nav-icon" />
-                  <span>Войти в аккаунт</span>
-                </button>
-                <button className="mobile-nav-button auth-button register" onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setIsRegisterModalOpen(true);
-                }}>
-                  <UserPlus className="mobile-nav-icon" />
-                  <span>Создать аккаунт</span>
-                </button>
+                {user ? (
+                  <>
+                    <button className="mobile-nav-button auth-button user" onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsDashboardOpen(true);
+                    }}>
+                      <User className="mobile-nav-icon" />
+                      <span>Личный кабинет ({user.name})</span>
+                    </button>
+                    <button className="mobile-nav-button auth-button logout" onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setUser(null);
+                    }}>
+                      <span>Выйти из аккаунта</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="mobile-nav-button auth-button login" onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsLoginModalOpen(true);
+                    }}>
+                      <User className="mobile-nav-icon" />
+                      <span>Войти в аккаунт</span>
+                    </button>
+                    <button className="mobile-nav-button auth-button register" onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsRegisterModalOpen(true);
+                    }}>
+                      <UserPlus className="mobile-nav-icon" />
+                      <span>Создать аккаунт</span>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </nav>
@@ -346,7 +366,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Поддержка и развитие</h3>
                   <p className="step-description">
-                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
+                    П��едлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
                   </p>
                 </div>
               </div>
@@ -375,7 +395,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
-                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. ��н понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
+                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
                 </div>
               </div>
@@ -393,7 +413,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Персональные рекомендации</h3>
                   <p className="feature-description">
-                    ДЖАРВИС ��оздает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
+                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
                   </p>
                 </div>
               </div>
