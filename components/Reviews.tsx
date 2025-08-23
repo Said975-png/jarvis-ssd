@@ -14,7 +14,7 @@ const reviews = [
   {
     id: 2,
     rating: 5,
-    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работать стало легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только получаю заказы. Очень довольна!",
+    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работат�� стало легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только получаю заказы. Очень довольна!",
     author: "Алимова М.",
     location: "Чебоксары, Freelance"
   },
@@ -44,7 +44,7 @@ const reviews = [
     rating: 5,
     text: "Мой магазин ювелирных изделий стал более удобным благодаря Jarvis. Бот помогает клиентам выбрать подходящие украшения и отвечает на все вопросы.",
     author: "Васильева О.",
-    location: "Набережные Челн��, Freelance"
+    location: "Набережные Челны, Freelance"
   },
   {
     id: 7,
@@ -84,7 +84,7 @@ const reviews = [
   {
     id: 12,
     rating: 5,
-    text: "Создала магазин косметики с Jarvis. Бот идеально консультирует клиентов по уходу за кожей, подбирает продукты по типу кожи. Продажи выросли в 4 раза!",
+    text: "Создала магазин косметики �� Jarvis. Бот идеально консультирует клиентов по уходу за кожей, подбирает продукты по типу кожи. Продажи выросли в 4 раза!",
     author: "Елена К.",
     location: "Москва, Freelance"
   }
@@ -116,18 +116,15 @@ export default function Reviews() {
 
     // Запускаем анимацию с задержкой для загрузки DOM
     const timer = setTimeout(() => {
-      console.log('Starting reviews animation') // Для отладки
       animationId = requestAnimationFrame(animate)
     }, 2000)
 
     // Останавливаем анимацию при наведении
     const handleMouseEnter = () => {
       isPaused = true
-      console.log('Animation paused')
     }
     const handleMouseLeave = () => {
       isPaused = false
-      console.log('Animation resumed')
     }
 
     scrollContainer.addEventListener('mouseenter', handleMouseEnter)
