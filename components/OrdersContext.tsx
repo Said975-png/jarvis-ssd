@@ -42,6 +42,14 @@ const OrdersContext = createContext<OrdersContextType | undefined>(undefined)
 export function OrdersProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([])
   const [isInitialized, setIsInitialized] = useState(false)
+  const providerId = React.useMemo(() => `OrdersProvider_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, [])
+
+  React.useEffect(() => {
+    console.log('🏭 OrdersProvider создан с ID:', providerId)
+    return () => {
+      console.log('🗑️ OrdersProvider уничтожен с ID:', providerId)
+    }
+  }, [])
 
   // Загрузка заказов из localStorage при инициализации
   useEffect(() => {
@@ -99,7 +107,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
       // Принудительно сохраняем в localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem('jarvis_orders', JSON.stringify(updatedOrders))
-        console.log('OrdersContext: принудительное сох��анение в localStorage')
+        console.log('OrdersContext: принудительное сохранение в localStorage')
       }
       return updatedOrders
     })
