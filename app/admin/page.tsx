@@ -129,6 +129,54 @@ export default function AdminPage() {
             >
               Обновить
             </button>
+            <button
+              onClick={() => {
+                // Создаем тестовый заказ
+                const testOrder = {
+                  userId: 'test_user_123',
+                  userEmail: 'test@example.com',
+                  items: [{
+                    id: 'test_item',
+                    name: 'Тестовый тариф',
+                    subtitle: 'Для проверки',
+                    price: '100',
+                    currency: '$'
+                  }],
+                  customerInfo: {
+                    fullName: 'Тестовый Пользователь',
+                    phone: '+998901234567',
+                    siteDescription: 'Тестовое описание сайта'
+                  },
+                  status: 'pending' as const
+                }
+                const orderId = updateOrderStatus ? (() => {
+                  const id = `order_${Date.now()}_test`
+                  const now = new Date().toISOString()
+                  const newOrder = {
+                    ...testOrder,
+                    id,
+                    createdAt: now,
+                    updatedAt: now
+                  }
+                  setOrders(prev => [...prev, newOrder])
+                  return id
+                })() : 'test_order'
+                console.log('Создан тестовый заказ:', orderId)
+              }}
+              className="test-button"
+            >
+              Тест
+            </button>
+            <button
+              onClick={() => {
+                localStorage.removeItem('jarvis_orders')
+                setOrders([])
+                console.log('localStorage очищен')
+              }}
+              className="clear-button"
+            >
+              Очистить
+            </button>
             <button onClick={handleLogout} className="logout-button">
               Выйти
             </button>
