@@ -733,24 +733,24 @@ body {
 /* 3D Robot Styles */
 .robot-3d-container {
   position: absolute;
-  top: -10%;
-  right: -10%;
-  width: 120%;
-  height: 120%;
-  opacity: 0.6;
-  z-index: 2;
+  top: -15%;
+  right: -15%;
+  width: 130%;
+  height: 130%;
+  opacity: 0.8;
+  z-index: 1;
   pointer-events: none;
   overflow: visible;
 }
 
 .scroll-animated-robot {
   position: fixed;
-  top: -10vh;
-  right: -10vw;
-  width: 70vw;
-  height: 120vh;
+  top: -15vh;
+  right: -15vw;
+  width: 90vw;
+  height: 130vh;
   opacity: 1;
-  z-index: 10000;
+  z-index: 1;
   pointer-events: none;
   transition: opacity 0.3s ease;
   overflow: visible;
