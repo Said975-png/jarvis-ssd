@@ -14,7 +14,7 @@ const reviews = [
   {
     id: 2,
     rating: 5,
-    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работат�� стало легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только получаю заказы. Очень довольна!",
+    text: "Создала сайт с Jarvis Intercoma для своего магазина одежды. Работать стало легче: бот помогает клиентам выбирать стиль, отвечает на вопросы, а я только получаю заказы. Очень довольна!",
     author: "Алимова М.",
     location: "Чебоксары, Freelance"
   },
@@ -70,7 +70,7 @@ const reviews = [
   {
     id: 10,
     rating: 5,
-    text: "Заказал сайт от Jarvis Intercoma онлайн-магазин с ИИ Джарвисом, и не пожалел! Всё сделали быстро, магазин сразу начал приносить заказы. Особенно понравилось, что бот отвечает клиентам мгновенно, даже ночью.",
+    text: "Заказал сайт от Jarvis Intercoma онлайн-магазин с ИИ Джарвисом, и не пожалел! Всё сделали быстро, магазин сразу начал приносить заказы. Особенно понравилось, что бот отвечает клиентам мгновенно, даже но��ью.",
     author: "Карим",
     location: "Ташкент, Freelance"
   },
@@ -84,7 +84,7 @@ const reviews = [
   {
     id: 12,
     rating: 5,
-    text: "Создала магазин косметики �� Jarvis. Бот идеально консультирует клиентов по уходу за кожей, подбирает продукты по типу кожи. Продажи выросли в 4 раза!",
+    text: "Создала магазин косметики с Jarvis. Бот идеально консультирует клиентов по уходу за кожей, подбирает продукты по типу кожи. Продажи выросли в 4 раза!",
     author: "Елена К.",
     location: "Москва, Freelance"
   }
@@ -119,22 +119,9 @@ export default function Reviews() {
       animationId = requestAnimationFrame(animate)
     }, 2000)
 
-    // Останавливаем анимацию при наведении
-    const handleMouseEnter = () => {
-      isPaused = true
-    }
-    const handleMouseLeave = () => {
-      isPaused = false
-    }
-
-    scrollContainer.addEventListener('mouseenter', handleMouseEnter)
-    scrollContainer.addEventListener('mouseleave', handleMouseLeave)
-
     return () => {
       clearTimeout(timer)
       cancelAnimationFrame(animationId)
-      scrollContainer?.removeEventListener('mouseenter', handleMouseEnter)
-      scrollContainer?.removeEventListener('mouseleave', handleMouseLeave)
     }
   }, [])
 
