@@ -80,7 +80,7 @@ const statistics = [
     icon: Clock,
     value: '24/7',
     label: 'Круглосуточно',
-    description: 'Обслуживание клиентов без выходных и перерывов'
+    description: 'Обслуживание клиентов без выходных и переры��ов'
   },
   {
     icon: Users,
@@ -103,6 +103,7 @@ export default function AIConsultant() {
   const [visibleStats, setVisibleStats] = useState<number[]>([])
   const sectionRef = useRef<HTMLElement>(null)
   const chatRef = useRef<HTMLDivElement>(null)
+  const chatMessagesRef = useRef<HTMLDivElement>(null)
   const comparisonRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
 
@@ -187,7 +188,7 @@ export default function AIConsultant() {
           </h2>
           
           <p className="ai-consultant-subtitle">
-            Персональный ИИ-помощник работает 24/7, общается с клиентами, отвечает на вопросы 
+            Персональный ИИ-помощник работает 24/7, общается с клиентами, отвеч��ет на вопросы 
             и предлагает товары на основе индивидуальных предпочтений и истории покупок
           </p>
         </div>
