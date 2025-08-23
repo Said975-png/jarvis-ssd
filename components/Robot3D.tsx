@@ -180,11 +180,12 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         const progress = safeScrollProgress
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
-        targetX = Math.cos(orbitAngle) * (1.2 - progress * 0.3)
+        // Start more visible and closer to the right edge
+        targetX = Math.cos(orbitAngle) * (1.5 - progress * 0.2) + 0.5
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.2
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.5
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
-        targetScale = 1.0 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
+        targetScale = 1.2 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else {
         const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
         const danceTime = state.clock.elapsedTime * 0.3 + secondProgress * 2
