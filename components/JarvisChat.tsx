@@ -133,9 +133,14 @@ export default function JarvisChat() {
   }
 
   const stopRecording = () => {
-    if (recognitionRef.current && isRecording) {
+    if (recognitionRef.current) {
       setIsRecording(false)
-      recognitionRef.current.stop()
+      setIsListening(false)
+      try {
+        recognitionRef.current.stop()
+      } catch (error) {
+        console.log('Recognition already stopped')
+      }
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current)
       }
