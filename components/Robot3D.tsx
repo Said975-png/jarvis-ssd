@@ -87,6 +87,9 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   )
 
+  // CRITICAL: ALL hooks must be called at the top level before any conditional logic!
+  const { actions, mixer } = useAnimations(gltf?.animations || [], groupRef)
+
   // Handle successful model load
   useEffect(() => {
     if (gltf && gltf.scene && !modelError && !isRetrying) {
@@ -94,9 +97,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       setModelError(false)
     }
   }, [gltf, modelError, isRetrying])
-
-  // CRITICAL: Always call ALL hooks BEFORE any conditional returns!
-  const { actions, mixer } = useAnimations(gltf?.animations || [], groupRef)
 
   // Reset retry counter when model loads successfully
   useEffect(() => {
@@ -139,6 +139,25 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       }
     }
   }, [actions, currentSection, isLoaded, modelError, isRetrying])
+
+  // Make robot model transparent
+  useEffect(() => {
+    if (gltf?.scene) {
+      gltf.scene.traverse((child) => {
+        if (child.isMesh && child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((mat) => {
+              mat.transparent = true
+              mat.opacity = 0.4
+            })
+          } else {
+            child.material.transparent = true
+            child.material.opacity = 0.4
+          }
+        }
+      })
+    }
+  }, [gltf?.scene])
 
   // CRITICAL: useFrame must also be called before any conditional returns!
   useFrame((state) => {
@@ -225,6 +244,8 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   })
 
+  // NOW we can safely use conditional logic after all hooks have been called
+
   // Show fallback if model failed to load after all retries
   if (modelError && retryCount >= 3) {
     return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
@@ -245,27 +266,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   }
 
   const { scene } = gltf
-
-  // Make robot model transparent
-  useEffect(() => {
-    if (scene) {
-      scene.traverse((child) => {
-        if (child.isMesh && child.material) {
-          if (Array.isArray(child.material)) {
-            child.material.forEach((mat) => {
-              mat.transparent = true
-              mat.opacity = 0.4
-            })
-          } else {
-            child.material.transparent = true
-            child.material.opacity = 0.4
-          }
-        }
-      })
-    }
-  }, [scene])
-
-  // Now we can safely use the scene since we've passed all the early returns and all hooks are called
 
   return (
     <group ref={groupRef}>
