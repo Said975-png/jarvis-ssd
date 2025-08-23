@@ -280,35 +280,14 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
 
   return (
     <group ref={groupRef}>
-      {/* Energy field effect - Make it more visible first */}
-      <mesh position={[0, 0, 0]} scale={[2, 2, 2]}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial
-          color="#0ea5e9"
-          transparent
-          opacity={0.15}
-          wireframe={true}
-        />
-      </mesh>
-
-      {/* Solid sphere for visibility test */}
-      <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
-        <meshBasicMaterial
-          color="#3b82f6"
-          transparent
-          opacity={0.6}
-        />
-      </mesh>
-
       {/* Sparkles effect around robot */}
       <Sparkles
-        count={30}
-        scale={[4, 4, 4]}
-        size={2}
+        count={20}
+        scale={[3, 3, 3]}
+        size={1.5}
         speed={0.3}
         color="#0ea5e9"
-        opacity={0.5}
+        opacity={0.25}
       />
 
       {/* Floating particles */}
@@ -318,8 +297,19 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       <primitive
         object={scene}
         rotation={[0, Math.PI * 0.2, 0]}
-        scale={[1.2, 1.2, 1.2]}
+        scale={[0.8, 0.8, 0.8]}
       />
+
+      {/* Energy field effect */}
+      <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
+        <sphereGeometry args={[1, 16, 16]} />
+        <meshBasicMaterial
+          color="#0ea5e9"
+          transparent
+          opacity={0.06}
+          wireframe={true}
+        />
+      </mesh>
     </group>
   )
 }
