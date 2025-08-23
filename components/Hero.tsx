@@ -207,7 +207,7 @@ export default function Hero() {
                       setIsLoginModalOpen(true);
                     }}>
                       <User className="mobile-nav-icon" />
-                      <span>Войти в аккаунт</span>
+                      <span>Войти �� аккаунт</span>
                     </button>
                     <button className="mobile-nav-button auth-button register" onClick={() => {
                       setIsMobileMenuOpen(false);
@@ -366,7 +366,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Поддержка и развитие</h3>
                   <p className="step-description">
-                    П��едлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
+                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
                   </p>
                 </div>
               </div>
@@ -431,7 +431,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терпение даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое вре��я дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
@@ -466,8 +466,20 @@ export default function Hero() {
 
             <form className="auth-form" onSubmit={(e) => {
               e.preventDefault();
-              // TODO: Handle login logic
-              console.log('Login submitted');
+              const formData = new FormData(e.target as HTMLFormElement);
+              const email = formData.get('email') as string;
+              const password = formData.get('password') as string;
+
+              // TODO: Add real authentication logic here
+              console.log('Login submitted', { email, password });
+
+              // Simulate successful login
+              const userData = {
+                name: email.split('@')[0], // Use email prefix as name
+                email: email
+              };
+
+              setUser(userData);
               setIsLoginModalOpen(false);
             }}>
               <div className="form-group">
