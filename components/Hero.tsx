@@ -201,6 +201,86 @@ export default function Hero() {
           <div className="card-text">Умные рекомендации</div>
         </div>
       </div>
+
+      {/* Contract Process Panel */}
+      {isContractPanelOpen && (
+        <div className="contract-panel-overlay" onClick={() => setIsContractPanelOpen(false)}>
+          <div className="contract-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="contract-panel-header">
+              <h2 className="contract-panel-title">Процесс работы с нами</h2>
+              <button
+                className="contract-panel-close"
+                onClick={() => setIsContractPanelOpen(false)}
+                aria-label="Закрыть панель"
+              >
+                <X className="close-icon" />
+              </button>
+            </div>
+
+            <div className="contract-panel-content">
+              <div className="contract-step">
+                <div className="step-number">1</div>
+                <div className="step-content">
+                  <h3 className="step-title">Создание макета</h3>
+                  <p className="step-description">
+                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
+                  </p>
+                </div>
+              </div>
+
+              <div className="contract-step">
+                <div className="step-number">2</div>
+                <div className="step-content">
+                  <h3 className="step-title">Согласование и предоплата</h3>
+                  <p className="step-description">
+                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости про��кта. Это позволяет нам приступить к разработке с полной уверенностью.
+                  </p>
+                </div>
+              </div>
+
+              <div className="contract-step">
+                <div className="step-number">3</div>
+                <div className="step-content">
+                  <h3 className="step-title">Разработка проекта</h3>
+                  <p className="step-description">
+                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
+                  </p>
+                </div>
+              </div>
+
+              <div className="contract-step">
+                <div className="step-number">4</div>
+                <div className="step-content">
+                  <h3 className="step-title">Тестирование и доработки</h3>
+                  <p className="step-description">
+                    Проводим полное те��тирование функционала, проверяем адаптивность на всех устройствах, оптимизируем скорость загрузки. Исправляем выявленные ошибки и дорабатываем детали по вашим пожеланиям.
+                  </p>
+                </div>
+              </div>
+
+              <div className="contract-step">
+                <div className="step-number">5</div>
+                <div className="step-content">
+                  <h3 className="step-title">Сдача проекта</h3>
+                  <p className="step-description">
+                    После завершения разработки и получения окончательного платежа мы передаем вам готовый проект. Предоставляем инструкции по использованию, помогаем с размещением на хостинге и даем гарантию на исправление ошибок.
+                  </p>
+                </div>
+              </div>
+
+              <div className="contract-step">
+                <div className="step-number">6</div>
+                <div className="step-content">
+                  <h3 className="step-title">Поддержка и развитие</h3>
+                  <p className="step-description">
+                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
