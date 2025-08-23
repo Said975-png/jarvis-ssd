@@ -211,14 +211,6 @@ export default function AIConsultant() {
               </div>
             )}
 
-            {visibleMessages > 3 && (
-              <div className="scroll-hint">
-                <div className="scroll-hint-text">
-                  <ArrowRight className="scroll-hint-icon" />
-                  Прокрутите, чтобы увидеть больше сообщений
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
