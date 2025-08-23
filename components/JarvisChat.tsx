@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, X, Send, Bot, User, Sparkles, Zap } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { MessageCircle, X, Send, Bot, User, Sparkles, Zap, Mic, MicOff } from 'lucide-react'
 
 interface Message {
   id: string
@@ -90,7 +90,7 @@ export default function JarvisChat() {
 
   return (
     <>
-      {/* Кнопка чата в правом нижнем углу */}
+      {/* Кнопка чата в правом ��ижнем углу */}
       {!isOpen && (
         <div className="chat-button-container">
           <button
