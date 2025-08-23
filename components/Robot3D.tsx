@@ -159,19 +159,13 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   }, [gltf?.scene])
 
-  // Set initial position when model first loads
-  useEffect(() => {
-    if (groupRef.current && isLoaded && !modelError && !isRetrying) {
-      // Set initial visible position immediately
-      groupRef.current.position.set(0.8, -0.8, 0.6)
-      groupRef.current.scale.setScalar(1.0)
-    }
-  }, [isLoaded, modelError, isRetrying])
-
   // CRITICAL: useFrame must also be called before any conditional returns!
   useFrame((state) => {
     // Only animate if we have a valid ref and the model is loaded
     if (groupRef.current && isLoaded && !modelError && !isRetrying && gltf?.scene) {
+      // Initialize position immediately on first frame if needed
+      const needsInitialPosition = groupRef.current.position.x === 0 && groupRef.current.position.y === 0 && groupRef.current.position.z === 0
+
       // Slow floating animation
       const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
       const baseY = -1 + floatY
@@ -234,24 +228,29 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       targetY = Math.max(-2, Math.min(2, targetY))
       targetZ = Math.max(-0.2, Math.min(1.2, targetZ)) // Ensure Z never goes too far back
 
-      // Much faster interpolation for immediate visibility, slower for smooth movement
-      const isFirstFrame = Math.abs(groupRef.current.position.x) < 0.1 && Math.abs(groupRef.current.position.y) < 0.1
-      const lerpSpeed = isFirstFrame ? 1.0 : (safeScrollProgress === 0 ? 0.3 : 0.08) // Instant first position, then smooth
+      // Set initial position immediately if needed, otherwise smooth interpolation
+      if (needsInitialPosition) {
+        // Jump directly to first visible position
+        groupRef.current.position.set(targetX, targetY, targetZ)
+        groupRef.current.scale.setScalar(targetScale)
+      } else {
+        // Smooth interpolation for ongoing animation
+        const lerpSpeed = 0.08
+        groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, lerpSpeed)
+        groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, lerpSpeed)
+        groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, lerpSpeed)
 
-      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, lerpSpeed)
-      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, lerpSpeed)
-      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, lerpSpeed)
+        // Breathing scale animation
+        const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
+        const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
+        groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, finalScale, 0.08))
+      }
 
       // Engaging rotation with personality
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY + personalityRotation, 0.05)
       groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.04 + Math.cos(safeScrollProgress * 2) * 0.02
       groupRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.15) * 0.03
-
-      // Breathing scale animation
-      const breathingScale = Math.sin(state.clock.elapsedTime * 0.8) * 0.02
-      const finalScale = Math.max(0.3, Math.min(1.2, targetScale + breathingScale))
-      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, finalScale, 0.08))
     }
   })
 
