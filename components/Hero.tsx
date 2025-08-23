@@ -48,6 +48,45 @@ export default function Hero() {
     }
   }, [isMobileMenuOpen])
 
+  // Lock scroll when panels are open
+  useEffect(() => {
+    if (isContractPanelOpen || isFeaturesPanelOpen) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflow = 'unset'
+    }
+
+    // Cleanup function to restore scroll when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflow = 'unset'
+    }
+  }, [isContractPanelOpen, isFeaturesPanelOpen])
+
+  // Handle escape key for panels
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isContractPanelOpen) {
+          setIsContractPanelOpen(false)
+        }
+        if (isFeaturesPanelOpen) {
+          setIsFeaturesPanelOpen(false)
+        }
+      }
+    }
+
+    if (isContractPanelOpen || isFeaturesPanelOpen) {
+      document.addEventListener('keydown', handleEscape)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+    }
+  }, [isContractPanelOpen, isFeaturesPanelOpen])
+
   return (
     <section className="hero-section">
       {/* Content */}
@@ -147,7 +186,7 @@ export default function Hero() {
             
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
-              обычные интернет-магазины в умные, клиентоориентированные платформы.
+              обычные интернет-магазины в умные, клиентоориентиров��нные платформы.
               Увеличьте продажи с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
@@ -224,7 +263,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Создание макета</h3>
                   <p className="step-description">
-                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
+                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть коне��ный результат.
                   </p>
                 </div>
               </div>
@@ -244,7 +283,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Разработка проекта</h3>
                   <p className="step-description">
-                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
+                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых ос��ований.
                   </p>
                 </div>
               </div>
@@ -288,7 +327,7 @@ export default function Hero() {
         <div className="features-panel-overlay" onClick={() => setIsFeaturesPanelOpen(false)}>
           <div className="features-panel" onClick={(e) => e.stopPropagation()}>
             <div className="features-panel-header">
-              <h2 className="features-panel-title">Возможнос��и ДЖАРВИС</h2>
+              <h2 className="features-panel-title">Возможности ДЖАРВИС</h2>
               <button
                 className="features-panel-close"
                 onClick={() => setIsFeaturesPanelOpen(false)}
@@ -339,7 +378,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не те��яет терпение даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
