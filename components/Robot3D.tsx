@@ -144,11 +144,11 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       // Engaging movement patterns with safe boundaries
       let targetX, targetY, targetZ, targetRotationY, targetScale
 
-      // Clamp scroll progress to prevent extreme values
-      const safeScrollProgress = Math.max(0, Math.min(scrollProgress, 2))
+      // Clamp scroll progress to prevent extreme values (now supports 5 sections: 0-4)
+      const safeScrollProgress = Math.max(0, Math.min(scrollProgress, 4))
 
       if (safeScrollProgress <= 1) {
-        // Hero section - Gentle orbit movement
+        // Hero to Advantages - Gentle orbit movement
         const progress = safeScrollProgress
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
@@ -158,8 +158,8 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         targetZ = Math.sin(progress * Math.PI) * 0.4 // Forward and back
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
         targetScale = 0.7 + progress * 0.2 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
-      } else {
-        // Advantages/Pricing sections - Interactive dance
+      } else if (safeScrollProgress <= 2) {
+        // Advantages to Pricing - Interactive dance
         const secondProgress = Math.max(0, Math.min(safeScrollProgress - 1, 1))
         const danceTime = state.clock.elapsedTime * 0.3 + secondProgress * 2
 
@@ -169,6 +169,28 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         targetZ = Math.cos(danceTime * 0.9) * 0.4 + secondProgress * 0.2 // Forward-back rhythm
         targetRotationY = danceTime * 0.4 + Math.sin(danceTime * 0.6) * 0.3
         targetScale = 0.8 + Math.sin(danceTime * 2) * 0.1 // Rhythmic pulsing
+      } else if (safeScrollProgress <= 3) {
+        // Pricing to AI Consultant - Thoughtful presentation
+        const thirdProgress = Math.max(0, Math.min(safeScrollProgress - 2, 1))
+        const presentationTime = state.clock.elapsedTime * 0.2 + thirdProgress * 1.5
+
+        // Consultant-like movement - more professional and focused
+        targetX = Math.sin(presentationTime * 0.8) * 0.4 + Math.cos(thirdProgress * Math.PI * 0.5) * 0.2 // Subtle side movement
+        targetY = baseY + Math.sin(presentationTime * 0.6) * 0.15 + thirdProgress * 0.3 // Rising motion for authority
+        targetZ = Math.cos(presentationTime * 0.5) * 0.3 + Math.sin(thirdProgress * Math.PI) * 0.25 // Forward presentation stance
+        targetRotationY = presentationTime * 0.2 + Math.sin(thirdProgress * Math.PI) * 0.1 // Gentle rotation
+        targetScale = 0.85 + Math.sin(presentationTime * 1.5) * 0.08 + thirdProgress * 0.1 // Authoritative scale
+      } else {
+        // AI Consultant to Reviews - Confident finale
+        const fourthProgress = Math.max(0, Math.min(safeScrollProgress - 3, 1))
+        const finaleTime = state.clock.elapsedTime * 0.25 + fourthProgress * 2
+
+        // Victory dance - confident and celebratory
+        targetX = Math.sin(finaleTime) * 0.5 + Math.cos(finaleTime * 1.2) * 0.2 // Triumphant movement
+        targetY = baseY + Math.sin(finaleTime * 1.1) * 0.2 + Math.cos(fourthProgress * Math.PI) * 0.4 // Elevated position
+        targetZ = Math.cos(finaleTime * 0.8) * 0.35 + fourthProgress * 0.15 // Forward confident stance
+        targetRotationY = finaleTime * 0.3 + Math.sin(fourthProgress * Math.PI) * 0.2 // Confident rotation
+        targetScale = 0.9 + Math.sin(finaleTime * 1.8) * 0.12 + fourthProgress * 0.05 // Larger, more confident
       }
 
       // Extra safety clamps to ensure robot stays visible
