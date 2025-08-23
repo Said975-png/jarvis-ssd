@@ -275,7 +275,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.05}
+          opacity={0.15}
           wireframe={true}
         />
       </mesh>
@@ -401,7 +401,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshBasicMaterial
           color="#0ea5e9"
           transparent
-          opacity={0.15}
+          opacity={0.25}
           wireframe={true}
         />
       </mesh>
@@ -412,7 +412,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         <meshBasicMaterial
           color="#3b82f6"
           transparent
-          opacity={0.05}
+          opacity={0.15}
         />
       </mesh>
     </group>
