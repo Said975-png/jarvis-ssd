@@ -264,7 +264,7 @@ export default function JarvisChat() {
       return
     }
 
-    // Останавливаем предыдущее воспроизведение если есть
+    // Ост��навливаем предыдущее воспроизведение если есть
     if (speechSynthesisRef.current.speaking) {
       speechSynthesisRef.current.cancel()
     }
@@ -350,7 +350,7 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Отличный вопрос! Наш�� команда специализируется на создании современных ИИ-решений для e-commerce.',
+        'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
@@ -368,6 +368,13 @@ export default function JarvisChat() {
 
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
+
+      // Озвучиваем ответ Джарвиса
+      if (ttsSupported) {
+        setTimeout(() => {
+          speakText(randomResponse)
+        }, 500) // Небольшая задержка перед озвучиванием
+      }
     }, 1500)
   }
 
@@ -403,7 +410,7 @@ export default function JarvisChat() {
             <div className="chat-button-pulse"></div>
           </button>
           <div className="chat-button-tooltip">
-            Чат с Джарвисом
+            Ч��т с Джарвисом
           </div>
         </div>
       )}
@@ -411,7 +418,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект частиц при открытии */}
+          {/* Эффек�� частиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
