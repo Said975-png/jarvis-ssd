@@ -56,32 +56,67 @@ export default function OrderForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Проверяем, что пользователь авторизован
+    if (!isAuthenticated || !user) {
+      alert('Для оформления заказа необходимо войти в систему')
+      return
+    }
+
     setIsSubmitting(true)
 
-    // Имитация отправки заказа
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    try {
+      // Имитация отправки заказа
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
-    console.log('Заказ отправлен:', {
-      formData,
-      items,
-      timestamp: new Date().toISOString()
-    })
-
-    setIsSubmitting(false)
-    setIsSuccess(true)
-    
-    // Очищаем корзину после успешной отправки
-    setTimeout(() => {
-      clearCart()
-      setIsSuccess(false)
-      setIsOrderFormOpen(false)
-      setFormData({
-        fullName: '',
-        phone: '',
-        siteDescription: '',
-        referenceLink: ''
+      // Создаем заказ в системе
+      const orderId = createOrder({
+        userId: user.id,
+        userEmail: user.email,
+        items: items.map(item => ({
+          id: item.id,
+          name: item.name,
+          subtitle: item.subtitle,
+          price: item.price,
+          currency: item.currency
+        })),
+        customerInfo: {
+          fullName: formData.fullName,
+          phone: formData.phone,
+          siteDescription: formData.siteDescription,
+          referenceLink: formData.referenceLink
+        },
+        status: 'pending'
       })
-    }, 3000)
+
+      console.log('Заказ создан:', {
+        orderId,
+        formData,
+        items,
+        user: user.email,
+        timestamp: new Date().toISOString()
+      })
+
+      setIsSubmitting(false)
+      setIsSuccess(true)
+
+      // Очищаем корзину после успешной отправки
+      setTimeout(() => {
+        clearCart()
+        setIsSuccess(false)
+        setIsOrderFormOpen(false)
+        setFormData({
+          fullName: '',
+          phone: '',
+          siteDescription: '',
+          referenceLink: ''
+        })
+      }, 3000)
+    } catch (error) {
+      console.error('Ошибка при создании заказа:', error)
+      setIsSubmitting(false)
+      alert('Произошла ошибка при оформлении заказа. Попробуйте еще раз.')
+    }
   }
 
   const handleClose = () => {
@@ -192,7 +227,7 @@ export default function OrderForm() {
                       value={formData.siteDescription}
                       onChange={handleInputChange}
                       className="form-textarea"
-                      placeholder="Опишите, какой сайт вы хотите: назначение, основные функции, целевая аудитория..."
+                      placeholder="Опишите, какой сайт вы хотите: назначение, основные функци��, целевая аудитория..."
                       rows={4}
                       required
                       disabled={isSubmitting}
