@@ -321,9 +321,9 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         const orbitAngle = progress * Math.PI + state.clock.elapsedTime * 0.1
 
         // Positioned to be visible but not intrusive
-        targetX = Math.cos(orbitAngle) * (1.8 - progress * 0.3) + 1.2
+        targetX = Math.cos(orbitAngle) * (1.0 - progress * 0.3) + 0.8
         targetY = baseY + Math.sin(orbitAngle) * 0.3 + progress * 0.2
-        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.3
+        targetZ = Math.sin(progress * Math.PI) * 0.4 + 0.4
         targetRotationY = orbitAngle * 0.3 + state.clock.elapsedTime * 0.05
         targetScale = 1.5 + progress * 0.1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.05
       } else {
