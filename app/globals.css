@@ -1814,6 +1814,7 @@ canvas {
   inset: 0;
   background: transparent;
   opacity: 0;
+  pointer-events: none;
 }
 
 @keyframes epicSlideUp {
