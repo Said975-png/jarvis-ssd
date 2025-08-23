@@ -105,7 +105,7 @@ export default function JarvisChat() {
           setInputMessage(trimmedTranscript)
           console.log('Final transcript received:', trimmedTranscript)
           
-          // Запускаем таймер на секунду молчания
+          // Запускаем таймер на секу��ду молчания
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current)
           }
@@ -413,7 +413,7 @@ export default function JarvisChat() {
     // Останавливаем любое воспроизведение
     setIsSpeaking(false)
 
-    // Останавливаем браузер��ый TTS
+    // Останавливаем браузерный TTS
     if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
       speechSynthesisRef.current.cancel()
     }
@@ -453,8 +453,8 @@ export default function JarvisChat() {
     setTimeout(() => {
       const jarvisResponses = [
         'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
-        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудит��?',
-        'Как интересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
+        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудить?',
+        'Как и��тересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
         'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересует?',
@@ -475,8 +475,8 @@ export default function JarvisChat() {
 
       // Озвучиваем ответ Джарвиса
       if (ttsSupported) {
-        setTimeout(() => {
-          speakText(randomResponse)
+        setTimeout(async () => {
+          await speakText(randomResponse)
         }, 500) // Небольшая задержка перед озвучиванием
       }
     }, 1500)
@@ -551,7 +551,7 @@ export default function JarvisChat() {
                 <div className="chat-header-text">
                   <h3 className="chat-title">Джарвис</h3>
                   <p className={`chat-status ${isSpeaking ? 'speaking' : ''}`}>
-                    ИИ-ассистент • {isSpeaking ? 'Говорит...' : 'Онлайн'}
+                    ИИ-асс��стент • {isSpeaking ? 'Говорит...' : 'Онлайн'}
                   </p>
                 </div>
               </div>
