@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero'
 import Advantages from '@/components/Advantages'
 import Pricing from '@/components/Pricing'
+import AIConsultant from '@/components/AIConsultant'
 import Reviews from '@/components/Reviews'
 import ScrollAnimatedRobot from '@/components/ScrollAnimatedRobot'
 import JarvisChat from '@/components/JarvisChat'
@@ -14,6 +15,7 @@ export default function Home() {
         <Hero />
         <Advantages />
         <Pricing />
+        <AIConsultant />
         <Reviews />
       </main>
       <JarvisChat />
