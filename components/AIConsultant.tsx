@@ -37,7 +37,7 @@ const chatMessages = [
   {
     id: 6,
     type: 'ai',
-    message: 'Идеально! У н��с есть кольцо с синим сапфиром 2 карата в платиновой оправе за 45 000₽. Могу организовать примерку или доставку курьером с возможностью возврата. Хотите посмотреть фото?',
+    message: 'Идеально! У нас есть кольцо с синим сапфиром 2 карата в платиновой оправе за 45 000₽. Могу организовать примерку или доставку курьером с возможностью возврата. Хотите посмотреть фото?',
     timestamp: '14:34'
   }
 ]
@@ -219,7 +219,7 @@ export default function AIConsultant() {
             </div>
           </div>
           
-          <div className="chat-messages">
+          <div ref={chatMessagesRef} className="chat-messages">
             {chatMessages.slice(0, visibleMessages).map((msg, index) => (
               <div 
                 key={msg.id} 
@@ -313,7 +313,7 @@ export default function AIConsultant() {
         {/* CTA */}
         <div className="consultant-cta">
           <div className="cta-content">
-            <h3 className="cta-title">Готовы заменить целую команду продавцов на ДЖАРВИС?</h3>
+            <h3 className="cta-title">Г��товы заменить целую команду продавцов на ДЖАРВИС?</h3>
             <p className="cta-subtitle">
               Запустите ИИ-консультанта и увеличьте продажи уже сегодня
             </p>
