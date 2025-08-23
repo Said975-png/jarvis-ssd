@@ -4,6 +4,7 @@ import { Suspense, useRef, useEffect, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations, OrbitControls, Environment, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
+import styles from './Robot3D.module.css'
 
 interface Robot3DProps {
   scrollProgress: number
