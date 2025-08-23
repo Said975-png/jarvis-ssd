@@ -46,12 +46,17 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedOrders = localStorage.getItem('jarvis_orders')
+      console.log('Загрузка заказов из localStorage:', savedOrders)
       if (savedOrders) {
         try {
-          setOrders(JSON.parse(savedOrders))
+          const parsedOrders = JSON.parse(savedOrders)
+          console.log('Заказы успешно загружены:', parsedOrders)
+          setOrders(parsedOrders)
         } catch (error) {
           console.error('Error loading orders from localStorage:', error)
         }
+      } else {
+        console.log('Заказы в localStorage не найдены')
       }
     }
   }, [])
@@ -59,6 +64,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   // Сохранение заказов в localStorage при изменении
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      console.log('Сохранение заказов в localStorage:', orders)
       localStorage.setItem('jarvis_orders', JSON.stringify(orders))
     }
   }, [orders])
@@ -74,7 +80,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
   const createOrder = (orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): string => {
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     const now = new Date().toISOString()
-    
+
     const newOrder: Order = {
       ...orderData,
       id: orderId,
@@ -83,7 +89,12 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
       updatedAt: now
     }
 
-    setOrders(prevOrders => [...prevOrders, newOrder])
+    console.log('OrdersContext: создание нового заказа:', newOrder)
+    setOrders(prevOrders => {
+      const updatedOrders = [...prevOrders, newOrder]
+      console.log('OrdersContext: обновленный список заказов:', updatedOrders)
+      return updatedOrders
+    })
     return orderId
   }
 
