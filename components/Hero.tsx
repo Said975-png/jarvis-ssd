@@ -285,7 +285,7 @@ export default function Hero() {
           <div className="card-icon">
             <BarChart3 className="icon" />
           </div>
-          <div className="card-text">Аналитика и отчеты</div>
+          <div className="card-text">Аналитика и о��четы</div>
         </div>
         <div className="floating-card card-3">
           <div className="card-icon">
@@ -404,7 +404,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. К��иенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
+                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
@@ -422,7 +422,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Увеличение продаж в 3 раза</h3>
                   <p className="feature-description">
-                    Магазины с ДЖАРВИС показывают фантастические р��зультаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
+                    Магазины с ДЖАРВИС показывают фантастические результаты. Продажи вырастают в среднем на 300 процентов. Клиенты покупают больше, возвращаются чаще и рекомендуют магазин друзьям. Средний чек увеличивается в 2 или 4 раза.
                   </p>
                 </div>
               </div>
@@ -440,7 +440,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассорти��ент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
                   </p>
                 </div>
               </div>
@@ -653,6 +653,96 @@ export default function Hero() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* User Dashboard */}
+      {isDashboardOpen && user && (
+        <div className="dashboard-overlay" onClick={() => setIsDashboardOpen(false)}>
+          <div className="dashboard-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="dashboard-header">
+              <h2 className="dashboard-title">Личный кабинет</h2>
+              <button
+                className="dashboard-close"
+                onClick={() => setIsDashboardOpen(false)}
+                aria-label="Закрыть"
+              >
+                <X className="close-icon" />
+              </button>
+            </div>
+
+            <div className="dashboard-content">
+              <div className="dashboard-section">
+                <div className="user-info">
+                  <div className="user-avatar">
+                    <User className="avatar-icon" />
+                  </div>
+                  <div className="user-details">
+                    <h3 className="user-name">{user.name}</h3>
+                    <p className="user-email">{user.email}</p>
+                    <span className="user-status">Активный пользователь</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="dashboard-section">
+                <h4 className="section-title">Мои проекты</h4>
+                <div className="projects-list">
+                  <div className="project-item">
+                    <div className="project-info">
+                      <h5 className="project-name">Интернет-магазин одежды</h5>
+                      <p className="project-status">В разработке</p>
+                    </div>
+                    <div className="project-actions">
+                      <button className="project-button">Открыть</button>
+                    </div>
+                  </div>
+                  <div className="project-item">
+                    <div className="project-info">
+                      <h5 className="project-name">Мебельный каталог</h5>
+                      <p className="project-status">Завершен</p>
+                    </div>
+                    <div className="project-actions">
+                      <button className="project-button">Открыть</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="dashboard-section">
+                <h4 className="section-title">Статистика</h4>
+                <div className="stats-grid">
+                  <div className="stat-card">
+                    <div className="stat-number">3</div>
+                    <div className="stat-label">Проекта</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="stat-number">250%</div>
+                    <div className="stat-label">Рост продаж</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="stat-number">24/7</div>
+                    <div className="stat-label">Поддержка ИИ</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="dashboard-actions">
+                <button className="dashboard-action-button primary" onClick={() => setIsContractPanelOpen(true)}>
+                  Новый проект
+                </button>
+                <button className="dashboard-action-button secondary">
+                  Настройки
+                </button>
+                <button className="dashboard-action-button logout" onClick={() => {
+                  setUser(null);
+                  setIsDashboardOpen(false);
+                }}>
+                  Выйти
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
