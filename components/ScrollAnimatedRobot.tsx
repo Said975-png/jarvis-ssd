@@ -60,7 +60,10 @@ export default function ScrollAnimatedRobot() {
   }, [])
 
   return (
-    <div className="scroll-animated-robot">
+    <div className="scroll-animated-robot" style={{
+      opacity: isVisible ? 1 : 0,
+      transition: 'opacity 0.3s ease'
+    }}>
       <Robot3D scrollProgress={scrollProgress} currentSection={currentSection} />
     </div>
   )
