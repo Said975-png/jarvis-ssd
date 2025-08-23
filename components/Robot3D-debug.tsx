@@ -104,7 +104,7 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
           alpha: true,
           powerPreference: "default"
         }}
-        style={{ background: 'rgba(255, 0, 0, 0.1)' }} // Полупрозрачный красный фон для видимости canvas
+        style={{ background: 'rgba(255, 0, 0, 0.3)' }} // Полупрозрачный красный фон для видимости canvas
       >
         <Suspense fallback={null}>
           {/* Яркое освещение */}
