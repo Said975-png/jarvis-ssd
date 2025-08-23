@@ -2049,7 +2049,7 @@ canvas {
 }
 
 .message-jarvis .message-avatar {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  display: none;
 }
 
 .message-avatar-icon {
@@ -2083,9 +2083,9 @@ canvas {
 }
 
 .message-jarvis .message-text {
-  background: rgba(255, 255, 255, 0.05);
+  background: transparent;
   color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   border-bottom-left-radius: 0.25rem;
 }
 
@@ -2099,8 +2099,8 @@ canvas {
   display: flex;
   gap: 0.25rem;
   padding: 1rem 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  border: none;
   border-radius: 1rem;
   border-bottom-left-radius: 0.25rem;
 }
