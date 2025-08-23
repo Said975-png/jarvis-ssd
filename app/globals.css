@@ -72,9 +72,9 @@ body {
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    transparent 100%
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 30%,
+    transparent 60%
   );
   z-index: -1;
   pointer-events: none;
