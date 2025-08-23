@@ -59,14 +59,18 @@ export default function JarvisChat() {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
 
-      // Озвучиваем приветствие при первом открытии
-      if (ttsSupported && messages.length === 1) {
-        setTimeout(async () => {
-          await speakText(messages[0].text)
-        }, 1000)
+      // Автоматически озвучиваем приветствие при открытии чата
+      if (messages.length === 1) {
+        // Небольшая задержка, чтобы чат успел открыться
+        setTimeout(() => {
+          if (ttsSupported) {
+            console.log('Auto-playing greeting...')
+            speakText(messages[0].text)
+          }
+        }, 500)
       }
     }
-  }, [isOpen, ttsSupported])
+  }, [isOpen, messages, ttsSupported])
 
   // Инициализация Speech Recognition
   useEffect(() => {
@@ -136,7 +140,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатываем специфичные ошибки
+        // Обрабатываем спе��ифичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -313,56 +317,9 @@ export default function JarvisChat() {
     // Очищаем текст от технических элементов
     const cleanText = cleanTextForSpeech(text)
 
-    // Разбиваем на короткие предложения для плавной озвучки
-    const sentences = splitIntoSentences(cleanText)
-
     setIsSpeaking(true)
-    speakSentences(sentences, 0)
-  }
 
-  const cleanTextForSpeech = (text: string): string => {
-    return text
-      // Убираем URL
-      .replace(/https?:\/\/[^\s]+/g, 'ссылка')
-      // Убираем технические коды в скобках
-      .replace(/\([A-Z0-9_]+\)/g, '')
-      // Убираем хештеги и специальные символы
-      .replace(/#\w+/g, '')
-      // Убираем множественные пробелы
-      .replace(/\s+/g, ' ')
-      .trim()
-  }
-
-  const splitIntoSentences = (text: string): string[] => {
-    // Разбиваем на предложения по знакам препинания
-    return text
-      .split(/[.!?]+/)
-      .map(sentence => sentence.trim())
-      .filter(sentence => sentence.length > 0)
-      .map(sentence => {
-        // Ограничиваем длину предложений для плавности
-        if (sentence.length > 100) {
-          const parts = sentence.split(/[,;:]/).map(part => part.trim()).filter(part => part.length > 0)
-          return parts.length > 1 ? parts : [sentence.substring(0, 100) + '...']
-        }
-        return [sentence]
-      })
-      .flat()
-  }
-
-  const speakSentences = (sentences: string[], index: number) => {
-    if (index >= sentences.length) {
-      setIsSpeaking(false)
-      console.log('Finished speaking all sentences')
-      return
-    }
-
-    const sentence = sentences[index]
-    if (!sentence) {
-      speakSentences(sentences, index + 1)
-      return
-    }
-
+    // Говорим весь текст целиком без разбиения на предложения
     const synth = window.speechSynthesis
     const voices = synth.getVoices()
 
@@ -387,7 +344,7 @@ export default function JarvisChat() {
       )
     }
 
-    const utterance = new SpeechSynthesisUtterance(sentence)
+    const utterance = new SpeechSynthesisUtterance(cleanText)
 
     if (voice) {
       utterance.voice = voice
@@ -395,19 +352,17 @@ export default function JarvisChat() {
     }
 
     // Настройки для дружелюбного женского голоса
-    utterance.rate = 1 // нормальная скорость
+    utterance.rate = 1.0 // нормальная скорость
     utterance.pitch = 1.1 // немного выше, чтобы звучало женственнее
     utterance.volume = 0.9
 
     utterance.onstart = () => {
-      console.log('Speaking sentence:', sentence)
+      console.log('Speaking text:', cleanText)
     }
 
     utterance.onend = () => {
-      // Переходим к следующему предложению с небольшой паузой
-      setTimeout(() => {
-        speakSentences(sentences, index + 1)
-      }, 200)
+      setIsSpeaking(false)
+      console.log('Finished speaking')
     }
 
     utterance.onerror = (event) => {
@@ -417,6 +372,21 @@ export default function JarvisChat() {
 
     synth.speak(utterance)
   }
+
+  const cleanTextForSpeech = (text: string): string => {
+    return text
+      // Убираем URL
+      .replace(/https?:\/\/[^\s]+/g, 'ссылка')
+      // Убираем технические коды в скобках
+      .replace(/\([A-Z0-9_]+\)/g, '')
+      // Убираем хештеги и специальные символы
+      .replace(/#\w+/g, '')
+      // Убираем множественные пробелы
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
+
+  // Убираем функции разбиения на предложения - больше не нужны
 
   const speakText = async (text: string) => {
     // Приоритет Web Speech API согласно промпту пользователя
