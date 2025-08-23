@@ -46,10 +46,13 @@ export default function AdminPage() {
   }
 
   const handleStatusUpdate = (orderId: string, newStatus: OrderStatus) => {
+    console.log('handleStatusUpdate начат для заказа:', orderId, 'новый статус:', newStatus)
     updateOrderStatus(orderId, newStatus)
-    setOrders(getAllOrders())
+    const refreshedOrders = getAllOrders()
+    console.log('handleStatusUpdate: обновленные заказы после updateOrderStatus:', refreshedOrders)
+    setOrders(refreshedOrders)
     if (selectedOrder && selectedOrder.id === orderId) {
-      const updatedOrder = getAllOrders().find(order => order.id === orderId)
+      const updatedOrder = refreshedOrders.find(order => order.id === orderId)
       if (updatedOrder) {
         setSelectedOrder(updatedOrder)
       }
