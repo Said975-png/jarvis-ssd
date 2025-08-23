@@ -13,6 +13,11 @@ export default function ScrollAnimatedRobot() {
   const [currentSection, setCurrentSection] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
 
+  // Ensure robot is visible immediately
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY
