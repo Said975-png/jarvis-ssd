@@ -176,7 +176,7 @@ export default function JarvisChat() {
         }
       }
     }
-  }, [isRecording])
+  }, [])
 
   const startRecording = async () => {
     console.log('startRecording called, current state:', { isRecording, isListening })
@@ -265,8 +265,8 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Отличный вопрос! Наша команда специал��зируется на создании современных ИИ-решений для e-commerce.',
-        'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
+        'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
+        'Я помогу вам ��оздать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ��аши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
@@ -341,7 +341,7 @@ export default function JarvisChat() {
             ))}
           </div>
           <div className="chat-container">
-            {/* Заголовок чата */}
+            {/* Загол��вок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
                 <div className="chat-avatar">
