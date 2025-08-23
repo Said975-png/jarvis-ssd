@@ -1,13 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
-import dynamic from 'next/dynamic'
-
-const ChatRobot3D = dynamic(() => import('./ChatRobot3D'), {
-  ssr: false,
-  loading: () => null
-})
+import { MessageCircle, X, Send, Bot, User, Sparkles, Zap } from 'lucide-react'
 
 interface Message {
   id: string
@@ -18,7 +12,6 @@ interface Message {
 
 export default function JarvisChat() {
   const [isOpen, setIsOpen] = useState(false)
-  const [show3DRobot, setShow3DRobot] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -92,19 +85,7 @@ export default function JarvisChat() {
   }
 
   const toggleChat = () => {
-    if (!isOpen) {
-      setIsOpen(true)
-      // Задержка для плавного появления 3D модели
-      setTimeout(() => {
-        setShow3DRobot(true)
-      }, 300)
-    } else {
-      setShow3DRobot(false)
-      // Задержка перед закрытием чата
-      setTimeout(() => {
-        setIsOpen(false)
-      }, 400)
-    }
+    setIsOpen(!isOpen)
   }
 
   return (
@@ -147,13 +128,8 @@ export default function JarvisChat() {
             {/* Заголовок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
-                <div className="chat-avatar chat-avatar-3d">
-                  <div className="chat-avatar-transition">
-                    <Bot className={`chat-avatar-icon ${show3DRobot ? 'fade-out' : 'fade-in'}`} />
-                    <div className={`chat-robot-container ${show3DRobot ? 'fade-in' : 'fade-out'}`}>
-                      <ChatRobot3D isVisible={show3DRobot} />
-                    </div>
-                  </div>
+                <div className="chat-avatar">
+                  <Bot className="chat-avatar-icon" />
                 </div>
                 <div className="chat-header-text">
                   <h3 className="chat-title">Джарвис</h3>
@@ -228,7 +204,7 @@ export default function JarvisChat() {
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim()}
                   className="chat-send-button"
-                  aria-label="Отправить сообщение"
+                  aria-label="Отправить соо��щение"
                 >
                   <Send className="chat-send-icon" />
                 </button>

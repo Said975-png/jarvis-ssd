@@ -1770,7 +1770,7 @@ canvas {
 .chat-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: #000000;
   backdrop-filter: blur(20px);
   z-index: 9999;
   display: flex;
@@ -1797,7 +1797,7 @@ canvas {
 .chat-container {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a, #111111);
+  background: #000000;
   border-radius: 0;
   border: none;
   box-shadow: none;
@@ -1812,9 +1812,9 @@ canvas {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+  background: transparent;
   opacity: 0;
-  animation: containerGlow 1s ease-in-out 0.3s forwards;
+  pointer-events: none;
 }
 
 @keyframes epicSlideUp {
@@ -1887,7 +1887,7 @@ canvas {
   justify-content: space-between;
   padding: 1.5rem 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.02);
+  background: #000000;
 }
 
 .chat-header-info {
@@ -1897,8 +1897,8 @@ canvas {
 }
 
 .chat-avatar {
-  width: 5rem;
-  height: 5rem;
+  width: 3rem;
+  height: 3rem;
   background: linear-gradient(135deg, #0ea5e9, #06b6d4);
   border-radius: 50%;
   display: flex;
@@ -1910,8 +1910,8 @@ canvas {
 
 .chat-avatar-3d {
   background: transparent;
-  width: 6rem;
-  height: 6rem;
+  width: 3rem;
+  height: 3rem;
 }
 
 .chat-avatar-transition {
@@ -1923,25 +1923,7 @@ canvas {
   justify-content: center;
 }
 
-.chat-robot-container {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
-}
-
-/* Убираем фоновые эффекты для более чистого вида */
-
-.chat-robot-3d {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  position: relative;
-  z-index: 2;
-}
+/* Simple chat avatar styles */
 
 .fade-in {
   opacity: 1;
@@ -2068,7 +2050,7 @@ canvas {
 }
 
 .message-jarvis .message-avatar {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  display: none;
 }
 
 .message-avatar-icon {
@@ -2079,8 +2061,8 @@ canvas {
 }
 
 .message-content {
-  flex: 1;
-  max-width: 70%;
+  flex: 0 1 auto;
+  max-width: 60%;
 }
 
 .message-user .message-content {
@@ -2088,23 +2070,26 @@ canvas {
 }
 
 .message-text {
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
   word-wrap: break-word;
+  display: inline-block;
+  width: fit-content;
+  min-width: 0;
 }
 
 .message-user .message-text {
-  background: linear-gradient(135deg, #8b5cf6, #a855f7);
+  background: #555555;
   color: white;
   border-bottom-right-radius: 0.25rem;
 }
 
 .message-jarvis .message-text {
-  background: rgba(255, 255, 255, 0.05);
+  background: transparent;
   color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   border-bottom-left-radius: 0.25rem;
 }
 
@@ -2117,10 +2102,10 @@ canvas {
 .typing-indicator {
   display: flex;
   gap: 0.25rem;
-  padding: 1rem 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.75rem;
   border-bottom-left-radius: 0.25rem;
 }
 
@@ -2149,12 +2134,16 @@ canvas {
   padding: 1.5rem 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.02);
+  z-index: 10;
+  position: relative;
 }
 
 .chat-input-wrapper {
   display: flex;
   gap: 1rem;
   align-items: center;
+  z-index: 10;
+  position: relative;
 }
 
 .chat-input {
@@ -2167,6 +2156,8 @@ canvas {
   font-size: 0.95rem;
   outline: none;
   transition: all 0.3s ease;
+  pointer-events: auto;
+  z-index: 1;
 }
 
 .chat-input::placeholder {
@@ -2274,5 +2265,172 @@ canvas {
   .chat-send-icon {
     width: 1rem;
     height: 1rem;
+  }
+}
+
+/* Reviews Section Styles */
+.reviews-section {
+  padding: 8rem 0;
+  background: #000000;
+  overflow: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+.reviews-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+  overflow: hidden;
+}
+
+.reviews-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.5;
+  animation: reviewsGridMove 25s linear infinite;
+}
+
+@keyframes reviewsGridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(80px, 80px); }
+}
+
+.reviews-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.reviews-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.reviews-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #0ea5e9, #06b6d4, #8b5cf6);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.reviews-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.reviews-scroll-container {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.reviews-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+}
+
+.review-card {
+  width: 400px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.review-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.review-stars {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.review-star {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: #fbbf24;
+  color: #fbbf24;
+}
+
+.review-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.review-author {
+  position: relative;
+  z-index: 1;
+}
+
+.review-author-name {
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.review-author-location {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive design for reviews */
+@media (max-width: 768px) {
+  .reviews-section {
+    padding: 4rem 0;
+  }
+
+  .reviews-container {
+    padding: 0 1rem;
+  }
+
+  .reviews-title {
+    font-size: 2.5rem;
+  }
+
+  .reviews-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .review-card {
+    width: 320px;
+    padding: 1.5rem;
+  }
+
+  .reviews-track {
+    gap: 1.5rem;
   }
 }
