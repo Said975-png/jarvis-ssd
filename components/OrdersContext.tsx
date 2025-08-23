@@ -41,6 +41,7 @@ const OrdersContext = createContext<OrdersContextType | undefined>(undefined)
 
 export function OrdersProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([])
+  const [isInitialized, setIsInitialized] = useState(false)
 
   // Загрузка заказов из localStorage при инициализации
   useEffect(() => {
@@ -58,16 +59,17 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
       } else {
         console.log('Заказы в localStorage не найдены')
       }
+      setIsInitialized(true)
     }
   }, [])
 
-  // Сохранение заказов в localStorage при изменении
+  // Сохранение заказов в localStorage при изменении (только после инициализации)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && isInitialized) {
       console.log('Сохранение заказов в localStorage:', orders)
       localStorage.setItem('jarvis_orders', JSON.stringify(orders))
     }
-  }, [orders])
+  }, [orders, isInitialized])
 
   const getUserOrders = (userId: string): Order[] => {
     return orders.filter(order => order.userId === userId)
@@ -93,6 +95,11 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     setOrders(prevOrders => {
       const updatedOrders = [...prevOrders, newOrder]
       console.log('OrdersContext: обновленный список заказов:', updatedOrders)
+      // Принудительно сохраняем в localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('jarvis_orders', JSON.stringify(updatedOrders))
+        console.log('OrdersContext: принудительное сохранение в localStorage')
+      }
       return updatedOrders
     })
     return orderId
