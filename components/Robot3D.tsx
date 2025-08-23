@@ -133,32 +133,10 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   }, [actions, currentSection, isLoaded, modelError, isRetrying])
 
-  // Show fallback if model failed to load
-  if (modelError) {
-    return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
-  }
-
-  // Show retry message if retrying
-  if (isRetrying && !isLoaded) {
-    return (
-      <group>
-        <LoadingFallback />
-        {/* Optional: Add text mesh for retry indication */}
-      </group>
-    )
-  }
-
-  // Don't render if model hasn't loaded yet
-  if (!isLoaded || !gltf?.scene) {
-    return <LoadingFallback />
-  }
-
-  const { scene } = gltf
-
-  // Now we can safely use the scene since we've passed all the early returns and all hooks are called
-
+  // CRITICAL: useFrame must also be called before any conditional returns!
   useFrame((state) => {
-    if (groupRef.current) {
+    // Only animate if we have a valid ref and the model is loaded
+    if (groupRef.current && isLoaded && !modelError && !isRetrying && gltf?.scene) {
       // Slow floating animation
       const floatY = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
       const baseY = -1 + floatY
@@ -215,6 +193,30 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, finalScale, 0.04))
     }
   })
+
+  // Show fallback if model failed to load
+  if (modelError) {
+    return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
+  }
+
+  // Show retry message if retrying
+  if (isRetrying && !isLoaded) {
+    return (
+      <group>
+        <LoadingFallback />
+        {/* Optional: Add text mesh for retry indication */}
+      </group>
+    )
+  }
+
+  // Don't render if model hasn't loaded yet
+  if (!isLoaded || !gltf?.scene) {
+    return <LoadingFallback />
+  }
+
+  const { scene } = gltf
+
+  // Now we can safely use the scene since we've passed all the early returns and all hooks are called
 
   return (
     <group ref={groupRef}>
