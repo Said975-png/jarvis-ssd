@@ -165,9 +165,20 @@ export default function JarvisChat() {
     }
   }, [isRecording])
 
-  const startRecording = () => {
+  const startRecording = async () => {
     if (recognitionRef.current && !isRecording && !isListening) {
       try {
+        // Проверяем раз��ешения микрофона
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            stream.getTracks().forEach(track => track.stop()) // Сразу останавливаем stream
+          } catch (permissionError) {
+            console.error('Microphone permission denied:', permissionError)
+            return
+          }
+        }
+
         setIsRecording(true)
         isRecordingRef.current = true
         setInputMessage('')
@@ -233,7 +244,7 @@ export default function JarvisChat() {
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
-        'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
+        'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расска��у подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
       
