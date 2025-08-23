@@ -168,7 +168,7 @@ export default function JarvisChat() {
   const startRecording = async () => {
     if (recognitionRef.current && !isRecording && !isListening) {
       try {
-        // Проверяем раз��ешения микрофона
+        // Проверяем разрешения микрофона
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -216,11 +216,11 @@ export default function JarvisChat() {
     }
   }
 
-  const toggleRecording = () => {
+  const toggleRecording = async () => {
     if (isRecording) {
       stopRecording()
     } else {
-      startRecording()
+      await startRecording()
     }
   }
 
@@ -244,7 +244,7 @@ export default function JarvisChat() {
         'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
-        'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расска��у подробнее?',
+        'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
         'У нас есть готовые решения для любого масштаба бизнеса. Что именно вам нужно?'
       ]
       
@@ -389,7 +389,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
+                  placeholder={isRecording ? "Гов��рите..." : "Напишите сообщение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
