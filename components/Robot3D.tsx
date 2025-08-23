@@ -341,9 +341,10 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
       targetY = Math.max(-2, Math.min(2, targetY))
       targetZ = Math.max(-1, Math.min(1, targetZ))
 
-      fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, 0.04)
-      fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, 0.05)
-      fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, 0.045)
+      const lerpSpeed = safeScrollProgress === 0 ? 0.15 : 0.04 // Faster on initial load
+      fallbackRef.current.position.x = THREE.MathUtils.lerp(fallbackRef.current.position.x, targetX, lerpSpeed)
+      fallbackRef.current.position.y = THREE.MathUtils.lerp(fallbackRef.current.position.y, targetY, lerpSpeed + 0.01)
+      fallbackRef.current.position.z = THREE.MathUtils.lerp(fallbackRef.current.position.z, targetZ, lerpSpeed + 0.005)
 
       const personalityRotation = Math.sin(state.clock.elapsedTime * 0.12) * 0.08
       fallbackRef.current.rotation.y = THREE.MathUtils.lerp(fallbackRef.current.rotation.y, targetRotationY + personalityRotation, 0.03)
