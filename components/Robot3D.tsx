@@ -345,8 +345,6 @@ function Loader() {
 }
 
 export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
-  console.log('Robot3D rendering with:', { scrollProgress, currentSection })
-
   return (
     <div className={styles['robot-3d-container']}>
       <Canvas
