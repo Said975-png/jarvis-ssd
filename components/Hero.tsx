@@ -10,6 +10,8 @@ export default function Hero() {
   const [isFeaturesPanelOpen, setIsFeaturesPanelOpen] = useState(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
+  const [isDashboardOpen, setIsDashboardOpen] = useState(false)
+  const [user, setUser] = useState<{name: string, email: string} | null>(null)
 
   useEffect(() => {
     setIsLoaded(true)
@@ -201,7 +203,7 @@ export default function Hero() {
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
               обычные интернет-магазины в умные, клиентоориентированные платформы.
-              Увеличьте продажи с автоматической поддержкой, персонализированным�� рекомендациями и умными взаимодействиями.
+              Увеличьте продажи с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
             <div className="hero-actions">
@@ -240,7 +242,7 @@ export default function Hero() {
           <div className="card-icon">
             <MessageCircle className="icon" />
           </div>
-          <div className="card-text">ИИ-чат поддержка</div>
+          <div className="card-text">ИИ-чат ��оддержка</div>
         </div>
         <div className="floating-card card-2">
           <div className="card-icon">
@@ -327,7 +329,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Поддержка и развитие</h3>
                   <p className="step-description">
-                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
+                    Предлагаем техническую поддержку проекта, обновления и добавление ��овых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
                   </p>
                 </div>
               </div>
@@ -374,7 +376,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Персональные рекомендации</h3>
                   <p className="feature-description">
-                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его с��общениям.
+                    ДЖАРВИС создает уникальный профиль каждого покупателя и предлагает товары, которые идеально подходят именно ему. Система учитывает сезон, праздники, предыдущие покупки и даже настроение клиента по его сообщениям.
                   </p>
                 </div>
               </div>
