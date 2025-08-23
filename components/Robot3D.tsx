@@ -228,8 +228,64 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
     }
   })
 
-  // Always show fallback robot to avoid fetch errors
-  return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
+  // Show fallback if model failed to load
+  if (modelError) {
+    return <FallbackRobot scrollProgress={scrollProgress} currentSection={currentSection} />
+  }
+
+  // Show retry message if retrying
+  if (isRetrying && !isLoaded) {
+    return (
+      <group>
+        <LoadingFallback />
+        {/* Optional: Add text mesh for retry indication */}
+      </group>
+    )
+  }
+
+  // Don't render if model hasn't loaded yet
+  if (!isLoaded || !gltf?.scene) {
+    return <LoadingFallback />
+  }
+
+  const { scene } = gltf
+
+  // Now we can safely use the scene since we've passed all the early returns and all hooks are called
+
+  return (
+    <group ref={groupRef}>
+      {/* Sparkles effect around robot */}
+      <Sparkles
+        count={30}
+        scale={[3, 3, 3]}
+        size={2}
+        speed={0.3}
+        color="#0ea5e9"
+        opacity={0.4}
+      />
+
+      {/* Floating particles */}
+      <RobotParticles position={[0, 0, 0]} />
+
+      {/* Main robot model */}
+      <primitive
+        object={scene}
+        rotation={[0, Math.PI * 0.2, 0]}
+        scale={[0.8, 0.8, 0.8]}
+      />
+
+      {/* Energy field effect */}
+      <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
+        <sphereGeometry args={[1, 16, 16]} />
+        <meshBasicMaterial
+          color="#0ea5e9"
+          transparent
+          opacity={0.05}
+          wireframe={true}
+        />
+      </mesh>
+    </group>
+  )
 }
 
 function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: number; currentSection: number }) {
