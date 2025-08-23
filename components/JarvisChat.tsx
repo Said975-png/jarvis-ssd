@@ -112,7 +112,7 @@ export default function JarvisChat() {
       recognition.onend = () => {
         setIsListening(false)
         // Не перезапускаем автоматически - только если пользователь активно записывает
-        // и запись не был�� остановлена вручную
+        // и запись не была остановлена вручную
       }
       
       recognitionRef.current = recognition
@@ -137,6 +137,7 @@ export default function JarvisChat() {
   const stopRecording = () => {
     if (recognitionRef.current) {
       setIsRecording(false)
+      isRecordingRef.current = false
       setIsListening(false)
       try {
         recognitionRef.current.stop()
