@@ -285,7 +285,7 @@ export default function Hero() {
           <div className="card-icon">
             <BarChart3 className="icon" />
           </div>
-          <div className="card-text">Аналитика и о��четы</div>
+          <div className="card-text">Аналитика и отчеты</div>
         </div>
         <div className="floating-card card-3">
           <div className="card-icon">
@@ -440,7 +440,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассорти��ент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
                   </p>
                 </div>
               </div>
@@ -659,8 +659,8 @@ export default function Hero() {
 
       {/* User Dashboard */}
       {isDashboardOpen && user && (
-        <div className="dashboard-overlay" onClick={() => setIsDashboardOpen(false)}>
-          <div className="dashboard-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="dashboard-overlay">
+          <div className="dashboard-modal">
             <div className="dashboard-header">
               <h2 className="dashboard-title">Личный кабинет</h2>
               <button
