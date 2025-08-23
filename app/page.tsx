@@ -6,11 +6,14 @@ import Reviews from '@/components/Reviews'
 import ScrollAnimatedRobot from '@/components/ScrollAnimatedRobot'
 import JarvisChat from '@/components/JarvisChat'
 import Footer from '@/components/Footer'
+import { CartProvider } from '@/components/CartContext'
+import CartModal from '@/components/CartModal'
+import OrderForm from '@/components/OrderForm'
 import './globals.css'
 
 export default function Home() {
   return (
-    <>
+    <CartProvider>
       <ScrollAnimatedRobot />
       <main className="min-h-screen">
         <Hero />
@@ -21,6 +24,8 @@ export default function Home() {
       </main>
       <Footer />
       <JarvisChat />
-    </>
+      <CartModal />
+      <OrderForm />
+    </CartProvider>
   )
 }
