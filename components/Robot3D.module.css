@@ -93,14 +93,16 @@
 /* Mobile optimization */
 @media (max-width: 768px) {
   .robot-3d-container {
-    width: 80%;
-    opacity: 0.3;
-    right: -20%;
+    width: 100%;
+    opacity: 0.6;
+    right: 0;
   }
 }
 
 @media (max-width: 480px) {
   .robot-3d-container {
-    display: none; /* Hide on very small screens for performance */
+    width: 100%;
+    opacity: 0.4;
+    right: 0;
   }
 }
