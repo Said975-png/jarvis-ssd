@@ -3824,6 +3824,17 @@ canvas {
     width: 1rem;
     height: 1rem;
   }
+
+  .chat-mic-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .chat-mic-icon {
+    width: 1rem;
+    height: 1rem;
+  }
 }
 
 /* Reviews Section Styles */
