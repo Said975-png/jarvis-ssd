@@ -442,8 +442,8 @@ function LoadingFallback() {
 
 function Loader() {
   return (
-    <div className="robot-loader">
-      <div className="loader-spinner" />
+    <div className={styles['robot-loader']}>
+      <div className={styles['loader-spinner']} />
     </div>
   )
 }
