@@ -232,7 +232,7 @@ export default function Hero() {
             </div>
             
             <h1 className="hero-title">
-              Мы создаем <span className="gradient-text">��мные</span>
+              Мы создаем <span className="gradient-text">умные</span>
               <br />
               интернет-магази��ы
             </h1>
@@ -314,9 +314,9 @@ export default function Hero() {
               <div className="contract-step">
                 <div className="step-number">1</div>
                 <div className="step-content">
-                  <h3 className="step-title">Созда��ие макета</h3>
+                  <h3 className="step-title">Создание макета</h3>
                   <p className="step-description">
-                    Сначала мы создаем детальный макет вашего проекта. Это вклю��ает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
+                    Сначала мы создаем детальный макет вашего проекта. Это включает в себя дизайн всех страниц, структуру сайта и техническое задание. На этом этапе вы видите как будет выглядеть конечный результат.
                   </p>
                 </div>
               </div>
@@ -366,7 +366,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Поддержка и развитие</h3>
                   <p className="step-description">
-                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнительных ИИ решений и интеграций.
+                    Предлагаем техническую поддержку проекта, обновления и добавление новых функций. Помогаем масштабировать ваш бизнес с помощью дополнител��ных ИИ решений и интеграций.
                   </p>
                 </div>
               </div>
@@ -395,7 +395,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
-                    ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, ��оторые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
+                    ДЖАРВИС анализирует поведение каждого клиента в реальном вр��мени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
                 </div>
               </div>
@@ -440,7 +440,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результат�� роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через н��делю вы уже видите первые результаты роста продаж.
                   </p>
                 </div>
               </div>
@@ -555,9 +555,30 @@ export default function Hero() {
 
             <form className="auth-form" onSubmit={(e) => {
               e.preventDefault();
-              // TODO: Handle registration logic
-              console.log('Registration submitted');
+              const formData = new FormData(e.target as HTMLFormElement);
+              const name = formData.get('name') as string;
+              const email = formData.get('email') as string;
+              const password = formData.get('password') as string;
+              const confirmPassword = formData.get('confirmPassword') as string;
+
+              // Basic validation
+              if (password !== confirmPassword) {
+                alert('Пароли не совпадают');
+                return;
+              }
+
+              // TODO: Add real registration logic here
+              console.log('Registration submitted', { name, email, password });
+
+              // Simulate successful registration and auto-login
+              const userData = {
+                name: name,
+                email: email
+              };
+
+              setUser(userData);
               setIsRegisterModalOpen(false);
+              setIsDashboardOpen(true); // Automatically open dashboard after registration
             }}>
               <div className="form-group">
                 <label htmlFor="register-name" className="form-label">Имя</label>
