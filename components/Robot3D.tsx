@@ -65,23 +65,20 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   // Load GLTF model with error handling
   const gltf = useGLTF(modelUrl,
     (loadedGltf) => {
-      console.log('Robot model loaded successfully:', loadedGltf)
       setIsLoaded(true)
       setModelError(false)
       setIsRetrying(false)
     },
     (progress) => {
-      console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%')
+      // Loading progress tracking (optional)
     },
     (error) => {
-      console.error('Failed to load GLTF model (attempt ' + (retryCount + 1) + '):', error)
       setModelError(true)
       setIsRetrying(false)
 
       // Retry up to 3 times
       if (retryCount < 3) {
         setTimeout(() => {
-          console.log('Retrying model load in 2 seconds...')
           setRetryCount(prev => prev + 1)
           setIsRetrying(true)
           setModelError(false)
@@ -93,7 +90,6 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
   // Handle successful model load
   useEffect(() => {
     if (gltf && gltf.scene && !modelError && !isRetrying) {
-      console.log('Robot model ready to render')
       setIsLoaded(true)
       setModelError(false)
     }
