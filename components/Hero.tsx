@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Zap, MessageCircle, BarChart3, Target, ShoppingCart, User, UserPlus, X } from 'lucide-react'
 import { useCart } from './CartContext'
+import { useUser } from './UserContext'
 
 export default function Hero() {
   const { getTotalItems, setIsCartOpen } = useCart()
@@ -413,7 +414,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
+                    Наш ИИ об��ается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
