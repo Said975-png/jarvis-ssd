@@ -1,4 +1,7 @@
 import type { Metadata } from 'next'
+import { UserProvider } from '@/components/UserContext'
+import { OrdersProvider } from '@/components/OrdersContext'
+import { CartProvider } from '@/components/CartContext'
 
 export const metadata: Metadata = {
   title: 'JARVIS - AI-Powered E-commerce Solutions',
@@ -13,7 +16,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <UserProvider>
+          <OrdersProvider>
+            <CartProvider>
+              {children}
+            </CartProvider>
+          </OrdersProvider>
+        </UserProvider>
+      </body>
     </html>
   )
 }
