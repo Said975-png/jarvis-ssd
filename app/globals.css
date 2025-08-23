@@ -3451,8 +3451,8 @@ canvas {
   transition: all 0.3s ease;
 }
 
-.chat-status:has-text("Говорит") {
-  color: #22c55e;
+.chat-status.speaking {
+  color: #22c55e !important;
   animation: speaking-pulse 1.5s ease-in-out infinite;
 }
 
