@@ -39,7 +39,7 @@ export default function Hero() {
                 </button>
                 <button className="auth-button register-button">
                   <UserPlus className="auth-icon" />
-                  <span>Ре��истрация</span>
+                  <span>Регистрация</span>
                 </button>
               </div>
             </div>
@@ -60,7 +60,22 @@ export default function Hero() {
               <a href="#services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Услуги</a>
               <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>О нас</a>
               <a href="#contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Контакты</a>
-              <button className="mobile-cta-button" onClick={() => setIsMobileMenuOpen(false)}>Начать</button>
+
+              <div className="mobile-nav-actions">
+                <button className="mobile-nav-button cart-button" onClick={() => setIsMobileMenuOpen(false)}>
+                  <ShoppingCart className="mobile-nav-icon" />
+                  <span>Корзина</span>
+                  <span className="mobile-cart-count">0</span>
+                </button>
+                <button className="mobile-nav-button auth-button" onClick={() => setIsMobileMenuOpen(false)}>
+                  <User className="mobile-nav-icon" />
+                  <span>Вход</span>
+                </button>
+                <button className="mobile-nav-button auth-button register" onClick={() => setIsMobileMenuOpen(false)}>
+                  <UserPlus className="mobile-nav-icon" />
+                  <span>Регистрация</span>
+                </button>
+              </div>
             </div>
           </nav>
 
