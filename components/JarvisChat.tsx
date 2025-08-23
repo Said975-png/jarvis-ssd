@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Меня зовут Джарвис, и я ваша ИИ-помощница. Я очень рада нашему зн��комству! Расскажите, чем могу помочь с вашим проектом?',
+      text: 'Привет! Меня зовут Джарвис, и я ваша ИИ-помощница. Я очень рада нашему знакомству! Расскажите, чем могу помочь с вашим проектом?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -178,27 +178,42 @@ export default function JarvisChat() {
     }
 
     // Инициализация Text-to-Speech
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      setTtsSupported(true)
-      speechSynthesisRef.current = window.speechSynthesis
-      console.log('Text-to-Speech API is supported')
+    const initTTS = () => {
+      // Проверяем Puter.js AI TTS
+      if (typeof window !== 'undefined' && window.puter && window.puter.ai) {
+        setTtsSupported(true)
+        console.log('Puter.js AI TTS is available')
+      } else if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        setTtsSupported(true)
+        speechSynthesisRef.current = window.speechSynthesis
+        console.log('Browser Text-to-Speech API is supported')
 
-      // Инициализируем голоса (они могут загружаться асинхронно)
-      const initVoices = () => {
-        const voices = speechSynthesisRef.current?.getVoices() || []
-        console.log('Available voices:', voices.length)
-        if (voices.length > 0) {
-          console.log('Voices loaded:', voices.map(v => v.name))
+        // Инициализируем голоса для fallback
+        const initVoices = () => {
+          const voices = speechSynthesisRef.current?.getVoices() || []
+          console.log('Available fallback voices:', voices.length)
         }
-      }
 
-      // Вызываем сразу и при событии voiceschanged
-      initVoices()
-      speechSynthesisRef.current.addEventListener('voiceschanged', initVoices)
-    } else {
-      setTtsSupported(false)
-      console.log('Text-to-Speech not supported in this browser')
+        initVoices()
+        speechSynthesisRef.current.addEventListener('voiceschanged', initVoices)
+      } else {
+        setTtsSupported(false)
+        console.log('No TTS support available')
+      }
     }
+
+    // Проверяем сразу и через небольшой интервал (Puter.js может загружаться)
+    initTTS()
+    const ttsCheckInterval = setInterval(() => {
+      if (window.puter && window.puter.ai) {
+        console.log('Puter.js AI TTS detected!')
+        setTtsSupported(true)
+        clearInterval(ttsCheckInterval)
+      }
+    }, 1000)
+
+    // Очищаем интервал через 10 секунд
+    setTimeout(() => clearInterval(ttsCheckInterval), 10000)
 
     return () => {
       if (silenceTimerRef.current) {
