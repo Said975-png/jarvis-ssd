@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 
-const Robot3D = dynamic(() => import('./Robot3D-debug'), {
+const Robot3D = dynamic(() => import('./Robot3D'), {
   ssr: false,
   loading: () => <div className="robot-loading" />
 })
