@@ -839,11 +839,19 @@ body {
 
 @media (max-width: 480px) {
   .robot-3d-container {
-    display: none; /* Hide on very small screens for performance */
+    width: 100vw;
+    opacity: 0.3;
+    right: -40vw;
+    top: -20vh;
+    height: 120vh;
   }
 
   .scroll-animated-robot {
-    display: none; /* Hide on very small screens for performance */
+    width: 100vw;
+    right: -40vw;
+    top: -20vh;
+    height: 120vh;
+    opacity: 0.3;
   }
 
   .hero-content::before {
