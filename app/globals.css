@@ -24,6 +24,7 @@ body {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  background: #000000;
   overflow: visible;
   z-index: 1;
 }
@@ -971,6 +972,7 @@ canvas {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  background: #000000;
   overflow: visible;
   padding: 6rem 0;
   z-index: 1;
@@ -1243,6 +1245,7 @@ canvas {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  background: #000000;
   overflow: visible;
   padding: 6rem 0;
   z-index: 1;
@@ -2272,6 +2275,7 @@ canvas {
 /* Reviews Section Styles */
 .reviews-section {
   padding: 8rem 0;
+  background: #000000;
   overflow: hidden;
   position: relative;
   min-height: 100vh;
@@ -2418,6 +2422,7 @@ canvas {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  background: #000000;
   overflow: visible;
   padding: 8rem 0;
   z-index: 1;
@@ -3196,6 +3201,7 @@ canvas {
 /* Footer Section */
 .footer-section {
   position: relative;
+  background: #000000;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 4rem 0 2rem;
   margin-top: 6rem;
