@@ -158,8 +158,8 @@ export default function Hero() {
                   <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
                 </svg>
               </button>
-              <button className="secondary-button">
-                Наши работы
+              <button className="secondary-button" onClick={() => setIsFeaturesPanelOpen(true)}>
+                Узнать больше
               </button>
             </div>
 
@@ -234,7 +234,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Согласование и предоплата</h3>
                   <p className="step-description">
-                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной увер��нностью.
+                    Если макет и техническое решение вас устраивает, мы заключаем договор и получаем предоплату 50 процентов от стоимости проекта. Это позволяет нам приступить к разработке с полной уверенностью.
                   </p>
                 </div>
               </div>
