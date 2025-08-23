@@ -117,9 +117,13 @@ export default function AdminPage() {
             <span className="orders-count">{orders.length} заказов</span>
             <button
               onClick={() => {
+                console.log('=== ОТЛАДКА АДМИН-ПАНЕЛИ ===')
+                console.log('localStorage jarvis_orders:', localStorage.getItem('jarvis_orders'))
                 const allOrders = getAllOrders()
-                console.log('Принудительное обновление заказов:', allOrders)
+                console.log('getAllOrders() результат:', allOrders)
                 setOrders(allOrders)
+                console.log('Состояние orders после обновления:', orders)
+                console.log('==========================')
               }}
               className="refresh-button"
             >
