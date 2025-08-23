@@ -15,15 +15,19 @@ export default function AdminPage() {
 
   useEffect(() => {
     // Проверяем аутентификацию из localStorage
-    const adminAuth = localStorage.getItem('admin_authenticated')
-    if (adminAuth === 'true') {
-      setIsAuthenticated(true)
+    if (typeof window !== 'undefined') {
+      const adminAuth = localStorage.getItem('admin_authenticated')
+      if (adminAuth === 'true') {
+        setIsAuthenticated(true)
+      }
     }
   }, [])
 
   useEffect(() => {
     if (isAuthenticated) {
-      setOrders(getAllOrders())
+      const allOrders = getAllOrders()
+      console.log('Админ-панель: загружено заказов:', allOrders.length, allOrders)
+      setOrders(allOrders)
     }
   }, [isAuthenticated, getAllOrders])
 
@@ -31,7 +35,9 @@ export default function AdminPage() {
     e.preventDefault()
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true)
-      localStorage.setItem('admin_authenticated', 'true')
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('admin_authenticated', 'true')
+      }
       setPassword('')
     } else {
       alert('Неверный пароль')
@@ -40,14 +46,19 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
-    localStorage.removeItem('admin_authenticated')
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('admin_authenticated')
+    }
   }
 
   const handleStatusUpdate = (orderId: string, newStatus: OrderStatus) => {
+    console.log('handleStatusUpdate начат для заказа:', orderId, 'новый статус:', newStatus)
     updateOrderStatus(orderId, newStatus)
-    setOrders(getAllOrders())
+    const refreshedOrders = getAllOrders()
+    console.log('handleStatusUpdate: обновленные заказы после updateOrderStatus:', refreshedOrders)
+    setOrders(refreshedOrders)
     if (selectedOrder && selectedOrder.id === orderId) {
-      const updatedOrder = getAllOrders().find(order => order.id === orderId)
+      const updatedOrder = refreshedOrders.find(order => order.id === orderId)
       if (updatedOrder) {
         setSelectedOrder(updatedOrder)
       }
@@ -113,6 +124,70 @@ export default function AdminPage() {
           <h1 className="admin-title">Админ-панель</h1>
           <div className="header-actions">
             <span className="orders-count">{orders.length} заказов</span>
+            <button
+              onClick={() => {
+                console.log('=== ОТЛАДКА АДМИН-ПАНЕЛИ ===')
+                console.log('localStorage jarvis_orders:', typeof window !== 'undefined' ? localStorage.getItem('jarvis_orders') : 'undefined')
+                const allOrders = getAllOrders()
+                console.log('getAllOrders() результат:', allOrders)
+                setOrders(allOrders)
+                console.log('Состояние orders после обновления:', orders)
+                console.log('==========================')
+              }}
+              className="refresh-button"
+            >
+              Обновить
+            </button>
+            <button
+              onClick={() => {
+                // Создаем тестовый заказ
+                const testOrder = {
+                  userId: 'test_user_123',
+                  userEmail: 'test@example.com',
+                  items: [{
+                    id: 'test_item',
+                    name: 'Тестовый тариф',
+                    subtitle: 'Для проверки',
+                    price: '100',
+                    currency: '$'
+                  }],
+                  customerInfo: {
+                    fullName: 'Тестовый Пользователь',
+                    phone: '+998901234567',
+                    siteDescription: 'Тестовое описание сайта'
+                  },
+                  status: 'pending' as const
+                }
+                const orderId = updateOrderStatus ? (() => {
+                  const id = `order_${Date.now()}_test`
+                  const now = new Date().toISOString()
+                  const newOrder = {
+                    ...testOrder,
+                    id,
+                    createdAt: now,
+                    updatedAt: now
+                  }
+                  setOrders(prev => [...prev, newOrder])
+                  return id
+                })() : 'test_order'
+                console.log('Создан тестовый заказ:', orderId)
+              }}
+              className="test-button"
+            >
+              Тест
+            </button>
+            <button
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  localStorage.removeItem('jarvis_orders')
+                  setOrders([])
+                  console.log('localStorage очищен')
+                }
+              }}
+              className="clear-button"
+            >
+              Очистить
+            </button>
             <button onClick={handleLogout} className="logout-button">
               Выйти
             </button>

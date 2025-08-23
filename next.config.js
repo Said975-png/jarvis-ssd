@@ -12,6 +12,14 @@ const nextConfig = {
   },
 
   webpack: (config, { dev, isServer }) => {
+    // Optimize Three.js build
+    config.module.rules.push({
+      test: /\.glb$|\.gltf$/,
+      use: {
+        loader: 'file-loader',
+      }
+    })
+
     if (dev && !isServer) {
       // Optimized HMR configuration
       config.watchOptions = {
@@ -29,6 +37,20 @@ const nextConfig = {
       }
     }
 
+    // Production optimizations
+    if (!dev) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          three: {
+            test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
+            name: 'three',
+            chunks: 'all',
+          },
+        },
+      }
+    }
+
     // Handle potential module resolution issues
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -40,14 +62,17 @@ const nextConfig = {
     return config
   },
 
-  // Disable source maps in development to improve performance
+  // Disable source maps in production to improve build time
   productionBrowserSourceMaps: false,
 
-  // Better error handling
-  onDemandEntries: {
-    maxInactiveAge: 25 * 1000,
-    pagesBufferLength: 2,
-  }
+  // Images optimization for better Vercel deployment
+  images: {
+    domains: ['cdn.builder.io'],
+    formats: ['image/webp', 'image/avif'],
+  },
+
+  // Disable automatic static optimization for better SSR compatibility
+  target: 'server',
 }
 
 module.exports = nextConfig

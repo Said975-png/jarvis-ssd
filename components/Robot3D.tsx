@@ -512,9 +512,17 @@ function Loader() {
 
 export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robot3DProps) {
   const [canvasReady, setCanvasReady] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  // Ensure we're on the client side to avoid SSR issues
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Force canvas to re-render and be ready
   useEffect(() => {
+    if (!isClient) return
+
     // Set canvas as ready after a brief delay to ensure proper initialization
     const timer = setTimeout(() => {
       setCanvasReady(true)
@@ -532,7 +540,12 @@ export default function Robot3D({ scrollProgress = 0, currentSection = 0 }: Robo
       clearTimeout(timer)
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [isClient])
+
+  // Don't render on server side
+  if (!isClient) {
+    return <Loader />
+  }
 
   return (
     <div className={styles['robot-3d-container']}>

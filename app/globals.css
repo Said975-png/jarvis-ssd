@@ -2444,10 +2444,9 @@ canvas {
 
 .main-content {
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  display: block;
+  padding: 0;
+  overflow-y: auto;
 }
 
 /* Empty State */
@@ -5860,14 +5859,25 @@ canvas {
 
 /* Dashboard Orders Styles */
 .dashboard-section {
-  padding: 2rem;
+  padding: 2.5rem 3rem;
+  max-width: none;
+  width: 100%;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 800;
   color: #ffffff;
-  margin: 0 0 2rem 0;
+  margin: 0 0 2.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  letter-spacing: -0.025em;
+}
+
+.section-title::before {
+  content: '📋';
+  font-size: 1.5rem;
 }
 
 .empty-orders {
@@ -5899,45 +5909,73 @@ canvas {
 .orders-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .order-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.order-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0ea5e9, #06b6d4, #0ea5e9);
+  border-radius: 1.25rem 1.25rem 0 0;
 }
 
 .order-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .order-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
 }
 
 .order-id {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #ffffff;
+  letter-spacing: -0.025em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.order-id::before {
+  content: '📋';
+  font-size: 1rem;
 }
 
 .order-status {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 0.6rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  letter-spacing: 0.01em;
 }
 
 .status-pending {
@@ -5964,26 +6002,47 @@ canvas {
 }
 
 .order-items {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .items-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.items-title::before {
+  content: '💼';
+  font-size: 0.9rem;
 }
 
 .order-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.order-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .order-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .item-name {
@@ -5992,22 +6051,45 @@ canvas {
 }
 
 .item-price {
-  font-weight: 600;
-  color: #0ea5e9;
+  font-weight: 700;
+  color: #06b6d4;
+  background: linear-gradient(90deg, #06b6d4, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1rem;
 }
 
 .order-info {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-top: 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  position: relative;
+}
+
+.order-info::before {
+  content: '👤';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1rem;
+  opacity: 0.3;
 }
 
 .order-info p {
-  margin: 0 0 0.5rem 0;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
+
+.order-info p:nth-child(1)::before { content: '👤'; }
+.order-info p:nth-child(2)::before { content: '📞'; }
+.order-info p:nth-child(3)::before { content: '📅'; }
 
 .order-info p:last-child {
   margin-bottom: 0;

@@ -24,12 +24,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedUser = localStorage.getItem('jarvis_user')
+      console.log('UserContext: загрузка пользователя из localStorage:', savedUser)
       if (savedUser) {
         try {
-          setUser(JSON.parse(savedUser))
+          const parsedUser = JSON.parse(savedUser)
+          console.log('UserContext: пользователь успешно загружен:', parsedUser)
+          setUser(parsedUser)
         } catch (error) {
           console.error('Error loading user from localStorage:', error)
         }
+      } else {
+        console.log('UserContext: пользователь в localStorage не найден')
       }
     }
   }, [])

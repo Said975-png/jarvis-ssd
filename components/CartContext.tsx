@@ -31,6 +31,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [isOrderFormOpen, setIsOrderFormOpen] = useState(false)
 
+  // Отладка инициализации корзины
+  React.useEffect(() => {
+    console.log('CartProvider инициализирован')
+  }, [])
+
   const addItem = (item: CartItem) => {
     setItems(prevItems => {
       // Проверяем, есть ли товар уже в корзине

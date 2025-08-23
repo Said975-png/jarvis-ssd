@@ -98,7 +98,7 @@ export default function OrderForm() {
       await new Promise(resolve => setTimeout(resolve, 2000))
 
       // Создаем заказ в системе
-      const orderId = createOrder({
+      const orderData = {
         userId: user.id,
         userEmail: user.email,
         items: items.map(item => ({
@@ -115,13 +115,16 @@ export default function OrderForm() {
           referenceLink: formData.referenceLink
         },
         status: 'pending'
-      })
+      }
 
-      console.log('Заказ создан:', {
+      console.log('Создание заказа - данные пользователя:', user)
+      console.log('Создание заказа - данные заказа:', orderData)
+
+      const orderId = createOrder(orderData)
+
+      console.log('Заказ создан успешно:', {
         orderId,
-        formData,
-        items,
-        user: user.email,
+        orderData,
         timestamp: new Date().toISOString()
       })
 
