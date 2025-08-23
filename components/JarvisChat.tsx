@@ -68,7 +68,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, ttsSupported])
 
-  // Инициализация Speech Recognition
+  // Инициализа��ия Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -287,7 +287,49 @@ export default function JarvisChat() {
     }
   }
 
-  const speakText = (text: string) => {
+  const speakText = async (text: string) => {
+    // Проверяем доступность Puter.js AI TTS
+    if (typeof window !== 'undefined' && window.puter && window.puter.ai) {
+      try {
+        console.log('Using Puter.js AI TTS for:', text)
+        setIsSpeaking(true)
+
+        // Останавливаем предыдущее воспроизведение если есть
+        if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
+          speechSynthesisRef.current.cancel()
+        }
+
+        // Используем Puter.js AI для более естественного голоса
+        const audio = await window.puter.ai.txt2speech(text)
+
+        audio.onplay = () => {
+          console.log('Puter.js AI voice started')
+        }
+
+        audio.onended = () => {
+          setIsSpeaking(false)
+          console.log('Puter.js AI voice finished')
+        }
+
+        audio.onerror = () => {
+          setIsSpeaking(false)
+          console.error('Puter.js AI voice error, falling back to browser TTS')
+          fallbackToWebSpeech(text)
+        }
+
+        await audio.play()
+      } catch (error) {
+        console.error('Puter.js AI TTS error:', error)
+        setIsSpeaking(false)
+        fallbackToWebSpeech(text)
+      }
+    } else {
+      console.log('Puter.js not available, using fallback TTS')
+      fallbackToWebSpeech(text)
+    }
+  }
+
+  const fallbackToWebSpeech = (text: string) => {
     if (!ttsSupported || !speechSynthesisRef.current) {
       console.log('TTS not supported')
       return
@@ -301,14 +343,13 @@ export default function JarvisChat() {
     const utterance = new SpeechSynthesisUtterance(text)
 
     // Настройки для естественного женского ИИ-голоса
-    utterance.rate = 0.9  // Немного медленнее для более естественного звучания
-    utterance.pitch = 1.1  // Чуть выше для женского голоса
-    utterance.volume = 0.8  // Комфортная громкость
+    utterance.rate = 0.9
+    utterance.pitch = 1.1
+    utterance.volume = 0.8
 
     // Пытаемся найти подходящий женский голос
     const voices = speechSynthesisRef.current.getVoices()
 
-    // Ищем русский женский голос
     let selectedVoice = voices.find(voice =>
       voice.lang.includes('ru') &&
       (voice.name.toLowerCase().includes('female') ||
@@ -318,40 +359,36 @@ export default function JarvisChat() {
        voice.name.toLowerCase().includes('женский'))
     )
 
-    // Если не нашли специфичный, ищем любой русский
     if (!selectedVoice) {
       selectedVoice = voices.find(voice => voice.lang.includes('ru'))
     }
 
-    // Если и русского нет, ищем английский женский
     if (!selectedVoice) {
       selectedVoice = voices.find(voice =>
         voice.lang.includes('en') &&
         (voice.name.toLowerCase().includes('female') ||
-         voice.name.toLowerCase().includes('woman') ||
-         voice.name.toLowerCase().includes('zira') ||
-         voice.name.toLowerCase().includes('eva'))
+         voice.name.toLowerCase().includes('woman'))
       )
     }
 
     if (selectedVoice) {
       utterance.voice = selectedVoice
-      console.log('Selected voice:', selectedVoice.name)
+      console.log('Selected fallback voice:', selectedVoice.name)
     }
 
     utterance.onstart = () => {
       setIsSpeaking(true)
-      console.log('Started speaking:', text)
+      console.log('Started fallback speaking:', text)
     }
 
     utterance.onend = () => {
       setIsSpeaking(false)
-      console.log('Finished speaking')
+      console.log('Finished fallback speaking')
     }
 
     utterance.onerror = (event) => {
       setIsSpeaking(false)
-      console.error('Speech synthesis error:', event.error)
+      console.error('Fallback speech synthesis error:', event.error)
     }
 
     speechSynthesisRef.current.speak(utterance)
@@ -384,7 +421,7 @@ export default function JarvisChat() {
     setInputMessage('')
     setIsTyping(true)
 
-    // Имитация ответа Джарвиса
+    // Имитация ответа ��жарвиса
     setTimeout(() => {
       const jarvisResponses = [
         'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
@@ -392,7 +429,7 @@ export default function JarvisChat() {
         'Как интересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
-        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересует?',
+        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с прое��тами. Что именно вас интересует?',
         'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
       ]
       
