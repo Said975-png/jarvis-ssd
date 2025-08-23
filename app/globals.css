@@ -25,6 +25,13 @@ main {
   z-index: 10;
 }
 
+/* Allow robot to show through content sections */
+.hero-section,
+.advantages-section,
+.pricing-section {
+  background: rgba(0, 0, 0, 0.85) !important;
+}
+
 /* Hero Section */
 .hero-section {
   position: relative;
