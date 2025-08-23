@@ -37,7 +37,7 @@ export default function OrderForm() {
       document.documentElement.style.overflow = 'unset'
     }
 
-    // Cleanup функция для восстановления скролла
+    // Cleanup функ��ия для восстановления скролла
     return () => {
       document.body.style.overflow = 'unset'
       document.documentElement.style.overflow = 'unset'
@@ -91,13 +91,6 @@ export default function OrderForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Проверяем, что пользователь авторизован
-    if (!isAuthenticated || !user) {
-      alert('Для оформления заказа необходимо войти в систему')
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
