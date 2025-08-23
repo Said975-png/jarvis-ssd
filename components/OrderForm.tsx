@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { X, User, Phone, FileText, Link, CheckCircle } from 'lucide-react'
 import { useCart } from './CartContext'
+import { useOrders } from './OrdersContext'
+import { useUser } from './UserContext'
 
 export default function OrderForm() {
   const { 
