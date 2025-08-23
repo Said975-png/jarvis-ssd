@@ -2271,20 +2271,33 @@ canvas {
 /* Reviews Section Styles */
 .reviews-section {
   padding: 8rem 0;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  background: #000000;
   overflow: hidden;
   position: relative;
+  min-height: 100vh;
 }
 
-.reviews-section::before {
-  content: '';
+.reviews-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
-  pointer-events: none;
+  inset: 0;
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+  overflow: hidden;
+}
+
+.reviews-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.5;
+  animation: reviewsGridMove 25s linear infinite;
+}
+
+@keyframes reviewsGridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(80px, 80px); }
 }
 
 .reviews-container {
