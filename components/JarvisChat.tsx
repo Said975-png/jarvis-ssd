@@ -258,6 +258,76 @@ export default function JarvisChat() {
     }
   }
 
+  const speakText = (text: string) => {
+    if (!ttsSupported || !speechSynthesisRef.current) {
+      console.log('TTS not supported')
+      return
+    }
+
+    // Останавливаем предыдущее воспроизведение если есть
+    if (speechSynthesisRef.current.speaking) {
+      speechSynthesisRef.current.cancel()
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text)
+
+    // Настройки для естественного женского ИИ-голоса
+    utterance.rate = 0.9  // Немного медленнее для более естественного звучания
+    utterance.pitch = 1.1  // Чуть выше для женского голоса
+    utterance.volume = 0.8  // Комфортная громкость
+
+    // Пытаемся найти подходящий женский голос
+    const voices = speechSynthesisRef.current.getVoices()
+
+    // Ищем русский женский голос
+    let selectedVoice = voices.find(voice =>
+      voice.lang.includes('ru') &&
+      (voice.name.toLowerCase().includes('female') ||
+       voice.name.toLowerCase().includes('woman') ||
+       voice.name.toLowerCase().includes('алина') ||
+       voice.name.toLowerCase().includes('катя') ||
+       voice.name.toLowerCase().includes('женский'))
+    )
+
+    // Если не нашли специфичный, ищем любой русский
+    if (!selectedVoice) {
+      selectedVoice = voices.find(voice => voice.lang.includes('ru'))
+    }
+
+    // Если и русского нет, ищем английский женский
+    if (!selectedVoice) {
+      selectedVoice = voices.find(voice =>
+        voice.lang.includes('en') &&
+        (voice.name.toLowerCase().includes('female') ||
+         voice.name.toLowerCase().includes('woman') ||
+         voice.name.toLowerCase().includes('zira') ||
+         voice.name.toLowerCase().includes('eva'))
+      )
+    }
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice
+      console.log('Selected voice:', selectedVoice.name)
+    }
+
+    utterance.onstart = () => {
+      setIsSpeaking(true)
+      console.log('Started speaking:', text)
+    }
+
+    utterance.onend = () => {
+      setIsSpeaking(false)
+      console.log('Finished speaking')
+    }
+
+    utterance.onerror = (event) => {
+      setIsSpeaking(false)
+      console.error('Speech synthesis error:', event.error)
+    }
+
+    speechSynthesisRef.current.speak(utterance)
+  }
+
   const sendMessage = (message: string) => {
     console.log('sendMessage called with:', message)
     if (!message.trim()) {
@@ -280,7 +350,7 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Отличный вопрос! Наша команда специализируется на создании современных ИИ-решений для e-commerce.',
+        'Отличный вопрос! Наш�� команда специализируется на создании современных ИИ-решений для e-commerce.',
         'Я помогу вам создать умный интернет-магазин с персонализированными рекомендациями.',
         'Давайте обсудим ваши потребности. Какой тип проекта вас интересует?',
         'Наши ИИ-ассистенты увеличивают конверсию на 40%. Расскажу подробнее?',
