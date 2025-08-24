@@ -305,10 +305,13 @@ export default function JarvisChat() {
   }
 
   const speakWithSvetlanaNeural = async (text: string) => {
+    // Останавливаем любую предыдущую речь ПЕРЕД началом новой
+    stopSpeaking()
+
     try {
       // Очищаем текст от технических элементов
       const cleanText = cleanTextForSpeech(text)
-      
+
       console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
       setIsSpeaking(true)
 
@@ -327,36 +330,34 @@ export default function JarvisChat() {
       // Получаем аудио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
-      
+
       // Создаем HTML Audio элемент для воспроизведения
       const audio = new Audio(audioUrl)
-      
+
       audio.onplay = () => {
         console.log('SvetlanaNeural started speaking:', cleanText)
       }
-      
+
       audio.onended = () => {
         setIsSpeaking(false)
         URL.revokeObjectURL(audioUrl) // Освобождаем память
         console.log('SvetlanaNeural finished speaking')
       }
-      
+
       audio.onerror = (error) => {
         console.error('Audio playback error:', error)
         setIsSpeaking(false)
         URL.revokeObjectURL(audioUrl)
-        // Fallback на Web Speech API если SvetlanaNeural не работает
-        fallbackToWebSpeech(text)
+        console.log('SvetlanaNeural playback failed - no fallback to preserve voice settings')
       }
-      
+
       // Воспроизводим аудио
       await audio.play()
-      
+
     } catch (error) {
       console.error('SvetlanaNeural TTS error:', error)
       setIsSpeaking(false)
-      // Fallback на Web Speech API
-      fallbackToWebSpeech(text)
+      console.log('SvetlanaNeural synthesis failed - no fallback to preserve voice settings')
     }
   }
 
