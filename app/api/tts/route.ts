@@ -17,13 +17,11 @@ export async function GET(request: NextRequest) {
 
     // Создаем SSML с регулировкой скорости для максимально спокойной и медленной речи
     const ssmlText = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ru-RU">
-      <voice name="${voice}">
-        <prosody rate="${rate}" pitch="+2%" volume="80%">
-          <break time="500ms"/>
-          ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\./g, '.<break time="800ms"/>').replace(/,/g, ',<break time="400ms"/>').replace(/;/g, ';<break time="600ms"/>')}
-          <break time="700ms"/>
-        </prosody>
-      </voice>
+      <prosody rate="${rate}" pitch="+2%" volume="80%">
+        <break time="500ms"/>
+        ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\./g, '.<break time="800ms"/>').replace(/,/g, ',<break time="400ms"/>').replace(/;/g, ';<break time="600ms"/>')}
+        <break time="700ms"/>
+      </prosody>
     </speak>`;
 
     console.log(`Synthesizing text: "${text}" with voice: ${voice}, rate: ${rate}`);
