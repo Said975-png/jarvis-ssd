@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { text, rate = '0.4' } = body; // По умол��анию максимально медленная скорость
+    const { text, rate = '0.6' } = body; // Оптимальная скорость для плавной речи
 
     if (!text) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
