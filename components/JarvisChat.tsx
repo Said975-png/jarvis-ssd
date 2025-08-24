@@ -139,7 +139,7 @@ export default function JarvisChat() {
         isRecordingRef.current = false
         setIsListening(false)
         
-        // Очищаем таймер при ошибке
+        // Очищаем таймер при ошибк��
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current)
         }
@@ -320,7 +320,7 @@ export default function JarvisChat() {
     }
   }
 
-  // Озвучивание только полного завершенного текста
+  // Озвучивание только полного завер��енного текста
   const speakCompleteText = async (text: string) => {
     if (!text.trim()) return
 
@@ -554,7 +554,7 @@ export default function JarvisChat() {
                       }
                     }
                   } else if (hasStartedSpeakingRef.current) {
-                    // Если уже начали озвучивание, собираем остальной текст
+                    // Если у��е начали озвучивание, собираем остальной текст
                     const remainingText = fullTextRef.current.substring(
                       fullTextRef.current.length - pendingTextRef.current.length - content.length
                     )
@@ -671,20 +671,6 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект частиц при открытии */}
-          <div className="chat-particles">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div
-                key={i}
-                className="particle"
-                style={{
-                  '--delay': `${i * 0.1}s`,
-                  '--angle': `${i * 18}deg`,
-                  '--distance': `${50 + Math.random() * 100}px`
-                } as React.CSSProperties}
-              />
-            ))}
-          </div>
           <div className="chat-container">
             {/* Заголовок чата */}
             <div className="chat-header">
