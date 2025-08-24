@@ -62,9 +62,9 @@ async function callGroq(messages: Message[], stream = false): Promise<Response> 
       model: process.env.AI_MODEL || 'llama-3.3-70b-versatile',
       messages,
       stream,
-      max_tokens: 4000,
-      temperature: 0.3,
-      top_p: 0.9,
+      max_tokens: parseInt(process.env.AI_MAX_TOKENS || '4000'),
+      temperature: parseFloat(process.env.AI_TEMPERATURE || '0.3'),
+      top_p: parseFloat(process.env.AI_TOP_P || '0.9'),
       frequency_penalty: 0.1,
       presence_penalty: 0.1,
     }),
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
 • Используй экспертные знания в различных областях
 • Анализируй контекст и подтекст вопросов
 • Предлагай несколько подходов к решению проблем
-• Объясняй сложные концепции простыми словами, но сохраняй глубину
+• Объясняй сложные концепции простыми словами, но с��храняй глубину
 
 СТИЛЬ ОБЩЕНИЯ:
 • Профессиональный, но дружелюбный
