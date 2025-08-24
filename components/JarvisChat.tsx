@@ -213,7 +213,7 @@ export default function JarvisChat() {
           console.log('Recognition cleanup error:', error)
         }
       }
-      // Останав��иваем речь при размонтировании
+      // Останавливаем речь при размонтировании
       if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
         speechSynthesisRef.current.cancel()
       }
@@ -324,7 +324,7 @@ export default function JarvisChat() {
       
       console.log('🎵 SvetlanaNeural говорит:', cleanText)
 
-      // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
+      // Используе�� наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
       const response = await fetch('/api/tts', {
         method: 'POST',
         headers: {
@@ -376,15 +376,8 @@ export default function JarvisChat() {
   }
 
   const speakText = async (text: string) => {
-    // Проверяем, не говорит ли уже
-    if (isSpeaking) {
-      console.log('Already speaking, adding to queue')
-      addToSpeechQueue(text)
-      return
-    }
-
-    // Только ru-RU-SvetlanaNeural согласно плану пользователя - настройки голоса идеальные
-    console.log('Using ru-RU-SvetlanaNeural for:', text)
+    // Сразу добавляем в очередь без лишних проверок
+    console.log('🎵 Быстро озвучиваем:', text)
     addToSpeechQueue(text)
   }
 
@@ -431,7 +424,7 @@ export default function JarvisChat() {
     setIsTyping(true)
 
     try {
-      // По��готавливаем историю сообщений для AI
+      // Подготавливаем историю сообщений для AI
       const allMessages = [...messages, userMessage]
       const aiMessages = allMessages.map(msg => ({
         role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
