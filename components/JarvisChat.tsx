@@ -204,6 +204,7 @@ export default function JarvisChat() {
             v.name.toLowerCase().includes('женский')
           )
           console.log('Female voices available:', femaleVoices.map(v => `${v.name} (${v.lang})`).join(', '))
+          console.log('Priority voice: ru-RU-SvetlanaNeural (via custom API)')
         }
 
         initVoices()
@@ -303,6 +304,62 @@ export default function JarvisChat() {
     }
   }
 
+  const speakWithSvetlanaNeural = async (text: string) => {
+    try {
+      // Очищаем текст от технических элементов
+      const cleanText = cleanTextForSpeech(text)
+
+      console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
+      setIsSpeaking(true)
+
+      // Используем наш API для синтеза речи с SvetlanaNeural
+      const response = await fetch(`/api/tts?text=${encodeURIComponent(cleanText)}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'audio/mpeg'
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`TTS API error: ${response.statusText}`)
+      }
+
+      // Получаем аудио данные
+      const audioBlob = await response.blob()
+      const audioUrl = URL.createObjectURL(audioBlob)
+
+      // Создаем HTML Audio элемент для воспроизведения
+      const audio = new Audio(audioUrl)
+
+      audio.onplay = () => {
+        console.log('SvetlanaNeural started speaking:', cleanText)
+      }
+
+      audio.onended = () => {
+        setIsSpeaking(false)
+        URL.revokeObjectURL(audioUrl) // Освобождаем память
+        console.log('SvetlanaNeural finished speaking')
+      }
+
+      audio.onerror = (error) => {
+        console.error('Audio playback error:', error)
+        setIsSpeaking(false)
+        URL.revokeObjectURL(audioUrl)
+        // Fallback на Web Speech API если SvetlanaNeural не работает
+        fallbackToWebSpeech(text)
+      }
+
+      // Воспроизводим аудио
+      await audio.play()
+
+    } catch (error) {
+      console.error('SvetlanaNeural TTS error:', error)
+      setIsSpeaking(false)
+      // Fallback на Web Speech API
+      fallbackToWebSpeech(text)
+    }
+  }
+
   const speakWithWebSpeech = (text: string) => {
     if (!ttsSupported || !speechSynthesisRef.current) {
       console.log('TTS not supported')
@@ -389,14 +446,14 @@ export default function JarvisChat() {
   // Убираем функции разбиения на предложения - больше не нужны
 
   const speakText = async (text: string) => {
-    // Приоритет Web Speech API согласно промпту пользователя
-    console.log('Using Web Speech API for:', text)
-    speakWithWebSpeech(text)
+    // Приоритет ru-RU-SvetlanaNeural согласно плану пользователя
+    console.log('Using ru-RU-SvetlanaNeural for:', text)
+    await speakWithSvetlanaNeural(text)
   }
 
-  // Оставляем функцию для совместимости, но теперь она не используется
+  // Fallback на Web Speech API если SvetlanaNeural не работает
   const fallbackToWebSpeech = (text: string) => {
-    console.log('Fallback method deprecated, using main Web Speech API')
+    console.log('Fallback to Web Speech API')
     speakWithWebSpeech(text)
   }
 
@@ -437,7 +494,7 @@ export default function JarvisChat() {
         'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
         'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудить?',
         'Как и��тересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
-        'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
+        'Отлично! Мне очень нравится помогать с такими во��росами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
         'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересует?',
         'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
