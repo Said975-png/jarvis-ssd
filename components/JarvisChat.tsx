@@ -111,7 +111,7 @@ export default function JarvisChat() {
           setInputMessage(trimmedTranscript)
           console.log('Final transcript received:', trimmedTranscript)
           
-          // Запускаем таймер на секунду молчания
+          // Запускаем таймер н�� секунду молчания
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current)
           }
@@ -322,7 +322,7 @@ export default function JarvisChat() {
   const speakCompleteText = async (text: string) => {
     if (!text.trim()) return
 
-    console.log('🎤 Озвучиваем полный текст:', text.length, 'символов')
+    console.log('🎤 Озвучиваем полный текст:', text.length, 'си��волов')
 
     // Останавливаем предыдущее аудио
     if (currentAudioRef.current) {
@@ -694,7 +694,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Говорите..." : "Напишите ��ообщение..."}
+                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
