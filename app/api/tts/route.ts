@@ -1,0 +1,83 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const text = searchParams.get('text');
+
+    if (!text) {
+      return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
+    }
+
+    // Динамический импорт edge-tts
+    const edgeTTS = await import('edge-tts');
+    
+    const voice = "ru-RU-SvetlanaNeural";
+    
+    console.log(`Synthesizing text: "${text}" with voice: ${voice}`);
+
+    // Создаем объект для синтеза
+    const tts = new edgeTTS.default(voice);
+    
+    // Синтезируем речь
+    const audioBuffer = await tts.synthesize(text);
+    
+    // Возвращаем аудио данные
+    return new NextResponse(audioBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'audio/mpeg',
+        'Content-Disposition': 'inline; filename="speech.mp3"',
+        'Cache-Control': 'public, max-age=3600', // Кэшируем на час
+      },
+    });
+    
+  } catch (error) {
+    console.error('TTS synthesis error:', error);
+    return NextResponse.json(
+      { error: 'Failed to synthesize speech', details: error instanceof Error ? error.message : 'Unknown error' }, 
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { text } = body;
+
+    if (!text) {
+      return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
+    }
+
+    // Динамический импорт edge-tts
+    const edgeTTS = await import('edge-tts');
+    
+    const voice = "ru-RU-SvetlanaNeural";
+    
+    console.log(`Synthesizing text: "${text}" with voice: ${voice}`);
+
+    // Создаем объект для синтеза
+    const tts = new edgeTTS.default(voice);
+    
+    // Синтезируем речь
+    const audioBuffer = await tts.synthesize(text);
+    
+    // Возвращаем аудио данные
+    return new NextResponse(audioBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'audio/mpeg',
+        'Content-Disposition': 'inline; filename="speech.mp3"',
+        'Cache-Control': 'public, max-age=3600', // Кэшируем на час
+      },
+    });
+    
+  } catch (error) {
+    console.error('TTS synthesis error:', error);
+    return NextResponse.json(
+      { error: 'Failed to synthesize speech', details: error instanceof Error ? error.message : 'Unknown error' }, 
+      { status: 500 }
+    );
+  }
+}
