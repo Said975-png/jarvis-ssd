@@ -299,11 +299,16 @@ export default function JarvisChat() {
       setIsSpeaking(true)
 
       // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
-      const response = await fetch(`/api/tts?text=${encodeURIComponent(cleanText)}&rate=0.4`, {
-        method: 'GET',
+      const response = await fetch('/api/tts', {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Accept': 'audio/mpeg'
-        }
+        },
+        body: JSON.stringify({
+          text: cleanText,
+          rate: '0.4'
+        })
       })
 
       if (!response.ok) {
@@ -372,7 +377,7 @@ export default function JarvisChat() {
     if (isSpeaking) {
       console.log('Already speaking, stopping current speech first')
       stopSpeaking()
-      // Небольшая задержка для корректной остановки
+      // Небольшая задержка для кор��ектной остановки
       await new Promise(resolve => setTimeout(resolve, 200))
     }
 
@@ -421,7 +426,7 @@ export default function JarvisChat() {
     setInputMessage('')
     setIsTyping(true)
 
-    // Имитация ответа Джарвиса
+    // Имит��ция ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
         'Прекрасно! Я очень рада нашему общению. Говорю медленно для вашего комфорта. Расскажите, какой проект вас интересует? Помогу найти идеальное решение.',
