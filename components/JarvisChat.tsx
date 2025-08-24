@@ -46,8 +46,11 @@ export default function JarvisChat() {
   const isRecordingRef = useRef(false)
   const currentTranscriptRef = useRef('')
   const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
-  const speechQueueRef = useRef<string[]>([])
-  const isSpeakingQueueRef = useRef(false)
+  const fullTextRef = useRef<string>('')
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null)
+  const isStreamingRef = useRef<boolean>(false)
+  const hasStartedSpeakingRef = useRef<boolean>(false)
+  const pendingTextRef = useRef<string>('')
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -81,9 +84,10 @@ export default function JarvisChat() {
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
       const recognition = new SpeechRecognition()
       
-      recognition.continuous = false  // Изменено на false
+      recognition.continuous = true   // Включаем непрерывное прослушивание
       recognition.interimResults = true
       recognition.lang = 'ru-RU'
+      recognition.maxAlternatives = 1
       
       recognition.onstart = () => {
         console.log('Speech recognition started')
@@ -122,7 +126,7 @@ export default function JarvisChat() {
               stopRecording()
               sendMessage(trimmedTranscript)
             }
-          }, 1000)
+          }, 3000)
         } else if (interimTranscript) {
           currentTranscriptRef.current = interimTranscript.trim()
           setInputMessage(interimTranscript.trim())
@@ -140,17 +144,44 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатываем специ��ичные ошибки
+        // Обрабатывае�� специ��ичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
             break
           case 'not-allowed':
             console.log('Microphone access denied')
+            alert('Нужно разрешить доступ к микрофону в настройках браузера')
             break
           case 'no-speech':
-            console.log('No speech detected')
-            break
+            console.log('No speech detected - continuing to listen')
+            // Продолжаем слушать при отсутствии речи
+            if (isRecordingRef.current) {
+              setTimeout(() => {
+                if (isRecordingRef.current && recognitionRef.current) {
+                  try {
+                    recognitionRef.current.start()
+                  } catch (restartError) {
+                    console.log('Failed to restart after no-speech:', restartError)
+                  }
+                }
+              }, 500)
+            }
+            return // Не останавливаем запись
+          case 'network':
+            console.log('Network error - retrying...')
+            if (isRecordingRef.current) {
+              setTimeout(() => {
+                if (isRecordingRef.current && recognitionRef.current) {
+                  try {
+                    recognitionRef.current.start()
+                  } catch (restartError) {
+                    console.log('Failed to restart after network error:', restartError)
+                  }
+                }
+              }, 1000)
+            }
+            return
           default:
             console.log('Speech recognition error:', event.error)
         }
@@ -159,19 +190,22 @@ export default function JarvisChat() {
       recognition.onend = () => {
         console.log('Speech recognition ended')
         setIsListening(false)
-        // Если мы еще записываем, перезапускаем только при необходимости
-        if (isRecordingRef.current && !currentTranscriptRef.current) {
+        // Автоматически перезапускаем распознавание, если еще записываем
+        if (isRecordingRef.current) {
           setTimeout(() => {
             if (isRecordingRef.current) {
               try {
+                console.log('Auto-restarting speech recognition...')
                 recognition.start()
               } catch (error) {
                 console.log('Failed to restart recognition:', error)
+                // При ошибке перезапуска останавливаем запись
                 setIsRecording(false)
                 isRecordingRef.current = false
+                setIsListening(false)
               }
             }
-          }, 100)
+          }, 300) // Небольшая задержка перед перезапуском
         }
       }
       
@@ -286,48 +320,21 @@ export default function JarvisChat() {
     }
   }
 
-  // Плавная очередь TTS - озвучивает предло��ения подряд без остановок
-  const processSpeechQueue = async () => {
-    if (isSpeakingQueueRef.current || speechQueueRef.current.length === 0) {
-      return
+  // Озвучивание только полного завершенного текста
+  const speakCompleteText = async (text: string) => {
+    if (!text.trim()) return
+
+    console.log('🎤 Озвучиваем полный текст:', text.length, 'символов')
+
+    // Останавливаем предыдущее аудио
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current = null
     }
 
-    isSpeakingQueueRef.current = true
     setIsSpeaking(true)
 
     try {
-      while (speechQueueRef.current.length > 0) {
-        const textToSpeak = speechQueueRef.current.shift()
-        if (textToSpeak) {
-          await speakWithSvetlanaNeural(textToSpeak)
-        }
-      }
-    } catch (error) {
-      console.error('Speech queue error:', error)
-    } finally {
-      isSpeakingQueueRef.current = false
-      setIsSpeaking(false)
-    }
-  }
-
-  const addToSpeechQueue = (text: string) => {
-    if (text.trim()) {
-      console.log('🎤 Мгновенно добавляем:', text)
-      speechQueueRef.current.push(text.trim())
-      // Запускаем без задержек
-      if (!isSpeakingQueueRef.current) {
-        processSpeechQueue()
-      }
-    }
-  }
-
-  const speakWithSvetlanaNeural = async (text: string) => {
-    try {
-      const cleanText = text
-      
-      console.log('🎵 SvetlanaNeural говорит:', cleanText)
-
-      // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
       const response = await fetch('/api/tts', {
         method: 'POST',
         headers: {
@@ -335,8 +342,8 @@ export default function JarvisChat() {
           'Accept': 'audio/mpeg'
         },
         body: JSON.stringify({
-          text: cleanText,
-          rate: '0.6'
+          text: text,
+          rate: '0.95'
         })
       })
 
@@ -344,50 +351,69 @@ export default function JarvisChat() {
         throw new Error(`TTS API error: ${response.statusText}`)
       }
 
-      // Получаем аудио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
-      
-      // Создаем HTML Audio элемент для воспроизведения
       const audio = new Audio(audioUrl)
-      
-      return new Promise<void>((resolve, reject) => {
-        audio.onplay = () => {
-          console.log('🎵 SvetlanaNeural started speaking:', cleanText)
-        }
-        
-        audio.onended = () => {
-          URL.revokeObjectURL(audioUrl) // Освобождаем память
-          console.log('🎵 SvetlanaNeural finished speaking')
-          resolve()
-        }
-        
-        audio.onerror = (error) => {
-          console.error('Audio playback error:', error)
-          URL.revokeObjectURL(audioUrl)
-          reject(error)
-        }
-        
-        // Воспроизводим аудио
-        audio.play().catch(reject)
-      })
-      
+
+      currentAudioRef.current = audio
+
+      audio.onended = () => {
+        URL.revokeObjectURL(audioUrl)
+        setIsSpeaking(false)
+        currentAudioRef.current = null
+        console.log('🎵 Озвучивание завершено')
+      }
+
+      audio.onerror = () => {
+        URL.revokeObjectURL(audioUrl)
+        setIsSpeaking(false)
+        currentAudioRef.current = null
+      }
+
+      await audio.play()
+
     } catch (error) {
-      console.error('SvetlanaNeural TTS error:', error)
-      throw error
+      console.error('Speech error:', error)
+      setIsSpeaking(false)
     }
   }
 
+  const startNewSpeech = () => {
+    // Сбрасываем все буферы для нового сообщения
+    fullTextRef.current = ''
+    pendingTextRef.current = ''
+    isStreamingRef.current = true
+    hasStartedSpeakingRef.current = false
+
+    // Останавливаем текущее аудио
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current = null
+    }
+
+    setIsSpeaking(false)
+    console.log('🎤 Начинаем новое озвучивание')
+  }
+
   const speakText = async (text: string) => {
-    // Сразу добавляем в очередь без лишних проверок
-    console.log('🎵 Быстро озвучиваем:', text)
-    addToSpeechQueue(text)
+    // Просто озвучиваем полный текст
+    console.log('🎵 Озвучиваем текст:', text)
+    await speakCompleteText(text)
   }
 
   const stopSpeaking = () => {
-    // Очищаем очередь
-    speechQueueRef.current = []
-    isSpeakingQueueRef.current = false
+    // Очищаем все буферы
+    fullTextRef.current = ''
+    pendingTextRef.current = ''
+    isStreamingRef.current = false
+    hasStartedSpeakingRef.current = false
+
+    // Останавливаем текущее аудио
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current = null
+    }
+
     setIsSpeaking(false)
 
     // Останавливаем Web Speech API
@@ -395,7 +421,7 @@ export default function JarvisChat() {
       speechSynthesisRef.current.cancel()
     }
 
-    // Останавливаем все HTML Audio элементы на странице
+    // Останавливаем все HTML Audio э��ементы на странице
     const audioElements = document.querySelectorAll('audio')
     audioElements.forEach(audio => {
       if (!audio.paused) {
@@ -404,7 +430,7 @@ export default function JarvisChat() {
       }
     })
 
-    console.log('All speech stopped')
+    console.log('🛑 Вся речь остановлена')
   }
 
   const sendMessage = async (message: string) => {
@@ -463,6 +489,9 @@ export default function JarvisChat() {
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
+      // Начинаем новое озвучивание
+      startNewSpeech()
+
       // Обрабатываем потоковый ответ
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
@@ -499,18 +528,37 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // О��вучиваем только полные предложения для плавной речи
-                  const isCompleteSentence = /[.!?][\s\n]*$/.test(content)
+                  // Накапливаем текст и начинаем озвучивание после первых предложений
+                  fullTextRef.current += content
 
-                  if (isCompleteSentence) {
-                    const completeSentence = sentenceBuffer.trim()
+                  // Проверяем, можно ли начать озвучивание
+                  if (!hasStartedSpeakingRef.current && !isSpeaking) {
+                    const currentText = fullTextRef.current
+                    // Начинаем озвучивание после первых 80 символов и завершенного предложения
+                    if (currentText.length >= 80 && /[.!?]\s/.test(currentText)) {
+                      // Находим последнюю точку/восклицание/вопрос
+                      const lastSentenceEnd = Math.max(
+                        currentText.lastIndexOf('. '),
+                        currentText.lastIndexOf('! '),
+                        currentText.lastIndexOf('? ')
+                      )
 
-                    if (completeSentence && completeSentence.length > 5) {
-                      console.log('🎤 Озвучиваем полное предложение:', completeSentence)
-                      addToSpeechQueue(completeSentence)
+                      if (lastSentenceEnd > 50) {
+                        const textToSpeak = currentText.substring(0, lastSentenceEnd + 1).trim()
+                        if (textToSpeak.length > 30) {
+                          hasStartedSpeakingRef.current = true
+                          pendingTextRef.current = currentText.substring(lastSentenceEnd + 1)
+                          console.log('🎤 Начинаем раннее озвучивание:', textToSpeak.length, 'символов')
+                          speakCompleteText(textToSpeak)
+                        }
+                      }
                     }
-
-                    sentenceBuffer = ''
+                  } else if (hasStartedSpeakingRef.current) {
+                    // Если уже начали ��звучивание, собираем остальной текст
+                    const remainingText = fullTextRef.current.substring(
+                      fullTextRef.current.length - pendingTextRef.current.length - content.length
+                    )
+                    pendingTextRef.current = remainingText
                   }
                 }
               } catch (e) {
@@ -521,11 +569,32 @@ export default function JarvisChat() {
         }
       }
 
-      // Если остался текст в буфере, озвучиваем его как завершающий фрагмент
-      const finalText = sentenceBuffer.trim()
-      if (finalText && finalText.length > 3) {
-        console.log('🎤 Озвучиваем завершение:', finalText)
-        addToSpeechQueue(finalText)
+      // Завершаем стриминг и обр��батываем оставшийся текст
+      isStreamingRef.current = false
+
+      if (hasStartedSpeakingRef.current) {
+        // Если уже начали озвучивание, добавляем оставшийся текст к очереди
+        const remainingText = pendingTextRef.current.trim()
+        if (remainingText.length > 10) {
+          console.log('🎤 Очередь: осталось', remainingText.length, 'символов для озвучивания')
+          // Ожидаем завершения текущего озвучивания
+          const checkAndContinue = () => {
+            if (!isSpeaking) {
+              console.log('🎤 Продолжаем озвучивание остатка')
+              speakCompleteText(remainingText)
+            } else {
+              setTimeout(checkAndContinue, 500)
+            }
+          }
+          setTimeout(checkAndContinue, 500)
+        }
+      } else {
+        // Если еще не начинали озвучивание, озвучиваем все сразу
+        const fullText = fullTextRef.current.trim()
+        if (fullText) {
+          console.log('🎤 Озвучиваем полный текст длиной', fullText.length, 'символов')
+          speakCompleteText(fullText)
+        }
       }
 
     } catch (error) {
