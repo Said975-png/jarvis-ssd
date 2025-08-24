@@ -10,19 +10,10 @@ interface ChatRequest {
   stream?: boolean;
 }
 
-// Preprocess messages to enhance context understanding
-function enhanceMessageContext(messages: Message[]): Message[] {
-  const enhancedMessages = [...messages];
-
-  // If this is a short question, add context hint
-  const lastMessage = enhancedMessages[enhancedMessages.length - 1];
-  if (lastMessage && lastMessage.role === 'user' && lastMessage.content.length < 50) {
-    // Add contextual enhancement for short questions
-    const contextualHint = `\n\n[Контекст: Пользователь задал краткий вопрос. Дай развернутый, экспертный ответ с практическими примерами и дополнительными деталями, которые могут быть полезны.]`;
-    lastMessage.content += contextualHint;
-  }
-
-  return enhancedMessages;
+// Keep messages simple without additional context
+function keepMessagesSimple(messages: Message[]): Message[] {
+  // Just return messages as-is for short, direct responses
+  return [...messages];
 }
 
 // Get random API key for load balancing
@@ -161,7 +152,7 @@ export async function POST(request: NextRequest) {
 
 ПРАВИЛА ОТВЕТОВ:
 - Никаких символов ** ## - только обычный текст
-- Ответы коротки�� и понятные (1-3 предложения)
+- Ответы короткие и понятные (1-3 предложения)
 - Без списков и маркировки
 - Только самое важное
 - Детали даешь только если пользователь попросит
