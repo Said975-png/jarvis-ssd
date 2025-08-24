@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 export default function TestTTSPage() {
   const [text, setText] = useState('Привет! Меня зовут Светлана. Я готова помочь вам с вашими вопросами.')
+  const [rate, setRate] = useState('0.8') // Медленная скорость по умолчанию
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -14,7 +15,7 @@ export default function TestTTSPage() {
     try {
       console.log('Testing TTS with text:', text)
       
-      const response = await fetch(`/api/tts?text=${encodeURIComponent(text)}`, {
+      const response = await fetch(`/api/tts?text=${encodeURIComponent(text)}&rate=${rate}`, {
         method: 'GET',
         headers: {
           'Accept': 'audio/mpeg'
@@ -78,6 +79,29 @@ export default function TestTTSPage() {
             fontSize: '14px'
           }}
         />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label htmlFor="rate-select" style={{ display: 'block', marginBottom: '8px' }}>
+          Скорость речи:
+        </label>
+        <select
+          id="rate-select"
+          value={rate}
+          onChange={(e) => setRate(e.target.value)}
+          style={{
+            padding: '8px',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            fontSize: '14px'
+          }}
+        >
+          <option value="0.6">Очень медленно (0.6x)</option>
+          <option value="0.8">Медленно (0.8x) - Рекомендуется</option>
+          <option value="1.0">Нормально (1.0x)</option>
+          <option value="1.2">Быстро (1.2x)</option>
+          <option value="1.5">Очень быстро (1.5x)</option>
+        </select>
       </div>
       
       <button
