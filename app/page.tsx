@@ -3,7 +3,6 @@ import Advantages from '@/components/Advantages'
 import Pricing from '@/components/Pricing'
 import AIConsultant from '@/components/AIConsultant'
 import Reviews from '@/components/Reviews'
-import ScrollAnimatedRobot from '@/components/ScrollAnimatedRobot'
 import JarvisChat from '@/components/JarvisChat'
 import Footer from '@/components/Footer'
 import CartModal from '@/components/CartModal'
@@ -13,7 +12,6 @@ import './globals.css'
 export default function Home() {
   return (
     <>
-      <ScrollAnimatedRobot />
       <main className="min-h-screen">
         <Hero />
         <Advantages />
