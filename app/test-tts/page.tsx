@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 export default function TestTTSPage() {
   const [text, setText] = useState('Привет! Меня зовут Светлана. Я готова помочь вам с вашими вопросами.')
-  const [rate, setRate] = useState('0.6') // Очень медленная скорость по умолчанию
+  const [rate, setRate] = useState('0.4') // Максимально медленная скорость по умолчанию
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -96,7 +96,8 @@ export default function TestTTSPage() {
             fontSize: '14px'
           }}
         >
-          <option value="0.6">Очень медленно (0.6x) - Рекомендуется</option>
+          <option value="0.4">Максимально медленно (0.4x) - Рекомендуется</option>
+          <option value="0.6">Очень медленно (0.6x)</option>
           <option value="0.8">Медленно (0.8x)</option>
           <option value="1.0">Нормально (1.0x)</option>
           <option value="1.2">Быстро (1.2x)</option>
@@ -140,8 +141,8 @@ export default function TestTTSPage() {
           <li><strong>Язык:</strong> Русский (Россия)</li>
           <li><strong>Тип:</strong> Женский нейронный голос Microsoft</li>
           <li><strong>Характеристики:</strong> Серьёзный, глубокий и уверенный с лёгким металлическим оттенком</li>
-          <li><strong>Скорость по умолчанию:</strong> 0.6x (очень медленная для максимального комфорта)</li>
-          <li><strong>Дополнительные настройки:</strong> Мягкая интонация (+3%), тихая громкость (85%), паузы между предложениями</li>
+          <li><strong>Скорость по умолчанию:</strong> 0.4x (макс��мально медленная для спокойного восприятия)</li>
+          <li><strong>Дополнительные настройки:</strong> Спокойная интонация (+2%), тихая громкость (80%), длинные паузы между фразами</li>
         </ul>
       </div>
       

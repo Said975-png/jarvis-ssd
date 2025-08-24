@@ -135,7 +135,7 @@ export default function JarvisChat() {
         isRecordingRef.current = false
         setIsListening(false)
         
-        // Очищаем таймер при ошибке
+        // Очищаем таймер пр�� ошибке
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current)
         }
@@ -312,8 +312,8 @@ export default function JarvisChat() {
       console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
       setIsSpeaking(true)
 
-      // Используем наш API для синтеза речи с SvetlanaNeural с очень медленной скоростью
-      const response = await fetch(`/api/tts?text=${encodeURIComponent(cleanText)}&rate=0.6`, {
+      // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
+      const response = await fetch(`/api/tts?text=${encodeURIComponent(cleanText)}&rate=0.4`, {
         method: 'GET',
         headers: {
           'Accept': 'audio/mpeg'
@@ -488,7 +488,7 @@ export default function JarvisChat() {
     setInputMessage('')
     setIsTyping(true)
 
-    // Имитация ответа Д��арвиса
+    // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
         'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
@@ -496,7 +496,7 @@ export default function JarvisChat() {
         'Как и��тересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
-        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с про��ктами. Что именно вас интересует?',
+        'Как здорово, что мы можем пообщаться! Я всегда рада помоч�� с проектами. Что именно вас интересует?',
         'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
       ]
       
