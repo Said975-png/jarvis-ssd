@@ -3555,7 +3555,7 @@ canvas {
   background: linear-gradient(135deg, #8b5cf6, #a855f7);
 }
 
-.message-jarvis .message-avatar {
+.message-friday .message-avatar {
   display: none;
 }
 
@@ -3592,7 +3592,7 @@ canvas {
   border-bottom-right-radius: 0.25rem;
 }
 
-.message-jarvis .message-text {
+.message-friday .message-text {
   background: transparent;
   color: rgba(255, 255, 255, 0.9);
   border: none;
