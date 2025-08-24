@@ -68,7 +68,7 @@ export default function JarvisChat() {
         }, 500)
       }
     }
-  }, [isOpen, messages, ttsSupported])
+  }, [isOpen, messages])
 
   // Инициализация Speech Recognition
   useEffect(() => {
@@ -271,7 +271,7 @@ export default function JarvisChat() {
   const stopRecording = () => {
     console.log('stopRecording called')
     if (recognitionRef.current) {
-      // Сначала о��новляем состояние
+      // Сначала обновляем состояние
       setIsRecording(false)
       isRecordingRef.current = false
       setIsListening(false)
@@ -313,7 +313,7 @@ export default function JarvisChat() {
       console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
       setIsSpeaking(true)
 
-      // Используем наш API для синтеза речи с SvetlanaNeural с максималь��о медленной скоростью
+      // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
       const response = await fetch(`/api/tts?text=${encodeURIComponent(cleanText)}&rate=0.4`, {
         method: 'GET',
         headers: {
@@ -409,7 +409,7 @@ export default function JarvisChat() {
 
     // Настройки для дружелюбного женского голоса
     utterance.rate = 1.0 // нормальная скорость
-    utterance.pitch = 1.1 // немного выш��, чтобы звучало женственнее
+    utterance.pitch = 1.1 // немного выш��, чтобы з��учало женственнее
     utterance.volume = 0.9
 
     utterance.onstart = () => {
@@ -453,7 +453,7 @@ export default function JarvisChat() {
       await new Promise(resolve => setTimeout(resolve, 200))
     }
 
-    // Только ru-RU-SvetlanaNeural согласно плану пользователя - настройки голоса идеальные
+    // Только ru-RU-SvetlanaNeural согласно плану пользователя - наст��ойки голоса идеальные
     console.log('Using ru-RU-SvetlanaNeural for:', text)
     await speakWithSvetlanaNeural(text)
   }
@@ -505,7 +505,7 @@ export default function JarvisChat() {
         'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
         'Как интересно! Давайте поговорим о ваших потребностях. Уверена, найдём отличное решение вместе. Говорю медленно, чтобы было удобно.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Говорю размеренно. Хотите узнать подробнее?',
-        'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расскажите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
+        'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расска��ите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
         'Как здорово, что можем пообщаться! Всегда рада помочь с проектами. Что именно интересует? Говорю спокойно и размеренно.',
         'Замечательно! Знаете, обожаю работать над интересными задачами. Поделитесь идеями, их воплотим. Говорю медленно для удобного восприятия.'
       ]
