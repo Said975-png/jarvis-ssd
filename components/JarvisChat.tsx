@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Меня зовут Джарвис. Я ваш ИИ-помощник. Говорю спокойно и медленно для вашего комфорта. Расскажите, чем могу помочь с вашим проектом?',
+      text: 'Привет! Меня зовут Джарвис. Я ваш ИИ-помощник с реальным искусственным интеллектом. Говорю спокойно и медленно для вашего комфорта. Расскажите, чем могу помочь с вашим проектом?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -315,7 +315,7 @@ export default function JarvisChat() {
         throw new Error(`TTS API error: ${response.statusText}`)
       }
 
-      // Получаем а��дио данные
+      // Получаем аудио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
       
@@ -377,7 +377,7 @@ export default function JarvisChat() {
     if (isSpeaking) {
       console.log('Already speaking, stopping current speech first')
       stopSpeaking()
-      // Небольшая задержка для кор��ектной остановки
+      // Небольшая задержка для корректной остановки
       await new Promise(resolve => setTimeout(resolve, 200))
     }
 
@@ -407,7 +407,7 @@ export default function JarvisChat() {
     console.log('All speech stopped')
   }
 
-  const sendMessage = (message: string) => {
+  const sendMessage = async (message: string) => {
     console.log('sendMessage called with:', message)
     if (!message.trim()) {
       console.log('Message is empty, not sending')
@@ -421,28 +421,41 @@ export default function JarvisChat() {
       timestamp: new Date()
     }
 
-    console.log('Sending message to chat:', userMessage.text)
+    console.log('Sending message to AI:', userMessage.text)
     setMessages(prev => [...prev, userMessage])
     setInputMessage('')
     setIsTyping(true)
 
-    // Имит��ция ответа Джарвиса
-    setTimeout(() => {
-      const jarvisResponses = [
-        'Прекрасно! Я очень рада нашему общению. Говорю медленно для вашего комфорта. Расскажите, какой проект вас интересует? Помогу найти идеальное решение.',
-        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений д��я бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
-        'Как интересно! Давайте поговорим о ваших потребностях. Уверена, найдём отличное решение вместе. Говорю медленно, чтобы было удобно.',
-        'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Говорю размеренно. Хотите узнать подробнее?',
-        'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расскажите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
-        'Как здорово, что можем пообщаться! Всегда рада помочь с проектами. Что именно интересует? Говорю спокойно и размеренно.',
-        'Замечательно! Знаете, обожаю работать над интересными задачами. Поделитесь идеями, их воплотим. Говорю медленно для удобного восприятия.'
-      ]
-      
-      const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
-      
+    try {
+      // Подготавливаем историю сообщений для AI
+      const allMessages = [...messages, userMessage]
+      const aiMessages = allMessages.map(msg => ({
+        role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
+        content: msg.text
+      }))
+
+      // Отправляем запрос к AI API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: aiMessages,
+          stream: false
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`AI API error: ${response.status} ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      const aiResponse = data.choices?.[0]?.message?.content || 'Извините, произошла ошибка при обработке вашего запроса.'
+
       const jarvisMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: randomResponse,
+        text: aiResponse,
         sender: 'jarvis',
         timestamp: new Date()
       }
@@ -452,13 +465,40 @@ export default function JarvisChat() {
 
       // Озвучиваем ответ Джарвиса только с SvetlanaNeural
       setTimeout(async () => {
-        await speakText(randomResponse)
-      }, 500) // Небольшая задержка перед озвучиванием
-    }, 1500)
+        await speakText(aiResponse)
+      }, 500) // Небольшая зад��ржка перед озвучиванием
+
+    } catch (error) {
+      console.error('AI chat error:', error)
+      
+      // Fallback to predefined responses if AI fails
+      const fallbackResponses = [
+        'Извините, у меня сейчас проблемы с подключением. Попробуйте ещё раз через несколько секунд.',
+        'Похоже, что-то пошло не так. Перефразируйте ваш вопрос, и я постараюсь ответить.',
+        'Временные технические неполадки. Давайте попробуем снова через момент.'
+      ]
+      
+      const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
+      
+      const jarvisMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: fallbackResponse,
+        sender: 'jarvis',
+        timestamp: new Date()
+      }
+
+      setMessages(prev => [...prev, jarvisMessage])
+      setIsTyping(false)
+
+      // Озвучиваем fallback ответ
+      setTimeout(async () => {
+        await speakText(fallbackResponse)
+      }, 500)
+    }
   }
 
   const handleSendMessage = async () => {
-    sendMessage(inputMessage)
+    await sendMessage(inputMessage)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
