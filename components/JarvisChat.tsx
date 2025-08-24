@@ -189,19 +189,22 @@ export default function JarvisChat() {
       recognition.onend = () => {
         console.log('Speech recognition ended')
         setIsListening(false)
-        // Если мы еще записываем, перезапускаем только при необходимости
-        if (isRecordingRef.current && !currentTranscriptRef.current) {
+        // Автоматически перезапускаем распознавание, если еще записываем
+        if (isRecordingRef.current) {
           setTimeout(() => {
             if (isRecordingRef.current) {
               try {
+                console.log('Auto-restarting speech recognition...')
                 recognition.start()
               } catch (error) {
                 console.log('Failed to restart recognition:', error)
+                // При ошибке перезапуска останавливаем запись
                 setIsRecording(false)
                 isRecordingRef.current = false
+                setIsListening(false)
               }
             }
-          }, 100)
+          }, 300) // Небольшая задержка пе��ед перезапуском
         }
       }
       
@@ -254,7 +257,7 @@ export default function JarvisChat() {
     console.log('startRecording called, current state:', { isRecording, isListening })
     if (recognitionRef.current && !isRecording && !isListening) {
       try {
-        // Проверяем разрешения мик��офона
+        // Проверяем разрешения микрофона
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -388,12 +391,12 @@ export default function JarvisChat() {
     }
 
     setIsSpeaking(false)
-    console.log('�� Начинаем новое озвучивание')
+    console.log('🎤 Начинаем новое озвучивание')
   }
 
   const speakText = async (text: string) => {
     // Просто озвучиваем полный текст
-    console.log('🎵 Озвуч��ваем текст:', text)
+    console.log('🎵 Озвучиваем текст:', text)
     await speakCompleteText(text)
   }
 
@@ -517,7 +520,7 @@ export default function JarvisChat() {
                   accumulatedText += content
                   sentenceBuffer += content
 
-                  // Обновляем сообщение в ��еальном времени
+                  // Обновляем сообщение в реальном времени
                   setMessages(prev => prev.map(msg => 
                     msg.id === jarvisMessageId 
                       ? { ...msg, text: accumulatedText }
@@ -530,7 +533,7 @@ export default function JarvisChat() {
                   // Проверяем, можно ли начать озвучивание
                   if (!hasStartedSpeakingRef.current && !isSpeaking) {
                     const currentText = fullTextRef.current
-                    // Начинаем озвучивание после первых 80 символов и завершенного предложения
+                    // Начинаем озвучивание после первых 80 символо�� и завершенного предложения
                     if (currentText.length >= 80 && /[.!?]\s/.test(currentText)) {
                       // Находим последнюю точку/восклицание/вопрос
                       const lastSentenceEnd = Math.max(
