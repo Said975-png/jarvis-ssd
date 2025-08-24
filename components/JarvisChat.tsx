@@ -328,7 +328,7 @@ export default function JarvisChat() {
         URL.revokeObjectURL(audioUrl)
         setIsSpeaking(false)
         currentAudioRef.current = null
-        console.log('🎵 Озвучивани�� завершено')
+        console.log('🎵 Озвучивание завершено')
       }
 
       audio.onerror = () => {
@@ -502,11 +502,12 @@ export default function JarvisChat() {
         }
       }
 
-      // Озвучиваем любой оставшийся текст
-      const finalText = sentenceBuffer.trim()
-      if (finalText) {
-        console.log('🎤 Завершаем озвучивание:', finalText)
-        speakContinuously(finalText)
+      // Озвучиваем полный текст одной порцией
+      isStreamingRef.current = false
+      const fullText = fullTextRef.current.trim()
+      if (fullText) {
+        console.log('🎤 Озвучиваем полный текст длиной', fullText.length, 'символов')
+        speakCompleteText(fullText)
       }
 
     } catch (error) {
