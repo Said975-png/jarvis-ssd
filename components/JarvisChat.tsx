@@ -46,8 +46,8 @@ export default function JarvisChat() {
   const isRecordingRef = useRef(false)
   const currentTranscriptRef = useRef('')
   const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
-  const speechQueueRef = useRef<string[]>([])
-  const isSpeakingQueueRef = useRef(false)
+  const continuousSpeechRef = useRef<string>('')
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -286,48 +286,26 @@ export default function JarvisChat() {
     }
   }
 
-  // Плавная очередь TTS - озвучивает предло��ения подряд без остановок
-  const processSpeechQueue = async () => {
-    if (isSpeakingQueueRef.current || speechQueueRef.current.length === 0) {
-      return
+  // Система непрерывной речи без остановок
+  const speakContinuously = async (newText: string) => {
+    // Добавляем новый текст к общему буферу
+    continuousSpeechRef.current += ' ' + newText.trim()
+    const fullText = continuousSpeechRef.current.trim()
+
+    if (!fullText) return
+
+    console.log('🎤 Непрерывное озвучивание:', fullText)
+
+    // Останавливаем предыдущее аудио
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current = null
     }
 
-    isSpeakingQueueRef.current = true
     setIsSpeaking(true)
 
     try {
-      while (speechQueueRef.current.length > 0) {
-        const textToSpeak = speechQueueRef.current.shift()
-        if (textToSpeak) {
-          await speakWithSvetlanaNeural(textToSpeak)
-        }
-      }
-    } catch (error) {
-      console.error('Speech queue error:', error)
-    } finally {
-      isSpeakingQueueRef.current = false
-      setIsSpeaking(false)
-    }
-  }
-
-  const addToSpeechQueue = (text: string) => {
-    if (text.trim()) {
-      console.log('🎤 Мгновенно добавляем:', text)
-      speechQueueRef.current.push(text.trim())
-      // Запускаем без задержек
-      if (!isSpeakingQueueRef.current) {
-        processSpeechQueue()
-      }
-    }
-  }
-
-  const speakWithSvetlanaNeural = async (text: string) => {
-    try {
-      const cleanText = text
-      
-      console.log('🎵 SvetlanaNeural говорит:', cleanText)
-
-      // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
+      // Создаем новое аудио с полным текстом
       const response = await fetch('/api/tts', {
         method: 'POST',
         headers: {
@@ -335,8 +313,8 @@ export default function JarvisChat() {
           'Accept': 'audio/mpeg'
         },
         body: JSON.stringify({
-          text: cleanText,
-          rate: '0.8'
+          text: fullText,
+          rate: '0.9'
         })
       })
 
@@ -344,50 +322,63 @@ export default function JarvisChat() {
         throw new Error(`TTS API error: ${response.statusText}`)
       }
 
-      // Получаем аудио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
-      
-      // Создаем HTML Audio элеме��т для воспроизведения
       const audio = new Audio(audioUrl)
-      
-      return new Promise<void>((resolve, reject) => {
-        audio.onplay = () => {
-          console.log('🎵 SvetlanaNeural started speaking:', cleanText)
-        }
-        
-        audio.onended = () => {
-          URL.revokeObjectURL(audioUrl) // Освобождаем память
-          console.log('🎵 SvetlanaNeural finished speaking')
-          resolve()
-        }
-        
-        audio.onerror = (error) => {
-          console.error('Audio playback error:', error)
-          URL.revokeObjectURL(audioUrl)
-          reject(error)
-        }
-        
-        // Воспроизводим аудио
-        audio.play().catch(reject)
-      })
-      
+
+      currentAudioRef.current = audio
+
+      audio.onended = () => {
+        URL.revokeObjectURL(audioUrl)
+        setIsSpeaking(false)
+        currentAudioRef.current = null
+        console.log('🎵 Озвучивание завершено')
+      }
+
+      audio.onerror = () => {
+        URL.revokeObjectURL(audioUrl)
+        setIsSpeaking(false)
+        currentAudioRef.current = null
+      }
+
+      await audio.play()
+
     } catch (error) {
-      console.error('SvetlanaNeural TTS error:', error)
-      throw error
+      console.error('Continuous speech error:', error)
+      setIsSpeaking(false)
     }
   }
 
+  const startNewSpeech = () => {
+    // Сбрасываем буфер для нового сообщения
+    continuousSpeechRef.current = ''
+
+    // Останавливаем текущее аудио
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current = null
+    }
+
+    setIsSpeaking(false)
+    console.log('🎤 Начинаем новое озвучивание')
+  }
+
   const speakText = async (text: string) => {
-    // Сразу добавляем в очередь без лишних проверок
-    console.log('🎵 Быстро озвучиваем:', text)
-    addToSpeechQueue(text)
+    // Сразу добавляем к непрерывной речи
+    console.log('🎵 Добавляем к речи:', text)
+    await speakContinuously(text)
   }
 
   const stopSpeaking = () => {
-    // Очищаем очередь
-    speechQueueRef.current = []
-    isSpeakingQueueRef.current = false
+    // Очищаем буфер
+    continuousSpeechRef.current = ''
+
+    // Останавливаем текущее аудио
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current = null
+    }
+
     setIsSpeaking(false)
 
     // Останавливаем Web Speech API
@@ -404,7 +395,7 @@ export default function JarvisChat() {
       }
     })
 
-    console.log('All speech stopped')
+    console.log('🛑 Вся речь остановлена')
   }
 
   const sendMessage = async (message: string) => {
@@ -463,6 +454,9 @@ export default function JarvisChat() {
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
+      // Начинаем новое озвучивание
+      startNewSpeech()
+
       // Обрабатываем потоковый ответ
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
@@ -492,19 +486,19 @@ export default function JarvisChat() {
                   accumulatedText += content
                   sentenceBuffer += content
 
-                  // Обновляем сообщение в реальном времени
+                  // Обновляем сообщен��е в реальном времени
                   setMessages(prev => prev.map(msg => 
                     msg.id === jarvisMessageId 
                       ? { ...msg, text: accumulatedText }
                       : msg
                   ))
 
-                  // Озвучиваем непрерывно каждые 15-20 символов для плавной речи без остановок
-                  if (sentenceBuffer.length >= 15) {
+                  // Озвучиваем каждые 20 символов непрерывно
+                  if (sentenceBuffer.length >= 20) {
                     const textToSpeak = sentenceBuffer.trim()
                     if (textToSpeak) {
-                      console.log('🎤 Плавно озвучиваем:', textToSpeak)
-                      addToSpeechQueue(textToSpeak)
+                      console.log('🎤 Непрерывно озвучиваем:', textToSpeak)
+                      await speakContinuously(textToSpeak)
                       sentenceBuffer = ''
                     }
                   }
@@ -520,8 +514,8 @@ export default function JarvisChat() {
       // Озвучиваем любой оставшийся текст
       const finalText = sentenceBuffer.trim()
       if (finalText) {
-        console.log('🎤 Озвучиваем остаток:', finalText)
-        addToSpeechQueue(finalText)
+        console.log('🎤 Завершаем озвучивание:', finalText)
+        await speakContinuously(finalText)
       }
 
     } catch (error) {
