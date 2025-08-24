@@ -213,7 +213,7 @@ export default function JarvisChat() {
           console.log('Recognition cleanup error:', error)
         }
       }
-      // Останавливаем речь при размонтировании
+      // Останав��иваем речь при размонтировании
       if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
         speechSynthesisRef.current.cancel()
       }
@@ -431,7 +431,7 @@ export default function JarvisChat() {
     setIsTyping(true)
 
     try {
-      // Подготавливаем историю сообщений для AI
+      // По��готавливаем историю сообщений для AI
       const allMessages = [...messages, userMessage]
       const aiMessages = allMessages.map(msg => ({
         role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
@@ -534,7 +534,7 @@ export default function JarvisChat() {
       }
 
       // Если остался текст в буфере, озвучиваем его
-      if (sentenceBuffer.trim() && sentenceBuffer.length > 5) {
+      if (sentenceBuffer.trim()) {
         console.log('🎤 Озвучиваем остаток:', sentenceBuffer.trim())
         addToSpeechQueue(sentenceBuffer.trim())
       }
