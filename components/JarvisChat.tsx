@@ -59,7 +59,7 @@ export default function JarvisChat() {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
 
-      // Автоматически озвучиваем приветствие при открытии чата
+      // Автоматически озвучивае�� приветствие при открытии чата
       if (messages.length === 1) {
         // Небольшая задержка, чтобы чат успел открыться
         setTimeout(() => {
@@ -179,37 +179,19 @@ export default function JarvisChat() {
       console.log('Speech Recognition not supported in this browser')
     }
 
-    // Инициализация Web Speech API TTS (приоритет сог��асно промпту)
+    // Инициализация TTS - используем только ru-RU-SvetlanaNeural (настройки голоса идеальные)
     const initTTS = () => {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (typeof window !== 'undefined') {
         setTtsSupported(true)
-        speechSynthesisRef.current = window.speechSynthesis
-        console.log('Web Speech API TTS is supported')
+        console.log('TTS initialized with ru-RU-SvetlanaNeural (настройки голоса идеальные)')
 
-        // Инициализируем голоса
-        const initVoices = () => {
-          const voices = speechSynthesisRef.current?.getVoices() || []
-          console.log('Available voices:', voices.length)
-
-          // Логируем доступные русские голоса
-          const russianVoices = voices.filter(v => v.lang.startsWith('ru'))
-          console.log('Russian voices available:', russianVoices.map(v => `${v.name} (${v.lang})`).join(', '))
-
-          // Логируем женские голоса
-          const femaleVoices = voices.filter(v =>
-            v.name.toLowerCase().includes('female') ||
-            v.name.toLowerCase().includes('woman') ||
-            v.name.toLowerCase().includes('женский')
-          )
-          console.log('Female voices available:', femaleVoices.map(v => `${v.name} (${v.lang})`).join(', '))
-          console.log('Priority voice: ru-RU-SvetlanaNeural (via custom API)')
+        // Инициализируем Web Speech API только для функции stopSpeaking
+        if ('speechSynthesis' in window) {
+          speechSynthesisRef.current = window.speechSynthesis
         }
-
-        initVoices()
-        speechSynthesisRef.current.addEventListener('voiceschanged', initVoices)
       } else {
         setTtsSupported(false)
-        console.log('Web Speech API TTS not supported')
+        console.log('Browser TTS not supported')
       }
     }
 
@@ -671,7 +653,7 @@ export default function JarvisChat() {
                   <button
                     onClick={toggleRecording}
                     className={`chat-mic-button ${isRecording ? 'recording' : ''}`}
-                    aria-label={isRecording ? "Остановить запись" : "Начать голосовую запись"}
+                    aria-label={isRecording ? "Остановить запись" : "��ачать голосовую запись"}
                   >
                     {isRecording ? <MicOff className="chat-mic-icon" /> : <Mic className="chat-mic-icon" />}
                     {isListening && <div className="mic-pulse"></div>}
