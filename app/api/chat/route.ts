@@ -166,9 +166,9 @@ export async function POST(request: NextRequest) {
 Отвечай на русском языке кратко и четко.`
     };
 
-    // Enhance messages with better context understanding
-    const enhancedMessages = enhanceMessageContext(messages);
-    const allMessages = [systemMessage, ...enhancedMessages];
+    // Keep messages simple for short responses
+    const simpleMessages = keepMessagesSimple(messages);
+    const allMessages = [systemMessage, ...simpleMessages];
 
     if (stream) {
       // Streaming response
