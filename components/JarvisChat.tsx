@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я Джарвис, ваш AI-пом��щник. Чем могу помочь?',
+      text: 'Привет! Я Джарвис, ваша AI-помощница. Чем могу помочь?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -213,7 +213,7 @@ export default function JarvisChat() {
       console.log('Speech Recognition not supported in this browser')
     }
 
-    // Инициализация TTS - используем только ru-RU-SvetlanaNeural (настройки голоса идеальные)
+    // Инициализация TTS - использу��м только ru-RU-SvetlanaNeural (настройки голоса идеальные)
     const initTTS = () => {
       if (typeof window !== 'undefined') {
         setTtsSupported(true)
@@ -388,7 +388,7 @@ export default function JarvisChat() {
     }
 
     setIsSpeaking(false)
-    console.log('🎤 Готовимся к озвучиванию нового ответа')
+    console.log('🎤 Гото��имся к озвучиванию нового ответа')
   }
 
   const speakText = async (text: string) => {
@@ -694,7 +694,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
+                  placeholder={isRecording ? "Говорите..." : "Напишите ��ообщение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
