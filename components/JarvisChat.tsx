@@ -140,7 +140,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатываем специ��ичные ошибки
+        // Обрабатывае�� специ��ичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -294,7 +294,7 @@ export default function JarvisChat() {
 
     if (!fullText) return
 
-    console.log('🎤 Непрерывное озвучивание:', fullText)
+    console.log('🎤 Н��прерывное озвучивание:', fullText)
 
     // Останавливаем предыдущее аудио
     if (currentAudioRef.current) {
@@ -350,7 +350,7 @@ export default function JarvisChat() {
   }
 
   const startNewSpeech = () => {
-    // Сб��асываем буфер для нового сообщения
+    // Сбрасываем буфер для нового сообщения
     continuousSpeechRef.current = ''
 
     // Останавливаем текущее аудио
@@ -386,7 +386,7 @@ export default function JarvisChat() {
       speechSynthesisRef.current.cancel()
     }
 
-    // Останавливаем все HTML Audio элементы на странице
+    // Останавливаем все HTML Audio э��ементы на странице
     const audioElements = document.querySelectorAll('audio')
     audioElements.forEach(audio => {
       if (!audio.paused) {
@@ -441,7 +441,7 @@ export default function JarvisChat() {
         throw new Error(`AI API error: ${response.status} ${response.statusText}`)
       }
 
-      // Создаем сообщение Д��арвиса для потокового обновления
+      // Создаем сообщение Джарвиса для потокового обновления
       const jarvisMessageId = (Date.now() + 1).toString()
       const jarvisMessage: Message = {
         id: jarvisMessageId,
@@ -515,7 +515,7 @@ export default function JarvisChat() {
       const finalText = sentenceBuffer.trim()
       if (finalText) {
         console.log('🎤 Завершаем озвучивание:', finalText)
-        await speakContinuously(finalText)
+        speakContinuously(finalText)
       }
 
     } catch (error) {
