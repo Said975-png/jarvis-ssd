@@ -49,6 +49,8 @@ export default function JarvisChat() {
   const fullTextRef = useRef<string>('')
   const currentAudioRef = useRef<HTMLAudioElement | null>(null)
   const isStreamingRef = useRef<boolean>(false)
+  const hasStartedSpeakingRef = useRef<boolean>(false)
+  const pendingTextRef = useRef<string>('')
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -346,9 +348,11 @@ export default function JarvisChat() {
   }
 
   const startNewSpeech = () => {
-    // Сбрасываем буфер для нового сообщения
+    // Сбрасываем все буферы для нового сообщения
     fullTextRef.current = ''
+    pendingTextRef.current = ''
     isStreamingRef.current = true
+    hasStartedSpeakingRef.current = false
 
     // Останавливаем текущее аудио
     if (currentAudioRef.current) {
@@ -367,9 +371,11 @@ export default function JarvisChat() {
   }
 
   const stopSpeaking = () => {
-    // Очищаем буфер
+    // Очищаем все буферы
     fullTextRef.current = ''
+    pendingTextRef.current = ''
     isStreamingRef.current = false
+    hasStartedSpeakingRef.current = false
 
     // Останавливаем текущее аудио
     if (currentAudioRef.current) {
@@ -491,8 +497,38 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Просто собираем весь текст, не озвучиваем по частям
+                  // Накапливаем текст и начинаем озвучивание после первых предложений
                   fullTextRef.current += content
+
+                  // Проверяем, можно ли начать озвучивание
+                  if (!hasStartedSpeakingRef.current && !isSpeaking) {
+                    const currentText = fullTextRef.current
+                    // Начинаем озвучивание после первых 80 символов и завершенного предложения
+                    if (currentText.length >= 80 && /[.!?]\s/.test(currentText)) {
+                      // Находим последнюю точку/восклицание/вопрос
+                      const lastSentenceEnd = Math.max(
+                        currentText.lastIndexOf('. '),
+                        currentText.lastIndexOf('! '),
+                        currentText.lastIndexOf('? ')
+                      )
+
+                      if (lastSentenceEnd > 50) {
+                        const textToSpeak = currentText.substring(0, lastSentenceEnd + 1).trim()
+                        if (textToSpeak.length > 30) {
+                          hasStartedSpeakingRef.current = true
+                          pendingTextRef.current = currentText.substring(lastSentenceEnd + 1)
+                          console.log('🎤 Начинаем раннее озвучивание:', textToSpeak.length, 'символов')
+                          speakCompleteText(textToSpeak)
+                        }
+                      }
+                    }
+                  } else if (hasStartedSpeakingRef.current) {
+                    // Если уже начали озвучивание, собираем остальной текст
+                    const remainingText = fullTextRef.current.substring(
+                      fullTextRef.current.length - pendingTextRef.current.length - content.length
+                    )
+                    pendingTextRef.current = remainingText
+                  }
                 }
               } catch (e) {
                 console.log('Parse error:', e)
@@ -502,12 +538,32 @@ export default function JarvisChat() {
         }
       }
 
-      // Озвучиваем полный текст одной порцией
+      // Завершаем стриминг и обр��батываем оставшийся текст
       isStreamingRef.current = false
-      const fullText = fullTextRef.current.trim()
-      if (fullText) {
-        console.log('🎤 Озвучиваем полный текст длиной', fullText.length, 'символов')
-        speakCompleteText(fullText)
+
+      if (hasStartedSpeakingRef.current) {
+        // Если уже начали озвучивание, добавляем оставшийся текст к очереди
+        const remainingText = pendingTextRef.current.trim()
+        if (remainingText.length > 10) {
+          console.log('🎤 Очередь: осталось', remainingText.length, 'символов для озвучивания')
+          // Ожидаем завершения текущего озвучивания
+          const checkAndContinue = () => {
+            if (!isSpeaking) {
+              console.log('🎤 Продолжаем озвучивание остатка')
+              speakCompleteText(remainingText)
+            } else {
+              setTimeout(checkAndContinue, 500)
+            }
+          }
+          setTimeout(checkAndContinue, 500)
+        }
+      } else {
+        // Если еще не начинали озвучивание, озвучиваем все сразу
+        const fullText = fullTextRef.current.trim()
+        if (fullText) {
+          console.log('🎤 Озвучиваем полный текст длиной', fullText.length, 'символов')
+          speakCompleteText(fullText)
+        }
       }
 
     } catch (error) {
