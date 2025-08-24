@@ -199,7 +199,7 @@ export default function JarvisChat() {
                 recognition.start()
               } catch (error) {
                 console.log('Failed to restart recognition:', error)
-                // Пр�� ошибке перезапуска останавливаем запись
+                // При ошибке перезапуска останавливаем запись
                 setIsRecording(false)
                 isRecordingRef.current = false
                 setIsListening(false)
@@ -528,7 +528,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Накапли��аем текст и начинаем озвучивание после первых предложений
+                  // Накапливаем текст и начинаем озвучивание после первых предложений
                   fullTextRef.current += content
 
                   // Проверяем, можно ли начать озвучивание
@@ -548,7 +548,7 @@ export default function JarvisChat() {
                         if (textToSpeak.length > 30) {
                           hasStartedSpeakingRef.current = true
                           pendingTextRef.current = currentText.substring(lastSentenceEnd + 1)
-                          console.log('🎤 Начинаем раннее озвучивание:', textToSpeak.length, 'символов')
+                          console.log('🎤 Начинаем раннее озвуч��вание:', textToSpeak.length, 'символов')
                           speakCompleteText(textToSpeak)
                         }
                       }
@@ -604,7 +604,7 @@ export default function JarvisChat() {
       const fallbackResponses = [
         'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
         'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
-        'Временный сбой. Давайте попробуем снова.'
+        'Временный с��ой. Давайте попробуем снова.'
       ]
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
@@ -760,7 +760,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Говорите..." : "Напишите соо��щение..."}
+                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
