@@ -140,7 +140,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатываем специфичные ошибки
+        // Обрабатываем специ��ичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -286,7 +286,7 @@ export default function JarvisChat() {
     }
   }
 
-  // Улучшенная очередь для TTS с мгновенным воспроизведением
+  // Улучшенная очередь для TTS без пауз
   const processSpeechQueue = async () => {
     if (isSpeakingQueueRef.current || speechQueueRef.current.length === 0) {
       return
@@ -299,8 +299,7 @@ export default function JarvisChat() {
       const textToSpeak = speechQueueRef.current.shift()
       if (textToSpeak) {
         await speakWithSvetlanaNeural(textToSpeak)
-        // Небольшая пауза между предложениями
-        await new Promise(resolve => setTimeout(resolve, 200))
+        // Убираем задержку для плавной речи
       }
     }
 
