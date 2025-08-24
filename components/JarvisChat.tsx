@@ -167,7 +167,7 @@ export default function JarvisChat() {
                 }
               }, 500)
             }
-            return // Не останавливаем запись
+            return // Не останавливаем ��апись
           case 'network':
             console.log('Network error - retrying...')
             if (isRecordingRef.current) {
@@ -199,7 +199,7 @@ export default function JarvisChat() {
                 recognition.start()
               } catch (error) {
                 console.log('Failed to restart recognition:', error)
-                // При ошибке перезапуска останавливаем запись
+                // При ошибке перезапуска останавливае�� запись
                 setIsRecording(false)
                 isRecordingRef.current = false
                 setIsListening(false)
@@ -361,7 +361,7 @@ export default function JarvisChat() {
         URL.revokeObjectURL(audioUrl)
         setIsSpeaking(false)
         currentAudioRef.current = null
-        console.log('🎵 Озвучивание завершено')
+        console.log('🎵 Озвучивание заверш��но')
       }
 
       audio.onerror = () => {
@@ -548,7 +548,7 @@ export default function JarvisChat() {
                         if (textToSpeak.length > 30) {
                           hasStartedSpeakingRef.current = true
                           pendingTextRef.current = currentText.substring(lastSentenceEnd + 1)
-                          console.log('🎤 Начинаем раннее озвуч��вание:', textToSpeak.length, 'символов')
+                          console.log('🎤 Начинаем раннее озвучивание:', textToSpeak.length, 'символов')
                           speakCompleteText(textToSpeak)
                         }
                       }
@@ -604,7 +604,7 @@ export default function JarvisChat() {
       const fallbackResponses = [
         'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
         'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
-        'Временный с��ой. Давайте попробуем снова.'
+        'Временный сбой. Давайте попробуем снова.'
       ]
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
