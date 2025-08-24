@@ -285,27 +285,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Floating elements */}
-      <div className="floating-elements">
-        <div className="floating-card card-1">
-          <div className="card-icon">
-            <MessageCircle className="icon" />
-          </div>
-          <div className="card-text">ИИ-чат поддержка</div>
-        </div>
-        <div className="floating-card card-2">
-          <div className="card-icon">
-            <BarChart3 className="icon" />
-          </div>
-          <div className="card-text">Аналитика и отчеты</div>
-        </div>
-        <div className="floating-card card-3">
-          <div className="card-icon">
-            <Target className="icon" />
-          </div>
-          <div className="card-text">Умные рекомендации</div>
-        </div>
-      </div>
 
       {/* Contract Process Panel */}
       {isContractPanelOpen && (
@@ -443,7 +422,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Мгновенная поддержка 24 часа в сутки</h3>
                   <p className="feature-description">
-                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновременно и никогда не теряет терпение даже с самыми сложными покупателями.
+                    ДЖАРВИС никогда не спит, не устает и не берет выходные. Он отвечает клиентам мгновенно в любое время дня и ночи, обрабатывает сотни обращений одновремен��о и никогда не теряет терпение даже с самыми сложными покупателями.
                   </p>
                 </div>
               </div>
