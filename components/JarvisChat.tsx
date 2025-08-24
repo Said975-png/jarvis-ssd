@@ -64,7 +64,7 @@ export default function JarvisChat() {
 
       // Автоматически озвучиваем приветствие при открытии чата
       if (messages.length === 1) {
-        // Небольшая задержка, чтобы чат успел открыться
+        // Небольшая задержк��, чтобы чат успел открыться
         setTimeout(() => {
           console.log('Auto-playing greeting...')
           speakText(messages[0].text)
@@ -287,15 +287,11 @@ export default function JarvisChat() {
     }
   }
 
-  // Система непрерывной речи без остановок
-  const speakContinuously = async (newText: string) => {
-    // Добавляем новый текст к общему буферу
-    continuousSpeechRef.current += ' ' + newText.trim()
-    const fullText = continuousSpeechRef.current.trim()
+  // Озву��ивание только полного завершенного текста
+  const speakCompleteText = async (text: string) => {
+    if (!text.trim()) return
 
-    if (!fullText) return
-
-    console.log('🎤 Н��прерывное озвучивание:', fullText)
+    console.log('🎤 Озвучиваем полный текст:', text.length, 'символов')
 
     // Останавливаем предыдущее аудио
     if (currentAudioRef.current) {
@@ -306,7 +302,6 @@ export default function JarvisChat() {
     setIsSpeaking(true)
 
     try {
-      // Создаем новое аудио с полным текстом
       const response = await fetch('/api/tts', {
         method: 'POST',
         headers: {
@@ -314,8 +309,8 @@ export default function JarvisChat() {
           'Accept': 'audio/mpeg'
         },
         body: JSON.stringify({
-          text: fullText,
-          rate: '0.9'
+          text: text,
+          rate: '0.95'
         })
       })
 
@@ -345,7 +340,7 @@ export default function JarvisChat() {
       await audio.play()
 
     } catch (error) {
-      console.error('Continuous speech error:', error)
+      console.error('Speech error:', error)
       setIsSpeaking(false)
     }
   }
@@ -515,7 +510,7 @@ export default function JarvisChat() {
       // Озвучиваем любой оставшийся текст
       const finalText = sentenceBuffer.trim()
       if (finalText) {
-        console.log('���� Завершаем озвучивание:', finalText)
+        console.log('🎤 Завершаем озвучивание:', finalText)
         speakContinuously(finalText)
       }
 
