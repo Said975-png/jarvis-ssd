@@ -75,7 +75,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // Инициализация Speech Recognition
+  // Инициализац��я Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -84,9 +84,10 @@ export default function JarvisChat() {
       const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
       const recognition = new SpeechRecognition()
       
-      recognition.continuous = false  // Изменено на false
+      recognition.continuous = true   // Включаем непрерывное прослушивание
       recognition.interimResults = true
       recognition.lang = 'ru-RU'
+      recognition.maxAlternatives = 1
       
       recognition.onstart = () => {
         console.log('Speech recognition started')
@@ -138,7 +139,7 @@ export default function JarvisChat() {
         isRecordingRef.current = false
         setIsListening(false)
         
-        // Очищаем таймер при ошибке
+        // Очи��аем таймер при ошибке
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current)
         }
@@ -429,7 +430,7 @@ export default function JarvisChat() {
         content: msg.text
       }))
 
-      // Отправляем потоковый запрос к AI API
+      // Отправляем ��отоковый запрос к AI API
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
