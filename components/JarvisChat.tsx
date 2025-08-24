@@ -63,10 +63,8 @@ export default function JarvisChat() {
       if (messages.length === 1) {
         // Небольшая задержка, чтобы чат успел открыться
         setTimeout(() => {
-          if (ttsSupported) {
-            console.log('Auto-playing greeting...')
-            speakText(messages[0].text)
-          }
+          console.log('Auto-playing greeting...')
+          speakText(messages[0].text)
         }, 500)
       }
     }
@@ -273,7 +271,7 @@ export default function JarvisChat() {
   const stopRecording = () => {
     console.log('stopRecording called')
     if (recognitionRef.current) {
-      // Сначала обновляем состояние
+      // Сначала о��новляем состояние
       setIsRecording(false)
       isRecordingRef.current = false
       setIsListening(false)
@@ -315,7 +313,7 @@ export default function JarvisChat() {
       console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
       setIsSpeaking(true)
 
-      // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
+      // Используем наш API для синтеза речи с SvetlanaNeural с максималь��о медленной скоростью
       const response = await fetch(`/api/tts?text=${encodeURIComponent(cleanText)}&rate=0.4`, {
         method: 'GET',
         headers: {
