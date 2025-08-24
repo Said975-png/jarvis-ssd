@@ -46,8 +46,9 @@ export default function JarvisChat() {
   const isRecordingRef = useRef(false)
   const currentTranscriptRef = useRef('')
   const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
-  const continuousSpeechRef = useRef<string>('')
+  const fullTextRef = useRef<string>('')
   const currentAudioRef = useRef<HTMLAudioElement | null>(null)
+  const isStreamingRef = useRef<boolean>(false)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -514,7 +515,7 @@ export default function JarvisChat() {
       // Озвучиваем любой оставшийся текст
       const finalText = sentenceBuffer.trim()
       if (finalText) {
-        console.log('🎤 Завершаем озвучивание:', finalText)
+        console.log('���� Завершаем озвучивание:', finalText)
         speakContinuously(finalText)
       }
 
