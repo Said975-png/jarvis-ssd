@@ -15,11 +15,13 @@ export async function GET(request: NextRequest) {
 
     const voice = "ru-RU-SvetlanaNeural";
 
-    // Создаем SSML с регулировкой скорости для более медленной и приятной речи
+    // Создаем SSML с регулировкой скорости для очень медленной и приятной речи
     const ssmlText = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ru-RU">
       <voice name="${voice}">
-        <prosody rate="${rate}" pitch="+5%" volume="90%">
-          ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+        <prosody rate="${rate}" pitch="+3%" volume="85%">
+          <break time="200ms"/>
+          ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\./g, '.<break time="500ms"/>')}
+          <break time="300ms"/>
         </prosody>
       </voice>
     </speak>`;
@@ -68,11 +70,13 @@ export async function POST(request: NextRequest) {
 
     const voice = "ru-RU-SvetlanaNeural";
 
-    // Создаем SSML с регулировкой скорости для более медленной и приятной реч��
+    // Создаем SSML с регулировкой скорости для очень медленной и приятной речи
     const ssmlText = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ru-RU">
       <voice name="${voice}">
-        <prosody rate="${rate}" pitch="+5%" volume="90%">
-          ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+        <prosody rate="${rate}" pitch="+3%" volume="85%">
+          <break time="200ms"/>
+          ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\./g, '.<break time="500ms"/>')}
+          <break time="300ms"/>
         </prosody>
       </voice>
     </speak>`;

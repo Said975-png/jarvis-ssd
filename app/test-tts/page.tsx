@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 export default function TestTTSPage() {
   const [text, setText] = useState('Привет! Меня зовут Светлана. Я готова помочь вам с вашими вопросами.')
-  const [rate, setRate] = useState('0.8') // Медленная скорость по умолчанию
+  const [rate, setRate] = useState('0.6') // Очень медленная скорость по умолчанию
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
