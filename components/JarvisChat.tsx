@@ -63,14 +63,12 @@ export default function JarvisChat() {
       if (messages.length === 1) {
         // Небольшая задержка, чтобы чат успел открыться
         setTimeout(() => {
-          if (ttsSupported) {
-            console.log('Auto-playing greeting...')
-            speakText(messages[0].text)
-          }
+          console.log('Auto-playing greeting...')
+          speakText(messages[0].text)
         }, 500)
       }
     }
-  }, [isOpen, messages, ttsSupported])
+  }, [isOpen, messages])
 
   // Инициализация Speech Recognition
   useEffect(() => {
@@ -181,37 +179,19 @@ export default function JarvisChat() {
       console.log('Speech Recognition not supported in this browser')
     }
 
-    // Инициализация Web Speech API TTS (приоритет сог��асно промпту)
+    // Инициализация TTS - используем только ru-RU-SvetlanaNeural (настройки голоса идеальные)
     const initTTS = () => {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (typeof window !== 'undefined') {
         setTtsSupported(true)
-        speechSynthesisRef.current = window.speechSynthesis
-        console.log('Web Speech API TTS is supported')
-
-        // Инициализируем голоса
-        const initVoices = () => {
-          const voices = speechSynthesisRef.current?.getVoices() || []
-          console.log('Available voices:', voices.length)
-
-          // Логируем доступные русские голоса
-          const russianVoices = voices.filter(v => v.lang.startsWith('ru'))
-          console.log('Russian voices available:', russianVoices.map(v => `${v.name} (${v.lang})`).join(', '))
-
-          // Логируем женские голоса
-          const femaleVoices = voices.filter(v =>
-            v.name.toLowerCase().includes('female') ||
-            v.name.toLowerCase().includes('woman') ||
-            v.name.toLowerCase().includes('женский')
-          )
-          console.log('Female voices available:', femaleVoices.map(v => `${v.name} (${v.lang})`).join(', '))
-          console.log('Priority voice: ru-RU-SvetlanaNeural (via custom API)')
+        console.log('TTS initialized with ru-RU-SvetlanaNeural (настройки голоса идеальные)')
+        
+        // Инициализируем Web Speech API только для функции stopSpeaking
+        if ('speechSynthesis' in window) {
+          speechSynthesisRef.current = window.speechSynthesis
         }
-
-        initVoices()
-        speechSynthesisRef.current.addEventListener('voiceschanged', initVoices)
       } else {
         setTtsSupported(false)
-        console.log('Web Speech API TTS not supported')
+        console.log('Browser TTS not supported')
       }
     }
 
@@ -305,26 +285,37 @@ export default function JarvisChat() {
   }
 
   const speakWithSvetlanaNeural = async (text: string) => {
+    // Останавливаем любую предыдущую речь ПЕРЕД началом новой
+    stopSpeaking()
+    
     try {
-      // Очищаем текст от технических элементов
-      const cleanText = cleanTextForSpeech(text)
+      // Временно убираем очистку текста для диагностики
+      const cleanText = text
       
+      console.log('Original text:', text)
+      console.log('Cleaned text:', cleanText)
+      console.log('Encoded text:', encodeURIComponent(cleanText))
       console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
       setIsSpeaking(true)
 
       // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
-      const response = await fetch(`/api/tts?text=${encodeURIComponent(cleanText)}&rate=0.4`, {
-        method: 'GET',
+      const response = await fetch('/api/tts', {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Accept': 'audio/mpeg'
-        }
+        },
+        body: JSON.stringify({
+          text: cleanText,
+          rate: '0.4'
+        })
       })
 
       if (!response.ok) {
         throw new Error(`TTS API error: ${response.statusText}`)
       }
 
-      // Получаем аудио данные
+      // Получаем а��дио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
       
@@ -345,8 +336,7 @@ export default function JarvisChat() {
         console.error('Audio playback error:', error)
         setIsSpeaking(false)
         URL.revokeObjectURL(audioUrl)
-        // Fallback на Web Speech API если SvetlanaNeural не работает
-        fallbackToWebSpeech(text)
+        console.log('SvetlanaNeural playback failed - no fallback to preserve voice settings')
       }
       
       // Воспроизводим аудио
@@ -355,106 +345,45 @@ export default function JarvisChat() {
     } catch (error) {
       console.error('SvetlanaNeural TTS error:', error)
       setIsSpeaking(false)
-      // Fallback на Web Speech API
-      fallbackToWebSpeech(text)
+      console.log('SvetlanaNeural synthesis failed - no fallback to preserve voice settings')
     }
-  }
-
-  const speakWithWebSpeech = (text: string) => {
-    if (!ttsSupported || !speechSynthesisRef.current) {
-      console.log('TTS not supported')
-      return
-    }
-
-    // Останавливаем предыдущее воспроизведение
-    if (speechSynthesisRef.current.speaking) {
-      speechSynthesisRef.current.cancel()
-    }
-
-    // Очищаем текст от технических элементов
-    const cleanText = cleanTextForSpeech(text)
-
-    setIsSpeaking(true)
-
-    // Говорим весь текст целиком без разбиения на предложения
-    const synth = window.speechSynthesis
-    const voices = synth.getVoices()
-
-    // Ищем женский русский голос согласно промпту
-    let voice = voices.find(v =>
-      v.lang.startsWith("ru") && (
-        v.name.toLowerCase().includes("female") ||
-        v.name.toLowerCase().includes("женский") ||
-        v.name.toLowerCase().includes("google") ||
-        v.name.toLowerCase().includes("алина") ||
-        v.name.toLowerCase().includes("катя")
-      )
-    ) || voices.find(v => v.lang.startsWith("ru"))
-
-    // Если русского нет, берем женский английский
-    if (!voice) {
-      voice = voices.find(v =>
-        v.lang.startsWith("en") && (
-          v.name.toLowerCase().includes("female") ||
-          v.name.toLowerCase().includes("woman")
-        )
-      )
-    }
-
-    const utterance = new SpeechSynthesisUtterance(cleanText)
-
-    if (voice) {
-      utterance.voice = voice
-      console.log('Selected voice:', voice.name)
-    }
-
-    // Настройки для дружелюбного женского голоса
-    utterance.rate = 1.0 // нормальная скорость
-    utterance.pitch = 1.1 // немного выш��, чтобы звучало женственнее
-    utterance.volume = 0.9
-
-    utterance.onstart = () => {
-      console.log('Speaking text:', cleanText)
-    }
-
-    utterance.onend = () => {
-      setIsSpeaking(false)
-      console.log('Finished speaking')
-    }
-
-    utterance.onerror = (event) => {
-      console.error('Speech synthesis error:', event.error)
-      setIsSpeaking(false)
-    }
-
-    synth.speak(utterance)
   }
 
   const cleanTextForSpeech = (text: string): string => {
     return text
       // Убираем URL
       .replace(/https?:\/\/[^\s]+/g, 'ссылка')
+      // Убираем любые HTML теги и символы < >
+      .replace(/<[^>]*>/g, '')
+      .replace(/</g, '')
+      .replace(/>/g, '')
       // Убираем технические коды в скобках
       .replace(/\([A-Z0-9_]+\)/g, '')
       // Убираем хештеги и специальные символы
       .replace(/#\w+/g, '')
+      // Убираем символы &amp; &lt; &gt; и другие HTML-сущности
+      .replace(/&[a-z]+;/gi, '')
+      .replace(/&/g, '')
+      // Убираем кавычки и специальные символы
+      .replace(/["""'']/g, '')
+      .replace(/[«»]/g, '')
       // Убираем множественные пробелы
       .replace(/\s+/g, ' ')
       .trim()
   }
 
-  // Убираем функции разбиения на предложения - больше не нужны
-
   const speakText = async (text: string) => {
-    // Приоритет ru-RU-SvetlanaNeural согласно плану пользователя
+    // Проверяем, не говорит ли уже
+    if (isSpeaking) {
+      console.log('Already speaking, stopping current speech first')
+      stopSpeaking()
+      // Небольшая задержка для кор��ектной остановки
+      await new Promise(resolve => setTimeout(resolve, 200))
+    }
+
+    // Только ru-RU-SvetlanaNeural согласно плану пользователя - настройки голоса идеальные
     console.log('Using ru-RU-SvetlanaNeural for:', text)
     await speakWithSvetlanaNeural(text)
-  }
-
-  // Fallback на Web Speech API если SvetlanaNeural не работает
-  const fallbackToWebSpeech = (text: string) => {
-    console.log('Fallback to Web Speech API')
-    speakWithWebSpeech(text)
   }
 
   const stopSpeaking = () => {
@@ -465,6 +394,15 @@ export default function JarvisChat() {
     if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
       speechSynthesisRef.current.cancel()
     }
+
+    // Останавливаем все HTML Audio элементы на странице
+    const audioElements = document.querySelectorAll('audio')
+    audioElements.forEach(audio => {
+      if (!audio.paused) {
+        audio.pause()
+        audio.currentTime = 0
+      }
+    })
 
     console.log('All speech stopped')
   }
@@ -488,11 +426,11 @@ export default function JarvisChat() {
     setInputMessage('')
     setIsTyping(true)
 
-    // Имитация ответа Джарвиса
+    // Имит��ция ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
         'Прекрасно! Я очень рада нашему общению. Говорю медленно для вашего комфорта. Расскажите, какой проект вас интересует? Помогу найти идеальное решение.',
-        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
+        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений д��я бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
         'Как интересно! Давайте поговорим о ваших потребностях. Уверена, найдём отличное решение вместе. Говорю медленно, чтобы было удобно.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Говорю размеренно. Хотите узнать подробнее?',
         'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расскажите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
@@ -512,12 +450,10 @@ export default function JarvisChat() {
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
-      // Озвучиваем ответ Джарвиса
-      if (ttsSupported) {
-        setTimeout(async () => {
-          await speakText(randomResponse)
-        }, 500) // Небольшая задержка перед озвучиванием
-      }
+      // Озвучиваем ответ Джарвиса только с SvetlanaNeural
+      setTimeout(async () => {
+        await speakText(randomResponse)
+      }, 500) // Небольшая задержка перед озвучиванием
     }, 1500)
   }
 
