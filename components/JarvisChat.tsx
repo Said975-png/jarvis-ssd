@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Меня зовут Джарвис. Я ваш ИИ-помощник. Говорю спокойно и медленно для вашего комфорта. Расскажите, чем могу помочь с вашим проектом?',
+      text: 'Привет! Я Джарвис, ваш AI-помощник. Чем могу помочь?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -46,6 +46,8 @@ export default function JarvisChat() {
   const isRecordingRef = useRef(false)
   const currentTranscriptRef = useRef('')
   const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
+  const speechQueueRef = useRef<string[]>([])
+  const isSpeakingQueueRef = useRef(false)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -138,7 +140,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатываем специфичные ошибки
+        // Обрабатываем специ��ичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -284,19 +286,46 @@ export default function JarvisChat() {
     }
   }
 
-  const speakWithSvetlanaNeural = async (text: string) => {
-    // Останавливаем любую предыдущую речь ПЕРЕД началом новой
-    stopSpeaking()
-    
+  // Плавная очередь TTS - озвучивает предло��ения подряд без остановок
+  const processSpeechQueue = async () => {
+    if (isSpeakingQueueRef.current || speechQueueRef.current.length === 0) {
+      return
+    }
+
+    isSpeakingQueueRef.current = true
+    setIsSpeaking(true)
+
     try {
-      // Временно убираем очистку текста для диагностики
+      while (speechQueueRef.current.length > 0) {
+        const textToSpeak = speechQueueRef.current.shift()
+        if (textToSpeak) {
+          await speakWithSvetlanaNeural(textToSpeak)
+        }
+      }
+    } catch (error) {
+      console.error('Speech queue error:', error)
+    } finally {
+      isSpeakingQueueRef.current = false
+      setIsSpeaking(false)
+    }
+  }
+
+  const addToSpeechQueue = (text: string) => {
+    if (text.trim()) {
+      console.log('🎤 Мгновенно добавляем:', text)
+      speechQueueRef.current.push(text.trim())
+      // Запускаем без задержек
+      if (!isSpeakingQueueRef.current) {
+        processSpeechQueue()
+      }
+    }
+  }
+
+  const speakWithSvetlanaNeural = async (text: string) => {
+    try {
       const cleanText = text
       
-      console.log('Original text:', text)
-      console.log('Cleaned text:', cleanText)
-      console.log('Encoded text:', encodeURIComponent(cleanText))
-      console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
-      setIsSpeaking(true)
+      console.log('🎵 SvetlanaNeural говорит:', cleanText)
 
       // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
       const response = await fetch('/api/tts', {
@@ -307,7 +336,7 @@ export default function JarvisChat() {
         },
         body: JSON.stringify({
           text: cleanText,
-          rate: '0.4'
+          rate: '0.6'
         })
       })
 
@@ -315,79 +344,50 @@ export default function JarvisChat() {
         throw new Error(`TTS API error: ${response.statusText}`)
       }
 
-      // Получаем а��дио данные
+      // Получаем аудио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
       
       // Создаем HTML Audio элемент для воспроизведения
       const audio = new Audio(audioUrl)
       
-      audio.onplay = () => {
-        console.log('SvetlanaNeural started speaking:', cleanText)
-      }
-      
-      audio.onended = () => {
-        setIsSpeaking(false)
-        URL.revokeObjectURL(audioUrl) // Освобождаем память
-        console.log('SvetlanaNeural finished speaking')
-      }
-      
-      audio.onerror = (error) => {
-        console.error('Audio playback error:', error)
-        setIsSpeaking(false)
-        URL.revokeObjectURL(audioUrl)
-        console.log('SvetlanaNeural playback failed - no fallback to preserve voice settings')
-      }
-      
-      // Воспроизводим аудио
-      await audio.play()
+      return new Promise<void>((resolve, reject) => {
+        audio.onplay = () => {
+          console.log('🎵 SvetlanaNeural started speaking:', cleanText)
+        }
+        
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl) // Освобождаем память
+          console.log('🎵 SvetlanaNeural finished speaking')
+          resolve()
+        }
+        
+        audio.onerror = (error) => {
+          console.error('Audio playback error:', error)
+          URL.revokeObjectURL(audioUrl)
+          reject(error)
+        }
+        
+        // Воспроизводим аудио
+        audio.play().catch(reject)
+      })
       
     } catch (error) {
       console.error('SvetlanaNeural TTS error:', error)
-      setIsSpeaking(false)
-      console.log('SvetlanaNeural synthesis failed - no fallback to preserve voice settings')
+      throw error
     }
-  }
-
-  const cleanTextForSpeech = (text: string): string => {
-    return text
-      // Убираем URL
-      .replace(/https?:\/\/[^\s]+/g, 'ссылка')
-      // Убираем любые HTML теги и символы < >
-      .replace(/<[^>]*>/g, '')
-      .replace(/</g, '')
-      .replace(/>/g, '')
-      // Убираем технические коды в скобках
-      .replace(/\([A-Z0-9_]+\)/g, '')
-      // Убираем хештеги и специальные символы
-      .replace(/#\w+/g, '')
-      // Убираем символы &amp; &lt; &gt; и другие HTML-сущности
-      .replace(/&[a-z]+;/gi, '')
-      .replace(/&/g, '')
-      // Убираем кавычки и специальные символы
-      .replace(/["""'']/g, '')
-      .replace(/[«»]/g, '')
-      // Убираем множественные пробелы
-      .replace(/\s+/g, ' ')
-      .trim()
   }
 
   const speakText = async (text: string) => {
-    // Проверяем, не говорит ли уже
-    if (isSpeaking) {
-      console.log('Already speaking, stopping current speech first')
-      stopSpeaking()
-      // Небольшая задержка для кор��ектной остановки
-      await new Promise(resolve => setTimeout(resolve, 200))
-    }
-
-    // Только ru-RU-SvetlanaNeural согласно плану пользователя - настройки голоса идеальные
-    console.log('Using ru-RU-SvetlanaNeural for:', text)
-    await speakWithSvetlanaNeural(text)
+    // Сразу добавляем в очередь без лишних проверок
+    console.log('🎵 Быстро озвучиваем:', text)
+    addToSpeechQueue(text)
   }
 
   const stopSpeaking = () => {
-    // Останавливаем любое воспроизведение
+    // Очищаем очередь
+    speechQueueRef.current = []
+    isSpeakingQueueRef.current = false
     setIsSpeaking(false)
 
     // Останавливаем Web Speech API
@@ -407,7 +407,7 @@ export default function JarvisChat() {
     console.log('All speech stopped')
   }
 
-  const sendMessage = (message: string) => {
+  const sendMessage = async (message: string) => {
     console.log('sendMessage called with:', message)
     if (!message.trim()) {
       console.log('Message is empty, not sending')
@@ -421,28 +421,128 @@ export default function JarvisChat() {
       timestamp: new Date()
     }
 
-    console.log('Sending message to chat:', userMessage.text)
+    console.log('Sending message to AI:', userMessage.text)
     setMessages(prev => [...prev, userMessage])
     setInputMessage('')
     setIsTyping(true)
 
-    // Имит��ция ответа Джарвиса
-    setTimeout(() => {
-      const jarvisResponses = [
-        'Прекрасно! Я очень рада нашему общению. Говорю медленно для вашего комфорта. Расскажите, какой проект вас интересует? Помогу найти идеальное решение.',
-        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений д��я бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
-        'Как интересно! Давайте поговорим о ваших потребностях. Уверена, найдём отличное решение вместе. Говорю медленно, чтобы было удобно.',
-        'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Говорю размеренно. Хотите узнать подробнее?',
-        'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расскажите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
-        'Как здорово, что можем пообщаться! Всегда рада помочь с проектами. Что именно интересует? Говорю спокойно и размеренно.',
-        'Замечательно! Знаете, обожаю работать над интересными задачами. Поделитесь идеями, их воплотим. Говорю медленно для удобного восприятия.'
+    try {
+      // Подготавливаем историю сообщений для AI
+      const allMessages = [...messages, userMessage]
+      const aiMessages = allMessages.map(msg => ({
+        role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
+        content: msg.text
+      }))
+
+      // Отправляем потоковый запрос к AI API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: aiMessages,
+          stream: true // Включаем потоковую пер��дачу
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`AI API error: ${response.status} ${response.statusText}`)
+      }
+
+      // Создаем сообщение Джарвиса для потокового обновления
+      const jarvisMessageId = (Date.now() + 1).toString()
+      const jarvisMessage: Message = {
+        id: jarvisMessageId,
+        text: '',
+        sender: 'jarvis',
+        timestamp: new Date()
+      }
+
+      // Добавляем пустое сообщение, которое будем обновлять
+      setMessages(prev => [...prev, jarvisMessage])
+      setIsTyping(false)
+
+      // Обрабатываем потоковый ответ
+      const reader = response.body?.getReader()
+      const decoder = new TextDecoder()
+      let accumulatedText = ''
+      let sentenceBuffer = ''
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read()
+          
+          if (done) break
+
+          const chunk = decoder.decode(value, { stream: true })
+          const lines = chunk.split('\n')
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6)
+              
+              if (data === '[DONE]') continue
+
+              try {
+                const parsed = JSON.parse(data)
+                const content = parsed.choices?.[0]?.delta?.content || ''
+                
+                if (content) {
+                  accumulatedText += content
+                  sentenceBuffer += content
+
+                  // Обновляем сообщение в реальном времени
+                  setMessages(prev => prev.map(msg => 
+                    msg.id === jarvisMessageId 
+                      ? { ...msg, text: accumulatedText }
+                      : msg
+                  ))
+
+                  // О��вучиваем только полные предложения для плавной речи
+                  const isCompleteSentence = /[.!?][\s\n]*$/.test(content)
+
+                  if (isCompleteSentence) {
+                    const completeSentence = sentenceBuffer.trim()
+
+                    if (completeSentence && completeSentence.length > 5) {
+                      console.log('🎤 Озвучиваем полное предложение:', completeSentence)
+                      addToSpeechQueue(completeSentence)
+                    }
+
+                    sentenceBuffer = ''
+                  }
+                }
+              } catch (e) {
+                console.log('Parse error:', e)
+              }
+            }
+          }
+        }
+      }
+
+      // Если остался текст в буфере, озвучиваем его как завершающий фрагмент
+      const finalText = sentenceBuffer.trim()
+      if (finalText && finalText.length > 3) {
+        console.log('🎤 Озвучиваем завершение:', finalText)
+        addToSpeechQueue(finalText)
+      }
+
+    } catch (error) {
+      console.error('AI chat error:', error)
+      
+      // Fallback to predefined responses if AI fails
+      const fallbackResponses = [
+        'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
+        'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
+        'Временный сбой. Давайте попробуем снова.'
       ]
       
-      const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
+      const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
       
       const jarvisMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: randomResponse,
+        text: fallbackResponse,
         sender: 'jarvis',
         timestamp: new Date()
       }
@@ -450,15 +550,15 @@ export default function JarvisChat() {
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
-      // Озвучиваем ответ Джарвиса только с SvetlanaNeural
+      // Озвучиваем fallback ответ
       setTimeout(async () => {
-        await speakText(randomResponse)
-      }, 500) // Небольшая задержка перед озвучиванием
-    }, 1500)
+        await speakText(fallbackResponse)
+      }, 500)
+    }
   }
 
   const handleSendMessage = async () => {
-    sendMessage(inputMessage)
+    await sendMessage(inputMessage)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
