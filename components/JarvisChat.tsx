@@ -151,6 +151,7 @@ export default function JarvisChat() {
             break
           case 'not-allowed':
             console.log('Microphone access denied')
+            alert('Нужно разрешить доступ к микрофону в настройках браузера')
             break
           case 'no-speech':
             console.log('No speech detected - continuing to listen')
@@ -204,7 +205,7 @@ export default function JarvisChat() {
                 setIsListening(false)
               }
             }
-          }, 300) // Небольшая задержка пе��ед перезапуском
+          }, 300) // Небольшая задержка перед перезапуском
         }
       }
       
@@ -533,7 +534,7 @@ export default function JarvisChat() {
                   // Проверяем, можно ли начать озвучивание
                   if (!hasStartedSpeakingRef.current && !isSpeaking) {
                     const currentText = fullTextRef.current
-                    // Начинаем озвучивание после первых 80 символо�� и завершенного предложения
+                    // Начинаем озвучивание после первых 80 символов и завершенного предложения
                     if (currentText.length >= 80 && /[.!?]\s/.test(currentText)) {
                       // Находим последнюю точку/восклицание/вопрос
                       const lastSentenceEnd = Math.max(
@@ -553,7 +554,7 @@ export default function JarvisChat() {
                       }
                     }
                   } else if (hasStartedSpeakingRef.current) {
-                    // Если уже начали озвучивание, собираем остальной текст
+                    // Если уже начали ��звучивание, собираем остальной текст
                     const remainingText = fullTextRef.current.substring(
                       fullTextRef.current.length - pendingTextRef.current.length - content.length
                     )
