@@ -48,7 +48,10 @@ async function callGroq(messages: Message[], stream = false): Promise<Response> 
       messages,
       stream,
       max_tokens: 4000,
-      temperature: 0.7,
+      temperature: 0.3,
+      top_p: 0.9,
+      frequency_penalty: 0.1,
+      presence_penalty: 0.1,
     }),
   });
 
@@ -76,7 +79,10 @@ async function callOpenRouter(messages: Message[], stream = false): Promise<Resp
       messages,
       stream,
       max_tokens: 4000,
-      temperature: 0.7,
+      temperature: 0.3,
+      top_p: 0.9,
+      frequency_penalty: 0.1,
+      presence_penalty: 0.1,
     }),
   });
 
