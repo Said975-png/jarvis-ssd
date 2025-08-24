@@ -500,18 +500,25 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Проверяем, завершилось ли предложение (более гибкая проверка)
-                  const sentenceEnders = /[.!?][\s\n]*$/
-                  if (sentenceEnders.test(content) || content.includes('\n\n')) {
-                    const completeSentence = sentenceBuffer.trim()
-                    
-                    if (completeSentence && completeSentence.length > 8) {
-                      console.log('🎤 Завершилось предложение, озвучиваем:', completeSentence)
-                      
-                      // Озвучиваем предложение сразу как оно завершилось
-                      addToSpeechQueue(completeSentence)
+                  // Быстрое озвучивание по частям без пауз
+                  const shouldSpeak =
+                    // Полные предложения
+                    /[.!?][\s\n]*$/.test(content) ||
+                    // Длинные паузы (запятые, двоеточия)
+                    /[,:;][\s]*$/.test(content) ||
+                    // Каждые 30 символов
+                    sentenceBuffer.length >= 30 ||
+                    // Переносы строк
+                    content.includes('\n')
+
+                  if (shouldSpeak) {
+                    const textToSpeak = sentenceBuffer.trim()
+
+                    if (textToSpeak && textToSpeak.length > 3) {
+                      console.log('🎤 Мгновенно озвучиваем:', textToSpeak)
+                      addToSpeechQueue(textToSpeak)
                     }
-                    
+
                     sentenceBuffer = ''
                   }
                 }
