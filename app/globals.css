@@ -2425,27 +2425,25 @@ body {
 
 /* Additional styles for authenticated state */
 .auth-button.user-button {
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #4ade80;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .auth-button.user-button:hover {
-  background: rgba(34, 197, 94, 0.2);
-  border-color: rgba(34, 197, 94, 0.5);
-  transform: translateY(-2px);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .auth-button.logout-button {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .auth-button.logout-button:hover {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.5);
-  transform: translateY(-2px);
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
 }
 
 /* Pricing Section */
