@@ -350,7 +350,7 @@ export default function JarvisChat() {
   }
 
   const startNewSpeech = () => {
-    // Сбрасываем буфер для нового сообщения
+    // Сб��асываем буфер для нового сообщения
     continuousSpeechRef.current = ''
 
     // Останавливаем текущее аудио
@@ -441,7 +441,7 @@ export default function JarvisChat() {
         throw new Error(`AI API error: ${response.status} ${response.statusText}`)
       }
 
-      // Создаем сообщение Джарвиса для потокового обновления
+      // Создаем сообщение Д��арвиса для потокового обновления
       const jarvisMessageId = (Date.now() + 1).toString()
       const jarvisMessage: Message = {
         id: jarvisMessageId,
@@ -486,7 +486,7 @@ export default function JarvisChat() {
                   accumulatedText += content
                   sentenceBuffer += content
 
-                  // Обновляем сообщен��е в реальном времени
+                  // Обновляем сообщение в реальном времени
                   setMessages(prev => prev.map(msg => 
                     msg.id === jarvisMessageId 
                       ? { ...msg, text: accumulatedText }
@@ -498,7 +498,7 @@ export default function JarvisChat() {
                     const textToSpeak = sentenceBuffer.trim()
                     if (textToSpeak) {
                       console.log('🎤 Непрерывно озвучиваем:', textToSpeak)
-                      await speakContinuously(textToSpeak)
+                      speakContinuously(textToSpeak)
                       sentenceBuffer = ''
                     }
                   }
