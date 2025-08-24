@@ -72,7 +72,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // Инициали��ация Speech Recognition
+  // Инициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -286,7 +286,7 @@ export default function JarvisChat() {
     }
   }
 
-  // Плавная очередь TTS - озвучивает предложения подряд без остановок
+  // Плавная очередь TTS - озвучивает предло��ения подряд без остановок
   const processSpeechQueue = async () => {
     if (isSpeakingQueueRef.current || speechQueueRef.current.length === 0) {
       return
@@ -499,7 +499,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Озвучиваем только полные предложения для плавной речи
+                  // О��вучиваем только полные предложения для плавной речи
                   const isCompleteSentence = /[.!?][\s\n]*$/.test(content)
 
                   if (isCompleteSentence) {
@@ -521,10 +521,11 @@ export default function JarvisChat() {
         }
       }
 
-      // Если остался текст в буфере, озвучиваем его
-      if (sentenceBuffer.trim()) {
-        console.log('🎤 Озвучиваем остаток:', sentenceBuffer.trim())
-        addToSpeechQueue(sentenceBuffer.trim())
+      // Если остался текст в буфере, озвучиваем его как завершающий фрагмент
+      const finalText = sentenceBuffer.trim()
+      if (finalText && finalText.length > 3) {
+        console.log('🎤 Озвучиваем завершение:', finalText)
+        addToSpeechQueue(finalText)
       }
 
     } catch (error) {
@@ -534,7 +535,7 @@ export default function JarvisChat() {
       const fallbackResponses = [
         'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
         'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
-        'Временный сбой. Дав��йте попробуем снова.'
+        'Временный сбой. Давайте попробуем снова.'
       ]
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
