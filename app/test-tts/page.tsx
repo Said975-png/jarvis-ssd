@@ -96,8 +96,8 @@ export default function TestTTSPage() {
             fontSize: '14px'
           }}
         >
-          <option value="0.6">Очень медленно (0.6x)</option>
-          <option value="0.8">Медленно (0.8x) - Рекомендуется</option>
+          <option value="0.6">Очень медленно (0.6x) - Рекомендуется</option>
+          <option value="0.8">Медленно (0.8x)</option>
           <option value="1.0">Нормально (1.0x)</option>
           <option value="1.2">Быстро (1.2x)</option>
           <option value="1.5">Очень быстро (1.5x)</option>
@@ -140,8 +140,8 @@ export default function TestTTSPage() {
           <li><strong>Язык:</strong> Русский (Россия)</li>
           <li><strong>Тип:</strong> Женский нейронный голос Microsoft</li>
           <li><strong>Характеристики:</strong> Серьёзный, глубокий и уверенный с лёгким металлическим оттенком</li>
-          <li><strong>Скорость по умолчанию:</strong> 0.8x (замедленная для комфортного восприятия)</li>
-          <li><strong>Дополнительные настройки:</strong> Повышенная интонация (+5%), комфортная громкость (90%)</li>
+          <li><strong>Скорость по умолчанию:</strong> 0.6x (очень медленная для максимального комфорта)</li>
+          <li><strong>Дополнительные настройки:</strong> Мягкая интонация (+3%), тихая громкость (85%), паузы между предложениями</li>
         </ul>
       </div>
       
