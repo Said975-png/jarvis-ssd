@@ -199,7 +199,7 @@ export default function JarvisChat() {
                 recognition.start()
               } catch (error) {
                 console.log('Failed to restart recognition:', error)
-                // При ошибке перезапуска останавливаем запись
+                // Пр�� ошибке перезапуска останавливаем запись
                 setIsRecording(false)
                 isRecordingRef.current = false
                 setIsListening(false)
@@ -485,7 +485,7 @@ export default function JarvisChat() {
         timestamp: new Date()
       }
 
-      // Добавляем пу��тое сообщение, которое будем обновлять
+      // Добавляем пустое сообщение, которое будем обновлять
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
@@ -528,7 +528,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Накапливаем текст и начинаем озвучивание после первых предложений
+                  // Накапли��аем текст и начинаем озвучивание после первых предложений
                   fullTextRef.current += content
 
                   // Проверяем, можно ли начать озвучивание
@@ -686,7 +686,7 @@ export default function JarvisChat() {
             ))}
           </div>
           <div className="chat-container">
-            {/* Заг��ловок чата */}
+            {/* Заголовок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
                 <div className="chat-avatar">
@@ -760,7 +760,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
+                  placeholder={isRecording ? "Говорите..." : "Напишите соо��щение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
