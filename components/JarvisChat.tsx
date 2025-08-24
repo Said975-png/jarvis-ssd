@@ -72,7 +72,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // ��нициализация Speech Recognition
+  // Инициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -444,7 +444,7 @@ export default function JarvisChat() {
         },
         body: JSON.stringify({
           messages: aiMessages,
-          stream: true // Включаем потоковую передачу
+          stream: true // Включаем потоковую пер��дачу
         })
       })
 
@@ -501,7 +501,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Проверяем, завершилось ли пр��дложение (более гибкая проверка)
+                  // Проверяем, завершилось ли предложение (более гибкая проверка)
                   const sentenceEnders = /[.!?][\s\n]*$/
                   if (sentenceEnders.test(content) || content.includes('\n\n')) {
                     const completeSentence = sentenceBuffer.trim()
@@ -535,9 +535,9 @@ export default function JarvisChat() {
       
       // Fallback to predefined responses if AI fails
       const fallbackResponses = [
-        'Извините, возникли временные технические сложности с нейросетью. Пожалуйста, повторите ваш запрос через несколько секунд — я готов предоставить вам максимально качественный анализ.',
-        'Произошел сбой соединения с основными серверами ИИ. Переформулируйте ваш вопрос, и я обязательно дам подробный и экспертный ответ.',
-        'Временная потеря связи с вычислительными ресурсами. Через момент буду готов предоставить глубокий анализ вашей задачи.'
+        'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
+        'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
+        'Временный сбой. Давайте попробуем снова.'
       ]
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
@@ -552,7 +552,7 @@ export default function JarvisChat() {
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
-      // Озвуч��ваем fallback ответ
+      // Озвучиваем fallback ответ
       setTimeout(async () => {
         await speakText(fallbackResponse)
       }, 500)
@@ -604,7 +604,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Э��фект частиц при открытии */}
+          {/* Эффект частиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
