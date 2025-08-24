@@ -9,19 +9,22 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
     }
 
-    // Динамический импорт edge-tts
-    const edgeTTS = await import('edge-tts');
-    
+    // Динамический импорт @travisvn/edge-tts
+    const { EdgeTTS } = await import('@travisvn/edge-tts');
+
     const voice = "ru-RU-SvetlanaNeural";
-    
+
     console.log(`Synthesizing text: "${text}" with voice: ${voice}`);
 
     // Создаем объект для синтеза
-    const tts = new edgeTTS.default(voice);
-    
+    const tts = new EdgeTTS(text, voice);
+
     // Синтезируем речь
-    const audioBuffer = await tts.synthesize(text);
-    
+    const result = await tts.synthesize();
+
+    // Конвертируем аудио в Buffer
+    const audioBuffer = Buffer.from(await result.audio.arrayBuffer());
+
     // Возвращаем аудио данные
     return new NextResponse(audioBuffer, {
       status: 200,
@@ -31,11 +34,11 @@ export async function GET(request: NextRequest) {
         'Cache-Control': 'public, max-age=3600', // Кэшируем на час
       },
     });
-    
+
   } catch (error) {
     console.error('TTS synthesis error:', error);
     return NextResponse.json(
-      { error: 'Failed to synthesize speech', details: error instanceof Error ? error.message : 'Unknown error' }, 
+      { error: 'Failed to synthesize speech', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
@@ -50,19 +53,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
     }
 
-    // Динамический импорт edge-tts
-    const edgeTTS = await import('edge-tts');
-    
+    // Динамический импорт @travisvn/edge-tts
+    const { EdgeTTS } = await import('@travisvn/edge-tts');
+
     const voice = "ru-RU-SvetlanaNeural";
-    
+
     console.log(`Synthesizing text: "${text}" with voice: ${voice}`);
 
     // Создаем объект для синтеза
-    const tts = new edgeTTS.default(voice);
-    
+    const tts = new EdgeTTS(text, voice);
+
     // Синтезируем речь
-    const audioBuffer = await tts.synthesize(text);
-    
+    const result = await tts.synthesize();
+
+    // Конвертируем аудио в Buffer
+    const audioBuffer = Buffer.from(await result.audio.arrayBuffer());
+
     // Возвращаем аудио данные
     return new NextResponse(audioBuffer, {
       status: 200,
@@ -72,11 +78,11 @@ export async function POST(request: NextRequest) {
         'Cache-Control': 'public, max-age=3600', // Кэшируем на час
       },
     });
-    
+
   } catch (error) {
     console.error('TTS synthesis error:', error);
     return NextResponse.json(
-      { error: 'Failed to synthesize speech', details: error instanceof Error ? error.message : 'Unknown error' }, 
+      { error: 'Failed to synthesize speech', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
