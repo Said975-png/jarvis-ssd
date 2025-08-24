@@ -10,6 +10,21 @@ interface ChatRequest {
   stream?: boolean;
 }
 
+// Preprocess messages to enhance context understanding
+function enhanceMessageContext(messages: Message[]): Message[] {
+  const enhancedMessages = [...messages];
+
+  // If this is a short question, add context hint
+  const lastMessage = enhancedMessages[enhancedMessages.length - 1];
+  if (lastMessage && lastMessage.role === 'user' && lastMessage.content.length < 50) {
+    // Add contextual enhancement for short questions
+    const contextualHint = `\n\n[Контекст: Пользователь задал краткий вопрос. Дай развернутый, экспертный ответ с практическими примерами и дополнительными деталями, которые могут быть полезны.]`;
+    lastMessage.content += contextualHint;
+  }
+
+  return enhancedMessages;
+}
+
 // Get random API key for load balancing
 function getRandomOpenRouterKey(): string {
   const keys = [
@@ -145,7 +160,7 @@ export async function POST(request: NextRequest) {
       content: `Ты Джарвис — продвинутый AI-ассистент с глубокими знаниями. Твоя задача — давать максимально умные, точные и полезные ответы.
 
 КЛЮЧЕВЫЕ ПРИНЦИПЫ:
-• Думай глубоко и аналитически перед ответом
+• Думай глубо��о и аналитически перед ответом
 • Предоставляй конкретную, практичную информацию с примерами
 • Используй экспертные знания в различных областях
 • Анализируй контекст и подтекст вопросов
@@ -164,7 +179,7 @@ export async function POST(request: NextRequest) {
 • Бизнес-стратегии и маркетинг
 • Наука и образование
 • Творчество и инновации
-• Решение проблем любой сложности
+• Решение проблем л��бой сложности
 
 Отвечай на русском языке. Будь максимально полезным и демонстрируй высокий интеллект в каждом ответе.`
     };
