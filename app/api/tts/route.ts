@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { text, rate = '0.95' } = body; // Оптимальная скорость для плавной речи
+    const { text, rate = '0.95' } = body; // Оптимальная скорость дл�� плавной речи
 
     if (!text) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       headers: {
         'Content-Type': 'audio/mpeg',
         'Content-Disposition': 'inline; filename="speech.mp3"',
-        'Cache-Control': 'public, max-age=3600', // Кэши��уем на час
+        'Cache-Control': 'public, max-age=3600', // Кэшируем на час
       },
     });
 
