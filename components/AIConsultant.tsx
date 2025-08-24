@@ -59,7 +59,7 @@ const statistics = [
   {
     icon: Users,
     value: '∞',
-    label: 'Клиентов одновременно',
+    label: 'Кли��нтов одновременно',
     description: 'Неограниченная пропускная способность'
   },
   {
@@ -93,7 +93,7 @@ export default function AIConsultant() {
     }
   }, [visibleMessages])
 
-  // Автоматическая прокрутка к пос��еднему сообщению
+  // Автоматическая прокрутка к последнему сообщению
   useEffect(() => {
     if (chatMessagesRef.current && (visibleMessages > 0 || isTyping)) {
       const container = chatMessagesRef.current

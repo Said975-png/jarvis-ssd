@@ -167,7 +167,7 @@ export default function JarvisChat() {
                 }
               }, 500)
             }
-            return // Не останавливаем ��апись
+            return // Не останавливаем запись
           case 'network':
             console.log('Network error - retrying...')
             if (isRecordingRef.current) {
@@ -199,7 +199,7 @@ export default function JarvisChat() {
                 recognition.start()
               } catch (error) {
                 console.log('Failed to restart recognition:', error)
-                // При ошибке перезапуска останавливае�� запись
+                // При ошибке перезапуска останавливаем запись
                 setIsRecording(false)
                 isRecordingRef.current = false
                 setIsListening(false)
@@ -361,7 +361,7 @@ export default function JarvisChat() {
         URL.revokeObjectURL(audioUrl)
         setIsSpeaking(false)
         currentAudioRef.current = null
-        console.log('🎵 Озвучивание заверш��но')
+        console.log('🎵 Озвучивание завершено')
       }
 
       audio.onerror = () => {

@@ -252,7 +252,7 @@ export default function Hero() {
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
               обычные интернет-магазины в умные, клиентоориентированные платформы.
-              Увеличьте продажи с автоматической поддержкой, персонализированными рекомендациями и умными взаимодействиями.
+              Увеличьте продажи с автоматической подде��жкой, персонализированными рекомендациями и умными взаимодействиями.
             </p>
 
             <div className="hero-actions">
@@ -274,7 +274,7 @@ export default function Hero() {
               </div>
               <div className="stat-item">
                 <span className="stat-number">300%</span>
-                <span className="stat-label">Рост продаж</span>
+                <span className="stat-label">Рост прода��</span>
               </div>
               <div className="stat-item">
                 <span className="stat-number">24/7</span>
@@ -348,7 +348,7 @@ export default function Hero() {
                 <div className="step-content">
                   <h3 className="step-title">Разработка проекта</h3>
                   <p className="step-description">
-                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не меняем макет по несколько раз без весомых оснований.
+                    Приступаем к программированию и созданию вашего проекта. Макет корректируется и дорабатывается в процессе работы для достижения наилучшего результата. Мы не ��еняем макет по несколько раз без весомых оснований.
                   </p>
                 </div>
               </div>
@@ -405,7 +405,7 @@ export default function Hero() {
             <div className="features-panel-content">
               <div className="feature-item">
                 <div className="feature-content">
-                  <h3 className="feature-title">Умн��й помощник продаж</h3>
+                  <h3 className="feature-title">Умный помощник продаж</h3>
                   <p className="feature-description">
                     ДЖАРВИС анализирует поведение каждого клиента в реальном времени и предлагает именно те товары, которые им нужны. Он понимает предпочтения покупателей лучше, чем они сами, изучая их историю покупок и поисковые запросы.
                   </p>
@@ -416,7 +416,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
+                    Наш ИИ о��щается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
@@ -452,7 +452,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Простая интеграция и быстрый запуск</h3>
                   <p className="feature-description">
-                    Подключение ДЖАРВИС к вашему магазину заним��ет всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
+                    Подключение ДЖАРВИС к вашему магазину занимает всего несколько дней. Никаких сложных настроек. Система сама изучает ваш ассортимент, цены и особенности бизнеса. Через неделю вы уже видите первые результаты роста продаж.
                   </p>
                 </div>
               </div>
@@ -674,7 +674,7 @@ export default function Hero() {
         <div className="dashboard-overlay">
           <div className="dashboard-modal">
             <div className="dashboard-header">
-              <h2 className="dashboard-title">Личный кабинет</h2>
+              <h2 className="dashboard-title">Личный кабине��</h2>
               <button
                 className="dashboard-close"
                 onClick={() => setIsDashboardOpen(false)}
@@ -741,7 +741,7 @@ export default function Hero() {
                           <div className="empty-orders">
                             <Package className="empty-icon" />
                             <p className="empty-text">У вас пока нет заказов</p>
-                            <p className="empty-subtext">Выберите тариф и оформите ваш первый заказ</p>
+                            <p className="empty-subtext">Выберите тариф и оформит�� ваш первый заказ</p>
                           </div>
                         )
                       }
