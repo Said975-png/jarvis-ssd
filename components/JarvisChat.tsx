@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я Джарвис, ваш AI-помо��ник. Чем могу помочь?',
+      text: 'Привет! Я Джарвис, ваш AI-помощник. Чем могу помочь?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -153,8 +153,34 @@ export default function JarvisChat() {
             console.log('Microphone access denied')
             break
           case 'no-speech':
-            console.log('No speech detected')
-            break
+            console.log('No speech detected - continuing to listen')
+            // Продолжаем слушать при отсутствии речи
+            if (isRecordingRef.current) {
+              setTimeout(() => {
+                if (isRecordingRef.current && recognitionRef.current) {
+                  try {
+                    recognitionRef.current.start()
+                  } catch (restartError) {
+                    console.log('Failed to restart after no-speech:', restartError)
+                  }
+                }
+              }, 500)
+            }
+            return // Не останавливаем запись
+          case 'network':
+            console.log('Network error - retrying...')
+            if (isRecordingRef.current) {
+              setTimeout(() => {
+                if (isRecordingRef.current && recognitionRef.current) {
+                  try {
+                    recognitionRef.current.start()
+                  } catch (restartError) {
+                    console.log('Failed to restart after network error:', restartError)
+                  }
+                }
+              }, 1000)
+            }
+            return
           default:
             console.log('Speech recognition error:', event.error)
         }
@@ -163,7 +189,7 @@ export default function JarvisChat() {
       recognition.onend = () => {
         console.log('Speech recognition ended')
         setIsListening(false)
-        // Если мы еще запис��ваем, перезапускаем только при необходимости
+        // Если мы еще записываем, перезапускаем только при необходимости
         if (isRecordingRef.current && !currentTranscriptRef.current) {
           setTimeout(() => {
             if (isRecordingRef.current) {
@@ -228,7 +254,7 @@ export default function JarvisChat() {
     console.log('startRecording called, current state:', { isRecording, isListening })
     if (recognitionRef.current && !isRecording && !isListening) {
       try {
-        // Проверяем разрешения микрофона
+        // Проверяем разрешения мик��офона
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -362,12 +388,12 @@ export default function JarvisChat() {
     }
 
     setIsSpeaking(false)
-    console.log('🎤 Начинаем новое озвучивание')
+    console.log('�� Начинаем новое озвучивание')
   }
 
   const speakText = async (text: string) => {
     // Просто озвучиваем полный текст
-    console.log('🎵 Озвучиваем текст:', text)
+    console.log('🎵 Озвуч��ваем текст:', text)
     await speakCompleteText(text)
   }
 
@@ -423,7 +449,7 @@ export default function JarvisChat() {
     setIsTyping(true)
 
     try {
-      // Подготавливаем ис��орию сообщений для AI
+      // Подготавливаем историю сообщений для AI
       const allMessages = [...messages, userMessage]
       const aiMessages = allMessages.map(msg => ({
         role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
@@ -491,14 +517,14 @@ export default function JarvisChat() {
                   accumulatedText += content
                   sentenceBuffer += content
 
-                  // Обновляем сообщение в реальном времени
+                  // Обновляем сообщение в ��еальном времени
                   setMessages(prev => prev.map(msg => 
                     msg.id === jarvisMessageId 
                       ? { ...msg, text: accumulatedText }
                       : msg
                   ))
 
-                  // Накап��иваем текст и начинаем озвучивание после первых предложений
+                  // Накапливаем текст и начинаем озвучивание после первых предложений
                   fullTextRef.current += content
 
                   // Проверяем, можно ли начать озвучивание
@@ -573,7 +599,7 @@ export default function JarvisChat() {
       // Fallback to predefined responses if AI fails
       const fallbackResponses = [
         'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
-        'Что-то пошло не та��. Перефразируйте вопрос, пожалуйста.',
+        'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
         'Временный сбой. Давайте попробуем снова.'
       ]
       
