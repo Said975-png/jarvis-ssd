@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я Джарвис, ваш AI-помощник. Чем могу помочь?',
+      text: 'Привет! Я Джарвис, ваш AI-пом��щник. Чем могу помочь?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -49,8 +49,6 @@ export default function JarvisChat() {
   const fullTextRef = useRef<string>('')
   const currentAudioRef = useRef<HTMLAudioElement | null>(null)
   const isStreamingRef = useRef<boolean>(false)
-  const hasStartedSpeakingRef = useRef<boolean>(false)
-  const pendingTextRef = useRef<string>('')
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -75,7 +73,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // ��нициализация Speech Recognition
+  // Инициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -324,7 +322,7 @@ export default function JarvisChat() {
   const speakCompleteText = async (text: string) => {
     if (!text.trim()) return
 
-    console.log('��� Озвучиваем полный текст:', text.length, 'символов')
+    console.log('🎤 Озвучиваем полный текст:', text.length, 'символов')
 
     // Останавливаем предыдущее аудио
     if (currentAudioRef.current) {
@@ -488,7 +486,7 @@ export default function JarvisChat() {
       // Начинаем новое озвучивание
       startNewSpeech()
 
-      // Обрабатываем потоковый ответ
+      // Обрабатываем п��токовый ответ
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
       let accumulatedText = ''
@@ -524,7 +522,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Просто накапливаем весь текст для озвучивания в конце
+                  // Просто накапливаем весь текст для озвучивания в конц��
                   fullTextRef.current += content
                 }
               } catch (e) {
@@ -644,7 +642,7 @@ export default function JarvisChat() {
               </button>
             </div>
 
-            {/* Сообщения */}
+            {/* Сооб��ения */}
             <div className="chat-messages">
               {messages.map((message) => (
                 <div
