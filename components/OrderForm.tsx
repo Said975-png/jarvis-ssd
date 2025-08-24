@@ -37,7 +37,7 @@ export default function OrderForm() {
       document.documentElement.style.overflow = 'unset'
     }
 
-    // Cleanup функ��ия для восстановления скролла
+    // Cleanup функция для восстановления скролла
     return () => {
       document.body.style.overflow = 'unset'
       document.documentElement.style.overflow = 'unset'
@@ -165,7 +165,7 @@ export default function OrderForm() {
             <CheckCircle className="success-icon" />
             <h2 className="success-title">Заказ отправлен!</h2>
             <p className="success-message">
-              Мы получили в��ш заказ и свяжемся с вами в ближайшее время для обсуждения деталей проекта.
+              Мы получили ваш заказ и свяжемся с вами в ближайшее время для обсуждения деталей проекта.
             </p>
             <div className="success-items">
               <h3 className="success-items-title">Выбранные тарифы:</h3>
@@ -281,7 +281,7 @@ export default function OrderForm() {
                       disabled={isSubmitting}
                     />
                     <p className="form-hint">
-                      Если у в��с есть сайт, дизайн которого вам нравится, укажите ссылку - это поможет нам лучше понять ваши предпочтения
+                      Если у вас есть сайт, дизайн которого вам нравится, укажите ссылку - это поможет нам лучше понять ваши предпочтения
                     </p>
                   </div>
                 </div>
