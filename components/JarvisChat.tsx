@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Я Джарвис, ваш AI-помощник. Чем могу помочь?',
+      text: 'Привет! Я Джарвис, ваш AI-помо��ник. Чем могу помочь?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -75,7 +75,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // Инициализац��я Speech Recognition
+  // Инициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -126,7 +126,7 @@ export default function JarvisChat() {
               stopRecording()
               sendMessage(trimmedTranscript)
             }
-          }, 1000)
+          }, 3000)
         } else if (interimTranscript) {
           currentTranscriptRef.current = interimTranscript.trim()
           setInputMessage(interimTranscript.trim())
@@ -139,7 +139,7 @@ export default function JarvisChat() {
         isRecordingRef.current = false
         setIsListening(false)
         
-        // Очи��аем таймер при ошибке
+        // Очищаем таймер при ошибке
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current)
         }
@@ -163,7 +163,7 @@ export default function JarvisChat() {
       recognition.onend = () => {
         console.log('Speech recognition ended')
         setIsListening(false)
-        // Если мы еще записываем, перезапускаем только при необходимости
+        // Если мы еще запис��ваем, перезапускаем только при необходимости
         if (isRecordingRef.current && !currentTranscriptRef.current) {
           setTimeout(() => {
             if (isRecordingRef.current) {
@@ -423,14 +423,14 @@ export default function JarvisChat() {
     setIsTyping(true)
 
     try {
-      // Подготавливаем историю сообщений для AI
+      // Подготавливаем ис��орию сообщений для AI
       const allMessages = [...messages, userMessage]
       const aiMessages = allMessages.map(msg => ({
         role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
         content: msg.text
       }))
 
-      // Отправляем ��отоковый запрос к AI API
+      // Отправляем потоковый запрос к AI API
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -498,7 +498,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Накапливаем текст и начинаем озвучивание после первых предложений
+                  // Накап��иваем текст и начинаем озвучивание после первых предложений
                   fullTextRef.current += content
 
                   // Проверяем, можно ли начать озвучивание
@@ -573,7 +573,7 @@ export default function JarvisChat() {
       // Fallback to predefined responses if AI fails
       const fallbackResponses = [
         'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
-        'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
+        'Что-то пошло не та��. Перефразируйте вопрос, пожалуйста.',
         'Временный сбой. Давайте попробуем снова.'
       ]
       
