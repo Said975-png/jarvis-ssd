@@ -6,7 +6,7 @@ import { MessageCircle, X, Send, Bot, User, Sparkles, Zap, Mic, MicOff } from 'l
 interface Message {
   id: string
   text: string
-  sender: 'user' | 'jarvis'
+  sender: 'user' | 'friday'
   timestamp: Date
 }
 
@@ -27,8 +27,8 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Меня зовут Джарвис, и я ваша ИИ-помощница. Я очень рада нашему знакомству! Расскажите, чем могу помочь с вашим проектом?',
-      sender: 'jarvis',
+      text: 'Привет! Меня зовут Пятница, и я ваша ИИ-помощница. Я очень рада нашему знакомству! Расскажите, чем могу помочь с вашим проектом?',
+      sender: 'friday',
       timestamp: new Date()
     }
   ])
@@ -193,7 +193,7 @@ export default function JarvisChat() {
           const voices = speechSynthesisRef.current?.getVoices() || []
           console.log('Available voices:', voices.length)
 
-          // Логируем доступные русские голоса
+          // Логируе�� доступные русские голоса
           const russianVoices = voices.filter(v => v.lang.startsWith('ru'))
           console.log('Russian voices available:', russianVoices.map(v => `${v.name} (${v.lang})`).join(', '))
 
@@ -431,31 +431,31 @@ export default function JarvisChat() {
     setInputMessage('')
     setIsTyping(true)
 
-    // Имитация ответа Джарвиса
+    // Имитация ответа Пятницы
     setTimeout(() => {
-      const jarvisResponses = [
+      const fridayResponses = [
         'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
         'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудить?',
         'Как и��тересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
         'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
-        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересует?',
+        'Как здорово, что мы можем пообщаться! Я всегда рада помочь с проектами. Что именно вас интересуе��?',
         'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
       ]
       
-      const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
+      const randomResponse = fridayResponses[Math.floor(Math.random() * fridayResponses.length)]
       
-      const jarvisMessage: Message = {
+      const fridayMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: randomResponse,
-        sender: 'jarvis',
+        sender: 'friday',
         timestamp: new Date()
       }
 
-      setMessages(prev => [...prev, jarvisMessage])
+      setMessages(prev => [...prev, fridayMessage])
       setIsTyping(false)
 
-      // Озвучиваем ответ Джарвиса
+      // Озвучиваем ответ Пятницы
       if (ttsSupported) {
         setTimeout(async () => {
           await speakText(randomResponse)
@@ -495,13 +495,13 @@ export default function JarvisChat() {
           <button
             onClick={toggleChat}
             className="chat-button"
-            aria-label="Открыть чат с Джарвисом"
+            aria-label="Открыть чат с Пятницей"
           >
             <MessageCircle className="chat-button-icon" />
             <div className="chat-button-pulse"></div>
           </button>
           <div className="chat-button-tooltip">
-            Чат с Джарвисом
+            Чат с Пятницей
           </div>
         </div>
       )}
@@ -531,7 +531,7 @@ export default function JarvisChat() {
                   <Bot className="chat-avatar-icon" />
                 </div>
                 <div className="chat-header-text">
-                  <h3 className="chat-title">Джарвис</h3>
+                  <h3 className="chat-title">Пятница</h3>
                   <p className={`chat-status ${isSpeaking ? 'speaking' : ''}`}>
                     ИИ-асс��стент • {isSpeaking ? 'Говорит...' : 'Онлайн'}
                   </p>
@@ -551,7 +551,7 @@ export default function JarvisChat() {
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`message ${message.sender === 'user' ? 'message-user' : 'message-jarvis'}`}
+                  className={`message ${message.sender === 'user' ? 'message-user' : 'message-friday'}`}
                 >
                   <div className="message-avatar">
                     {message.sender === 'user' ? (
@@ -573,7 +573,7 @@ export default function JarvisChat() {
               ))}
               
               {isTyping && (
-                <div className="message message-jarvis">
+                <div className="message message-friday">
                   <div className="message-avatar">
                     <Bot className="message-avatar-icon" />
                   </div>
