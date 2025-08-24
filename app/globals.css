@@ -224,12 +224,14 @@ body {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.auth-button.login-button,
 .auth-button.register-button {
   background: #000000;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.auth-button.login-button:hover,
 .auth-button.register-button:hover {
   background: rgba(0, 0, 0, 0.8);
   border-color: rgba(255, 255, 255, 0.3);
