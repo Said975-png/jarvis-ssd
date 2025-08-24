@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Приветствую! Я Джарвис — ваш продвинутый AI-ассистент с глубокой аналитикой и экспертными знаниями. Готов помочь с задачами любой сложности: от технических решений до бизнес-стратегий. Что интересует вас сегодня?',
+      text: 'Привет! Я Джарвис, ваш AI-помощник. Чем могу помочь?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -72,7 +72,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // Инициализация Speech Recognition
+  // ��нициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -266,7 +266,7 @@ export default function JarvisChat() {
         silenceTimerRef.current = null
       }
       
-      // Затем ос��анавливаем recognition
+      // Затем останавливаем recognition
       try {
         if (recognitionRef.current) {
           console.log('Stopping speech recognition...')
@@ -444,7 +444,7 @@ export default function JarvisChat() {
         },
         body: JSON.stringify({
           messages: aiMessages,
-          stream: true // Вклю��аем потоковую передачу
+          stream: true // Включаем потоковую передачу
         })
       })
 
@@ -501,7 +501,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Проверяем, завершилось ли предложение (более гибкая проверка)
+                  // Проверяем, завершилось ли пр��дложение (более гибкая проверка)
                   const sentenceEnders = /[.!?][\s\n]*$/
                   if (sentenceEnders.test(content) || content.includes('\n\n')) {
                     const completeSentence = sentenceBuffer.trim()
@@ -509,7 +509,7 @@ export default function JarvisChat() {
                     if (completeSentence && completeSentence.length > 8) {
                       console.log('🎤 Завершилось предложение, озвучиваем:', completeSentence)
                       
-                      // Озвучиваем предложение сразу как оно завершилос��
+                      // Озвучиваем предложение сразу как оно завершилось
                       addToSpeechQueue(completeSentence)
                     }
                     
@@ -552,7 +552,7 @@ export default function JarvisChat() {
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
-      // Озвучиваем fallback ответ
+      // Озвуч��ваем fallback ответ
       setTimeout(async () => {
         await speakText(fallbackResponse)
       }, 500)
@@ -604,7 +604,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект частиц при открытии */}
+          {/* Э��фект частиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
@@ -711,7 +711,7 @@ export default function JarvisChat() {
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isRecording}
                   className="chat-send-button"
-                  aria-label="Отп��авить сообщение"
+                  aria-label="Отправить сообщение"
                 >
                   <Send className="chat-send-icon" />
                 </button>
