@@ -141,7 +141,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатывае�� специ��ичные ошибки
+        // Обрабатывае�� ��пеци��ичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -368,7 +368,8 @@ export default function JarvisChat() {
 
   const stopSpeaking = () => {
     // Очищаем буфер
-    continuousSpeechRef.current = ''
+    fullTextRef.current = ''
+    isStreamingRef.current = false
 
     // Останавливаем текущее аудио
     if (currentAudioRef.current) {
@@ -438,7 +439,7 @@ export default function JarvisChat() {
         throw new Error(`AI API error: ${response.status} ${response.statusText}`)
       }
 
-      // Создаем сообщение Джарвиса для п��токового обновления
+      // Создаем сообщение Джарвиса для потоко��ого обновления
       const jarvisMessageId = (Date.now() + 1).toString()
       const jarvisMessage: Message = {
         id: jarvisMessageId,
@@ -483,7 +484,7 @@ export default function JarvisChat() {
                   accumulatedText += content
                   sentenceBuffer += content
 
-                  // Обновляем сообщение в р��альном времени
+                  // Обновляем сообщение в реальном времени
                   setMessages(prev => prev.map(msg => 
                     msg.id === jarvisMessageId 
                       ? { ...msg, text: accumulatedText }
