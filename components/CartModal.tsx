@@ -86,7 +86,7 @@ export default function CartModal() {
                     <button
                       className="cart-item-remove"
                       onClick={() => removeItem(item.id)}
-                      aria-label="��далить из корзины"
+                      aria-label="Удалить из корзины"
                     >
                       <Trash2 className="remove-icon" />
                     </button>

@@ -292,23 +292,7 @@ function RobotModel({ scrollProgress, currentSection = 0 }: { scrollProgress: nu
       {/* Floating particles */}
       <RobotParticles position={[0, 0, 0]} />
 
-      {/* Main robot model */}
-      <primitive
-        object={scene}
-        rotation={[0, Math.PI * 0.2, 0]}
-        scale={[0.8, 0.8, 0.8]}
-      />
-
-      {/* Energy field effect */}
-      <mesh position={[0, 0, 0]} scale={[1.5, 1.5, 1.5]}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial
-          color="#0ea5e9"
-          transparent
-          opacity={0.06}
-          wireframe={true}
-        />
-      </mesh>
+      {/* 3D модель и сферы удалены */}
     </group>
   )
 }
@@ -436,26 +420,7 @@ function FallbackRobot({ scrollProgress, currentSection }: { scrollProgress: num
         />
       </mesh>
 
-      {/* Energy field effect */}
-      <mesh position={[0, 0, 0]} scale={[2, 2, 2]}>
-        <sphereGeometry args={[1.2, 16, 16]} />
-        <meshBasicMaterial
-          color="#0ea5e9"
-          transparent
-          opacity={0.08}
-          wireframe={true}
-        />
-      </mesh>
-
-      {/* Additional glow effect */}
-      <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[1.8, 8, 8]} />
-        <meshBasicMaterial
-          color="#3b82f6"
-          transparent
-          opacity={0.06}
-        />
-      </mesh>
+      {/* Сферы удалены */}
     </group>
   )
 }

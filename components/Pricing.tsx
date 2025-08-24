@@ -180,7 +180,7 @@ export default function Pricing() {
               <Headphones className="support-icon" />
               <div className="support-text">
                 <span className="support-label">Техническая поддержка</span>
-                <span className="support-detail">Помощь в настройк��</span>
+                <span className="support-detail">Помощь в настройке</span>
               </div>
             </div>
             <div className="support-item">

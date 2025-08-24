@@ -144,7 +144,7 @@ export default function JarvisChat() {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатывае�� специ��ичные ошибки
+        // Обрабатываем специфичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -421,7 +421,7 @@ export default function JarvisChat() {
       speechSynthesisRef.current.cancel()
     }
 
-    // Останавливаем все HTML Audio э��ементы на странице
+    // Останавливаем все HTML Audio элементы на странице
     const audioElements = document.querySelectorAll('audio')
     audioElements.forEach(audio => {
       if (!audio.paused) {
@@ -468,7 +468,7 @@ export default function JarvisChat() {
         },
         body: JSON.stringify({
           messages: aiMessages,
-          stream: true // Включаем потоковую пер��дачу
+          stream: true // Включаем потоковую передачу
         })
       })
 
@@ -554,7 +554,7 @@ export default function JarvisChat() {
                       }
                     }
                   } else if (hasStartedSpeakingRef.current) {
-                    // Если уже начали ��звучивание, собираем остальной текст
+                    // Если уже начали озвучивание, собираем остальной текст
                     const remainingText = fullTextRef.current.substring(
                       fullTextRef.current.length - pendingTextRef.current.length - content.length
                     )
@@ -569,7 +569,7 @@ export default function JarvisChat() {
         }
       }
 
-      // Завершаем стриминг и обр��батываем оставшийся текст
+      // Завершаем стриминг и обрабатываем оставшийся текст
       isStreamingRef.current = false
 
       if (hasStartedSpeakingRef.current) {

@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       headers: {
         'Content-Type': 'audio/mpeg',
         'Content-Disposition': 'inline; filename="speech.mp3"',
-        'Cache-Control': 'public, max-age=3600', // Кэши��уем на час
+        'Cache-Control': 'public, max-age=3600', // Кэшируем на час
       },
     });
 
