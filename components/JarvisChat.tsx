@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Меня зовут Джарвис. Я ваш ИИ-помощник. Говорю спокойно и медленно для вашего комфорта. Расскажите, чем могу помочь с вашим проектом?',
+      text: 'Привет! Меня зовут Джарвис. Я ваш ИИ-пом��щник. Говорю спокойно и медленно для вашего комфорта. Расскажите, чем могу помочь с вашим проектом?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -381,7 +381,7 @@ export default function JarvisChat() {
     const synth = window.speechSynthesis
     const voices = synth.getVoices()
 
-    // Ищем женск��й русский голос согласно промпту
+    // Ищем женский русский голос согласно промпту
     let voice = voices.find(v =>
       v.lang.startsWith("ru") && (
         v.name.toLowerCase().includes("female") ||
@@ -447,6 +447,14 @@ export default function JarvisChat() {
   // Убираем функции разбиения на предложения - больше не нужны
 
   const speakText = async (text: string) => {
+    // Проверяем, не говорит ли уже
+    if (isSpeaking) {
+      console.log('Already speaking, stopping current speech first')
+      stopSpeaking()
+      // Небольшая задержка для корректной остановки
+      await new Promise(resolve => setTimeout(resolve, 200))
+    }
+
     // Только ru-RU-SvetlanaNeural согласно плану пользователя - настройки голоса идеальные
     console.log('Using ru-RU-SvetlanaNeural for:', text)
     await speakWithSvetlanaNeural(text)
@@ -461,7 +469,7 @@ export default function JarvisChat() {
       speechSynthesisRef.current.cancel()
     }
 
-    // Остана��ливаем все HTML Audio элементы на странице
+    // Останавливаем все HTML Audio элементы на странице
     const audioElements = document.querySelectorAll('audio')
     audioElements.forEach(audio => {
       if (!audio.paused) {
@@ -500,7 +508,7 @@ export default function JarvisChat() {
         'Как интересно! Давайте поговорим о ваших потребностях. Уверена, найдём отличное решение вместе. Говорю медленно, чтобы было удобно.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Говорю размеренно. Хотите узнать подробнее?',
         'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расскажите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
-        'Как здорово, что можем пообщаться! Всегда рада помочь с проектами. Что именно интересует? Говорю спокойно и размеренно.',
+        'Как здорово, что можем пообщаться! Всегда рада помочь с проектами. Что именно интересует? Говорю спокойно и ра��меренно.',
         'Замечательно! Знаете, обожаю работать над интересными задачами. Поделитесь идеями, их воплотим. Говорю медленно для удобного восприятия.'
       ]
       
@@ -550,7 +558,7 @@ export default function JarvisChat() {
 
   return (
     <>
-      {/* Кнопка чата в правом ни��нем углу */}
+      {/* Кнопка чата в правом нижнем углу */}
       {!isOpen && (
         <div className="chat-button-container">
           <button
