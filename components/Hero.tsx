@@ -120,7 +120,7 @@ export default function Hero() {
             <div className="nav-links desktop-nav">
               <a href="#services" className="nav-link">Услуги</a>
               <a href="#about" className="nav-link">О нас</a>
-              <a href="#contact" className="nav-link">��онтакты</a>
+              <a href="#contact" className="nav-link">Контакты</a>
 
               <div className="nav-actions">
                 <button
@@ -246,13 +246,13 @@ export default function Hero() {
             <h1 className="hero-title">
               Мы создаем <span className="gradient-text">умные</span>
               <br />
-              интернет-магази��ы
+              интернет-магазины
             </h1>
             
             <p className="hero-description">
               JARVIS создает современные сайты с ИИ-ассистентами, которые превращают
               обычные интернет-магазины в умные, клиентоориентированные платформы.
-              Увеличьте продаж�� с автоматической поддержкой, персонализированными рекомендациями и умным�� взаимодействиями.
+              Увеличьте продажи с автоматической поддержкой, персонализированными рекомендац��ями и умными взаимодействиями.
             </p>
 
             <div className="hero-actions">
@@ -416,7 +416,7 @@ export default function Hero() {
                 <div className="feature-content">
                   <h3 className="feature-title">Общение как с живым консультантом</h3>
                   <p className="feature-description">
-                    Наш ИИ общается с клиентами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
+                    Наш ИИ общается с кли��нтами естественно и дружелюбно, отвечает на любые вопросы о товарах, помогает с выбором размера, цвета, характеристик. Клиенты даже не замечают, что говорят с роботом - настолько живое и понятное общение.
                   </p>
                 </div>
               </div>
@@ -643,7 +643,7 @@ export default function Hero() {
               <div className="form-options">
                 <label className="checkbox-wrapper">
                   <input type="checkbox" className="checkbox" required />
-                  <span className="checkbox-label">Я согласен с условиями использования и политикой конфиденциальности</span>
+                  <span className="checkbox-label">Я согласен с условиям�� использования и политикой конфиденциальности</span>
                 </label>
               </div>
 
@@ -741,7 +741,7 @@ export default function Hero() {
                           <div className="empty-orders">
                             <Package className="empty-icon" />
                             <p className="empty-text">У вас пока нет заказов</p>
-                            <p className="empty-subtext">Выберите тариф и оформите ваш первый заказ</p>
+                            <p className="empty-subtext">Выберите тариф и оформите ваш пе��вый заказ</p>
                           </div>
                         )
                       }
