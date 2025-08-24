@@ -46,6 +46,8 @@ export default function JarvisChat() {
   const isRecordingRef = useRef(false)
   const currentTranscriptRef = useRef('')
   const speechSynthesisRef = useRef<SpeechSynthesis | null>(null)
+  const speechQueueRef = useRef<string[]>([])
+  const isSpeakingQueueRef = useRef(false)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -179,7 +181,7 @@ export default function JarvisChat() {
       console.log('Speech Recognition not supported in this browser')
     }
 
-    // Инициализация TTS - используем тол��ко ru-RU-SvetlanaNeural (настройки голоса идеальные)
+    // Инициализация TTS - используем только ru-RU-SvetlanaNeural (настройки голоса идеальные)
     const initTTS = () => {
       if (typeof window !== 'undefined') {
         setTtsSupported(true)
@@ -264,7 +266,7 @@ export default function JarvisChat() {
         silenceTimerRef.current = null
       }
       
-      // Затем останавливаем recognition
+      // Затем ос��анавливаем recognition
       try {
         if (recognitionRef.current) {
           console.log('Stopping speech recognition...')
@@ -284,19 +286,41 @@ export default function JarvisChat() {
     }
   }
 
+  // Улучшенная очередь для TTS с мгновенным воспроизведением
+  const processSpeechQueue = async () => {
+    if (isSpeakingQueueRef.current || speechQueueRef.current.length === 0) {
+      return
+    }
+
+    isSpeakingQueueRef.current = true
+    setIsSpeaking(true)
+
+    while (speechQueueRef.current.length > 0) {
+      const textToSpeak = speechQueueRef.current.shift()
+      if (textToSpeak) {
+        await speakWithSvetlanaNeural(textToSpeak)
+        // Небольшая пауза между предложениями
+        await new Promise(resolve => setTimeout(resolve, 200))
+      }
+    }
+
+    isSpeakingQueueRef.current = false
+    setIsSpeaking(false)
+  }
+
+  const addToSpeechQueue = (text: string) => {
+    if (text.trim()) {
+      console.log('🎤 Добавляем в очередь:', text)
+      speechQueueRef.current.push(text.trim())
+      processSpeechQueue()
+    }
+  }
+
   const speakWithSvetlanaNeural = async (text: string) => {
-    // Останавливаем любую предыдущую речь ПЕРЕД началом новой
-    stopSpeaking()
-    
     try {
-      // Временно убираем очистку текста для диагностики
       const cleanText = text
       
-      console.log('Original text:', text)
-      console.log('Cleaned text:', cleanText)
-      console.log('Encoded text:', encodeURIComponent(cleanText))
-      console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
-      setIsSpeaking(true)
+      console.log('🎵 SvetlanaNeural говорит:', cleanText)
 
       // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
       const response = await fetch('/api/tts', {
@@ -322,72 +346,50 @@ export default function JarvisChat() {
       // Создаем HTML Audio элемент для воспроизведения
       const audio = new Audio(audioUrl)
       
-      audio.onplay = () => {
-        console.log('SvetlanaNeural started speaking:', cleanText)
-      }
-      
-      audio.onended = () => {
-        setIsSpeaking(false)
-        URL.revokeObjectURL(audioUrl) // Освобождаем память
-        console.log('SvetlanaNeural finished speaking')
-      }
-      
-      audio.onerror = (error) => {
-        console.error('Audio playback error:', error)
-        setIsSpeaking(false)
-        URL.revokeObjectURL(audioUrl)
-        console.log('SvetlanaNeural playback failed - no fallback to preserve voice settings')
-      }
-      
-      // Воспроизводим аудио
-      await audio.play()
+      return new Promise<void>((resolve, reject) => {
+        audio.onplay = () => {
+          console.log('🎵 SvetlanaNeural started speaking:', cleanText)
+        }
+        
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl) // Освобождаем память
+          console.log('🎵 SvetlanaNeural finished speaking')
+          resolve()
+        }
+        
+        audio.onerror = (error) => {
+          console.error('Audio playback error:', error)
+          URL.revokeObjectURL(audioUrl)
+          reject(error)
+        }
+        
+        // Воспроизводим аудио
+        audio.play().catch(reject)
+      })
       
     } catch (error) {
       console.error('SvetlanaNeural TTS error:', error)
-      setIsSpeaking(false)
-      console.log('SvetlanaNeural synthesis failed - no fallback to preserve voice settings')
+      throw error
     }
   }
 
-  const cleanTextForSpeech = (text: string): string => {
-    return text
-      // Убираем URL
-      .replace(/https?:\/\/[^\s]+/g, 'ссылка')
-      // Убираем любые HTML теги и символы < >
-      .replace(/<[^>]*>/g, '')
-      .replace(/</g, '')
-      .replace(/>/g, '')
-      // Убираем технические коды в скобках
-      .replace(/\([A-Z0-9_]+\)/g, '')
-      // Убираем хештеги и специальные символы
-      .replace(/#\w+/g, '')
-      // Убираем символы &amp; &lt; &gt; и другие HTML-сущности
-      .replace(/&[a-z]+;/gi, '')
-      .replace(/&/g, '')
-      // Убираем кавычки и специальные символы
-      .replace(/["""'']/g, '')
-      .replace(/[«»]/g, '')
-      // Убираем множественные пробелы
-      .replace(/\s+/g, ' ')
-      .trim()
-  }
-
   const speakText = async (text: string) => {
-    // Пров��ряем, не говорит ли уже
+    // Проверяем, не говорит ли уже
     if (isSpeaking) {
-      console.log('Already speaking, stopping current speech first')
-      stopSpeaking()
-      // Небольшая задержка для корректной остановки
-      await new Promise(resolve => setTimeout(resolve, 200))
+      console.log('Already speaking, adding to queue')
+      addToSpeechQueue(text)
+      return
     }
 
     // Только ru-RU-SvetlanaNeural согласно плану пользователя - настройки голоса идеальные
     console.log('Using ru-RU-SvetlanaNeural for:', text)
-    await speakWithSvetlanaNeural(text)
+    addToSpeechQueue(text)
   }
 
   const stopSpeaking = () => {
-    // Останавливаем любое воспроизведение
+    // Очищаем очередь
+    speechQueueRef.current = []
+    isSpeakingQueueRef.current = false
     setIsSpeaking(false)
 
     // Останавливаем Web Speech API
@@ -434,7 +436,7 @@ export default function JarvisChat() {
         content: msg.text
       }))
 
-      // Отправляем запрос к AI API
+      // Отправляем потоковый запрос к AI API
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -442,7 +444,7 @@ export default function JarvisChat() {
         },
         body: JSON.stringify({
           messages: aiMessages,
-          stream: false
+          stream: true // Вклю��аем потоковую передачу
         })
       })
 
@@ -450,23 +452,83 @@ export default function JarvisChat() {
         throw new Error(`AI API error: ${response.status} ${response.statusText}`)
       }
 
-      const data = await response.json()
-      const aiResponse = data.choices?.[0]?.message?.content || 'Извините, произошла ошибка при о��работке вашего запроса.'
-
+      // Создаем сообщение Джарвиса для потокового обновления
+      const jarvisMessageId = (Date.now() + 1).toString()
       const jarvisMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: aiResponse,
+        id: jarvisMessageId,
+        text: '',
         sender: 'jarvis',
         timestamp: new Date()
       }
 
+      // Добавляем пустое сообщение, которое будем обновлять
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
-      // Озвучиваем ответ Джарвиса только с SvetlanaNeural
-      setTimeout(async () => {
-        await speakText(aiResponse)
-      }, 500) // Небольшая задержка перед озвучиванием
+      // Обрабатываем потоковый ответ
+      const reader = response.body?.getReader()
+      const decoder = new TextDecoder()
+      let accumulatedText = ''
+      let sentenceBuffer = ''
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read()
+          
+          if (done) break
+
+          const chunk = decoder.decode(value, { stream: true })
+          const lines = chunk.split('\n')
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6)
+              
+              if (data === '[DONE]') continue
+
+              try {
+                const parsed = JSON.parse(data)
+                const content = parsed.choices?.[0]?.delta?.content || ''
+                
+                if (content) {
+                  accumulatedText += content
+                  sentenceBuffer += content
+
+                  // Обновляем сообщение в реальном времени
+                  setMessages(prev => prev.map(msg => 
+                    msg.id === jarvisMessageId 
+                      ? { ...msg, text: accumulatedText }
+                      : msg
+                  ))
+
+                  // Проверяем, завершилось ли предложение (более гибкая проверка)
+                  const sentenceEnders = /[.!?][\s\n]*$/
+                  if (sentenceEnders.test(content) || content.includes('\n\n')) {
+                    const completeSentence = sentenceBuffer.trim()
+                    
+                    if (completeSentence && completeSentence.length > 8) {
+                      console.log('🎤 Завершилось предложение, озвучиваем:', completeSentence)
+                      
+                      // Озвучиваем предложение сразу как оно завершилос��
+                      addToSpeechQueue(completeSentence)
+                    }
+                    
+                    sentenceBuffer = ''
+                  }
+                }
+              } catch (e) {
+                console.log('Parse error:', e)
+              }
+            }
+          }
+        }
+      }
+
+      // Если остался текст в буфере, озвучиваем его
+      if (sentenceBuffer.trim() && sentenceBuffer.length > 5) {
+        console.log('🎤 Озвучиваем остаток:', sentenceBuffer.trim())
+        addToSpeechQueue(sentenceBuffer.trim())
+      }
 
     } catch (error) {
       console.error('AI chat error:', error)
@@ -475,7 +537,7 @@ export default function JarvisChat() {
       const fallbackResponses = [
         'Извините, возникли временные технические сложности с нейросетью. Пожалуйста, повторите ваш запрос через несколько секунд — я готов предоставить вам максимально качественный анализ.',
         'Произошел сбой соединения с основными серверами ИИ. Переформулируйте ваш вопрос, и я обязательно дам подробный и экспертный ответ.',
-        'Врем��нная потеря связи с вычислительными ресурсами. Через момент буду готов предоставить глубокий анализ вашей задачи.'
+        'Временная потеря связи с вычислительными ресурсами. Через момент буду готов предоставить глубокий анализ вашей задачи.'
       ]
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
@@ -649,7 +711,7 @@ export default function JarvisChat() {
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isRecording}
                   className="chat-send-button"
-                  aria-label="Отправить сообщение"
+                  aria-label="Отп��авить сообщение"
                 >
                   <Send className="chat-send-icon" />
                 </button>
