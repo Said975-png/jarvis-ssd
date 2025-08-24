@@ -309,9 +309,12 @@ export default function JarvisChat() {
 
   const addToSpeechQueue = (text: string) => {
     if (text.trim()) {
-      console.log('🎤 Добавляем в очередь:', text)
+      console.log('🎤 Мгновенно добавляем:', text)
       speechQueueRef.current.push(text.trim())
-      processSpeechQueue()
+      // Запускаем без задержек
+      if (!isSpeakingQueueRef.current) {
+        processSpeechQueue()
+      }
     }
   }
 
@@ -500,7 +503,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Быстрое озвучивание по частям без пауз
+                  // Быстрое озвучивание ��о частям без пауз
                   const shouldSpeak =
                     // Полные предложения
                     /[.!?][\s\n]*$/.test(content) ||
