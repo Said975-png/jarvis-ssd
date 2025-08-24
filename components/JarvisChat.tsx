@@ -64,7 +64,7 @@ export default function JarvisChat() {
 
       // Автоматически озвучиваем приветствие при открытии чата
       if (messages.length === 1) {
-        // Небольшая задержк��, чтобы чат успел открыться
+        // Небольшая задержка, чтобы чат успел открыться
         setTimeout(() => {
           console.log('Auto-playing greeting...')
           speakText(messages[0].text)
@@ -287,7 +287,7 @@ export default function JarvisChat() {
     }
   }
 
-  // Озву��ивание только полного завершенного текста
+  // Озвучивание только полного заверше��ного текста
   const speakCompleteText = async (text: string) => {
     if (!text.trim()) return
 
@@ -347,7 +347,8 @@ export default function JarvisChat() {
 
   const startNewSpeech = () => {
     // Сбрасываем буфер для нового сообщения
-    continuousSpeechRef.current = ''
+    fullTextRef.current = ''
+    isStreamingRef.current = true
 
     // Останавливаем текущее аудио
     if (currentAudioRef.current) {
