@@ -213,7 +213,7 @@ export default function JarvisChat() {
           console.log('Recognition cleanup error:', error)
         }
       }
-      // Останавливаем речь при размонтировании
+      // Останавливаем р��чь при размонтировании
       if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
         speechSynthesisRef.current.cancel()
       }
@@ -228,7 +228,7 @@ export default function JarvisChat() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-            stream.getTracks().forEach(track => track.stop()) // Сразу ост��навливаем stream
+            stream.getTracks().forEach(track => track.stop()) // Сразу останавливаем stream
           } catch (permissionError) {
             console.error('Microphone permission denied:', permissionError)
             return
@@ -357,7 +357,7 @@ export default function JarvisChat() {
         }
         
         audio.onended = () => {
-          URL.revokeObjectURL(audioUrl) // Осв��бождаем память
+          URL.revokeObjectURL(audioUrl) // Освобождаем память
           console.log('🎵 SvetlanaNeural finished speaking')
           resolve()
         }
@@ -450,7 +450,7 @@ export default function JarvisChat() {
         throw new Error(`AI API error: ${response.status} ${response.statusText}`)
       }
 
-      // Создаем сообщение Джарвиса дл�� потокового обновления
+      // Создаем сообщение Джарвиса для потокового обновления
       const jarvisMessageId = (Date.now() + 1).toString()
       const jarvisMessage: Message = {
         id: jarvisMessageId,
@@ -517,10 +517,10 @@ export default function JarvisChat() {
         }
       }
 
-      // Если остался текст в буфере, озвучиваем его как завершающий фрагмент
+      // Озвучиваем любой оставшийся текст
       const finalText = sentenceBuffer.trim()
-      if (finalText && finalText.length > 3) {
-        console.log('🎤 Озвучиваем завершение:', finalText)
+      if (finalText) {
+        console.log('🎤 Озвучиваем остаток:', finalText)
         addToSpeechQueue(finalText)
       }
 
@@ -687,7 +687,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
+                  placeholder={isRecording ? "Говорите..." : "На��ишите сообщение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
