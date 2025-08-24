@@ -228,7 +228,7 @@ export default function JarvisChat() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-            stream.getTracks().forEach(track => track.stop()) // Сразу останавливаем stream
+            stream.getTracks().forEach(track => track.stop()) // Сразу ост��навливаем stream
           } catch (permissionError) {
             console.error('Microphone permission denied:', permissionError)
             return
@@ -357,7 +357,7 @@ export default function JarvisChat() {
         }
         
         audio.onended = () => {
-          URL.revokeObjectURL(audioUrl) // Освобождаем память
+          URL.revokeObjectURL(audioUrl) // Осв��бождаем память
           console.log('🎵 SvetlanaNeural finished speaking')
           resolve()
         }
@@ -450,7 +450,7 @@ export default function JarvisChat() {
         throw new Error(`AI API error: ${response.status} ${response.statusText}`)
       }
 
-      // Создаем сообщение Джарвиса для потокового обновления
+      // Создаем сообщение Джарвиса дл�� потокового обновления
       const jarvisMessageId = (Date.now() + 1).toString()
       const jarvisMessage: Message = {
         id: jarvisMessageId,
@@ -499,18 +499,14 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // О��вучиваем только полные предложения для плавной речи
-                  const isCompleteSentence = /[.!?][\s\n]*$/.test(content)
-
-                  if (isCompleteSentence) {
-                    const completeSentence = sentenceBuffer.trim()
-
-                    if (completeSentence && completeSentence.length > 5) {
-                      console.log('🎤 Озвучиваем полное предложение:', completeSentence)
-                      addToSpeechQueue(completeSentence)
+                  // Озвучиваем непрерывно каждые 15-20 символов для плавной речи без остановок
+                  if (sentenceBuffer.length >= 15) {
+                    const textToSpeak = sentenceBuffer.trim()
+                    if (textToSpeak) {
+                      console.log('🎤 Плавно озвучиваем:', textToSpeak)
+                      addToSpeechQueue(textToSpeak)
+                      sentenceBuffer = ''
                     }
-
-                    sentenceBuffer = ''
                   }
                 }
               } catch (e) {
