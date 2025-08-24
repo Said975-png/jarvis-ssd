@@ -324,7 +324,7 @@ export default function JarvisChat() {
       
       console.log('🎵 SvetlanaNeural говорит:', cleanText)
 
-      // Используе�� наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
+      // Используем наш API для синтеза речи с SvetlanaNeural с максимально медленной скоростью
       const response = await fetch('/api/tts', {
         method: 'POST',
         headers: {
@@ -496,23 +496,15 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Быстрое озвучивание по частям без пауз
-                  const shouldSpeak =
-                    // Полные предложения
-                    /[.!?][\s\n]*$/.test(content) ||
-                    // Длинные паузы (запятые, двоеточия)
-                    /[,:;][\s]*$/.test(content) ||
-                    // Каждые 30 символов
-                    sentenceBuffer.length >= 30 ||
-                    // Переносы строк
-                    content.includes('\n')
+                  // Озвучиваем только полные предложения для плавной речи
+                  const isCompleteSentence = /[.!?][\s\n]*$/.test(content)
 
-                  if (shouldSpeak) {
-                    const textToSpeak = sentenceBuffer.trim()
+                  if (isCompleteSentence) {
+                    const completeSentence = sentenceBuffer.trim()
 
-                    if (textToSpeak && textToSpeak.length > 3) {
-                      console.log('🎤 Мгновенно озвучиваем:', textToSpeak)
-                      addToSpeechQueue(textToSpeak)
+                    if (completeSentence && completeSentence.length > 5) {
+                      console.log('🎤 Озвучиваем полное предложение:', completeSentence)
+                      addToSpeechQueue(completeSentence)
                     }
 
                     sentenceBuffer = ''
@@ -606,7 +598,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект частиц при открытии */}
+          {/* Эффект части�� при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
