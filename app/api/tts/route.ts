@@ -4,7 +4,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const text = searchParams.get('text');
-    const rate = searchParams.get('rate') || '0.8'; // По умолчанию замедленная скорость
+    const rate = searchParams.get('rate') || '0.6'; // По умолчанию очень медленная скорость
 
     if (!text) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { text, rate = '0.8' } = body; // По умолчанию замедленная скорость
+    const { text, rate = '0.6' } = body; // По умолчанию очень медленная скорость
 
     if (!text) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     const voice = "ru-RU-SvetlanaNeural";
 
-    // Создаем SSML с регулировкой скорости для более медленной и приятной речи
+    // Создаем SSML с регулировкой скорости для более медленной и приятной реч��
     const ssmlText = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ru-RU">
       <voice name="${voice}">
         <prosody rate="${rate}" pitch="+5%" volume="90%">
