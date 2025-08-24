@@ -59,7 +59,7 @@ export default function JarvisChat() {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
 
-      // Автоматически озвучивае�� приветствие при открытии чата
+      // Автоматически озвучиваем приветствие при открытии чата
       if (messages.length === 1) {
         // Небольшая задержка, чтобы чат успел открыться
         setTimeout(() => {
@@ -184,7 +184,7 @@ export default function JarvisChat() {
       if (typeof window !== 'undefined') {
         setTtsSupported(true)
         console.log('TTS initialized with ru-RU-SvetlanaNeural (настройки голоса идеальные)')
-
+        
         // Инициализируем Web Speech API только для функции stopSpeaking
         if ('speechSynthesis' in window) {
           speechSynthesisRef.current = window.speechSynthesis
@@ -287,11 +287,11 @@ export default function JarvisChat() {
   const speakWithSvetlanaNeural = async (text: string) => {
     // Останавливаем любую предыдущую речь ПЕРЕД началом новой
     stopSpeaking()
-
+    
     try {
       // Очищаем текст от технических элементов
       const cleanText = cleanTextForSpeech(text)
-
+      
       console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
       setIsSpeaking(true)
 
@@ -307,108 +307,38 @@ export default function JarvisChat() {
         throw new Error(`TTS API error: ${response.statusText}`)
       }
 
-      // Получаем аудио данные
+      // Получаем а��дио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
-
+      
       // Создаем HTML Audio элемент для воспроизведения
       const audio = new Audio(audioUrl)
-
+      
       audio.onplay = () => {
         console.log('SvetlanaNeural started speaking:', cleanText)
       }
-
+      
       audio.onended = () => {
         setIsSpeaking(false)
         URL.revokeObjectURL(audioUrl) // Освобождаем память
         console.log('SvetlanaNeural finished speaking')
       }
-
+      
       audio.onerror = (error) => {
         console.error('Audio playback error:', error)
         setIsSpeaking(false)
         URL.revokeObjectURL(audioUrl)
         console.log('SvetlanaNeural playback failed - no fallback to preserve voice settings')
       }
-
+      
       // Воспроизводим аудио
       await audio.play()
-
+      
     } catch (error) {
       console.error('SvetlanaNeural TTS error:', error)
       setIsSpeaking(false)
       console.log('SvetlanaNeural synthesis failed - no fallback to preserve voice settings')
     }
-  }
-
-  const speakWithWebSpeech = (text: string) => {
-    if (!ttsSupported || !speechSynthesisRef.current) {
-      console.log('TTS not supported')
-      return
-    }
-
-    // Останавливаем предыдущее воспроизведение
-    if (speechSynthesisRef.current.speaking) {
-      speechSynthesisRef.current.cancel()
-    }
-
-    // Очищаем текст от технических элементов
-    const cleanText = cleanTextForSpeech(text)
-
-    setIsSpeaking(true)
-
-    // Говорим весь текст целиком без разбиения на предложения
-    const synth = window.speechSynthesis
-    const voices = synth.getVoices()
-
-    // Ищем женский русский голос согласно промпту
-    let voice = voices.find(v =>
-      v.lang.startsWith("ru") && (
-        v.name.toLowerCase().includes("female") ||
-        v.name.toLowerCase().includes("женский") ||
-        v.name.toLowerCase().includes("google") ||
-        v.name.toLowerCase().includes("алина") ||
-        v.name.toLowerCase().includes("катя")
-      )
-    ) || voices.find(v => v.lang.startsWith("ru"))
-
-    // Если русского нет, берем женский английский
-    if (!voice) {
-      voice = voices.find(v =>
-        v.lang.startsWith("en") && (
-          v.name.toLowerCase().includes("female") ||
-          v.name.toLowerCase().includes("woman")
-        )
-      )
-    }
-
-    const utterance = new SpeechSynthesisUtterance(cleanText)
-
-    if (voice) {
-      utterance.voice = voice
-      console.log('Selected voice:', voice.name)
-    }
-
-    // Настройки для дружелюбного женского голоса
-    utterance.rate = 1.0 // нормальная скорость
-    utterance.pitch = 1.1 // немного выш��, чтобы з��учало женственнее
-    utterance.volume = 0.9
-
-    utterance.onstart = () => {
-      console.log('Speaking text:', cleanText)
-    }
-
-    utterance.onend = () => {
-      setIsSpeaking(false)
-      console.log('Finished speaking')
-    }
-
-    utterance.onerror = (event) => {
-      console.error('Speech synthesis error:', event.error)
-      setIsSpeaking(false)
-    }
-
-    synth.speak(utterance)
   }
 
   const cleanTextForSpeech = (text: string): string => {
@@ -424,8 +354,6 @@ export default function JarvisChat() {
       .trim()
   }
 
-  // Убираем функции разбиения на предложения - больше не нужны
-
   const speakText = async (text: string) => {
     // Проверяем, не говорит ли уже
     if (isSpeaking) {
@@ -435,7 +363,7 @@ export default function JarvisChat() {
       await new Promise(resolve => setTimeout(resolve, 200))
     }
 
-    // Только ru-RU-SvetlanaNeural согласно плану пользователя - наст��ойки голоса идеальные
+    // Только ru-RU-SvetlanaNeural согласно плану пользователя - настройки голоса идеальные
     console.log('Using ru-RU-SvetlanaNeural for:', text)
     await speakWithSvetlanaNeural(text)
   }
@@ -484,10 +412,10 @@ export default function JarvisChat() {
     setTimeout(() => {
       const jarvisResponses = [
         'Прекрасно! Я очень рада нашему общению. Говорю медленно для вашего комфорта. Расскажите, какой проект вас интересует? Помогу найти идеальное решение.',
-        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
+        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений д��я бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
         'Как интересно! Давайте поговорим о ваших потребностях. Уверена, найдём отличное решение вместе. Говорю медленно, чтобы было удобно.',
         'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Говорю размеренно. Хотите узнать подробнее?',
-        'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расска��ите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
+        'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расскажите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
         'Как здорово, что можем пообщаться! Всегда рада помочь с проектами. Что именно интересует? Говорю спокойно и размеренно.',
         'Замечательно! Знаете, обожаю работать над интересными задачами. Поделитесь идеями, их воплотим. Говорю медленно для удобного восприятия.'
       ]
@@ -653,7 +581,7 @@ export default function JarvisChat() {
                   <button
                     onClick={toggleRecording}
                     className={`chat-mic-button ${isRecording ? 'recording' : ''}`}
-                    aria-label={isRecording ? "Остановить запись" : "��ачать голосовую запись"}
+                    aria-label={isRecording ? "Остановить запись" : "Начать голосовую запись"}
                   >
                     {isRecording ? <MicOff className="chat-mic-icon" /> : <Mic className="chat-mic-icon" />}
                     {isListening && <div className="mic-pulse"></div>}
