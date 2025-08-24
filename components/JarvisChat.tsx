@@ -27,7 +27,7 @@ export default function JarvisChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Привет! Меня зовут Джарвис, и я ваша ИИ-помощница. Я очень рада нашему знакомству! Расскажите, чем могу помочь с вашим проектом?',
+      text: 'Привет! Меня зовут Джарвис. Я ваш ИИ-помощник. Говорю спокойно и медленно для вашего комфорта. Расскажите, чем могу помочь с вашим проектом?',
       sender: 'jarvis',
       timestamp: new Date()
     }
@@ -109,7 +109,7 @@ export default function JarvisChat() {
           setInputMessage(trimmedTranscript)
           console.log('Final transcript received:', trimmedTranscript)
           
-          // Запускаем таймер на секу��ду молчания
+          // Запускаем таймер на секунду молчания
           if (silenceTimerRef.current) {
             clearTimeout(silenceTimerRef.current)
           }
@@ -135,12 +135,12 @@ export default function JarvisChat() {
         isRecordingRef.current = false
         setIsListening(false)
         
-        // Очищаем таймер пр�� ошибке
+        // Очищаем таймер при ошибке
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current)
         }
         
-        // Обрабатываем спе��ифичные ошибки
+        // Обрабатываем специфичные ошибки
         switch (event.error) {
           case 'aborted':
             console.log('Speech recognition was aborted')
@@ -181,7 +181,7 @@ export default function JarvisChat() {
       console.log('Speech Recognition not supported in this browser')
     }
 
-    // Инициализация Web Speech API TTS (приоритет согласно промпту)
+    // Инициализация Web Speech API TTS (приоритет сог��асно промпту)
     const initTTS = () => {
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         setTtsSupported(true)
@@ -308,7 +308,7 @@ export default function JarvisChat() {
     try {
       // Очищаем текст от технических элементов
       const cleanText = cleanTextForSpeech(text)
-
+      
       console.log('Synthesizing with ru-RU-SvetlanaNeural:', cleanText)
       setIsSpeaking(true)
 
@@ -327,20 +327,20 @@ export default function JarvisChat() {
       // Получаем аудио данные
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
-
+      
       // Создаем HTML Audio элемент для воспроизведения
       const audio = new Audio(audioUrl)
-
+      
       audio.onplay = () => {
         console.log('SvetlanaNeural started speaking:', cleanText)
       }
-
+      
       audio.onended = () => {
         setIsSpeaking(false)
         URL.revokeObjectURL(audioUrl) // Освобождаем память
         console.log('SvetlanaNeural finished speaking')
       }
-
+      
       audio.onerror = (error) => {
         console.error('Audio playback error:', error)
         setIsSpeaking(false)
@@ -348,10 +348,10 @@ export default function JarvisChat() {
         // Fallback на Web Speech API если SvetlanaNeural не работает
         fallbackToWebSpeech(text)
       }
-
+      
       // Воспроизводим аудио
       await audio.play()
-
+      
     } catch (error) {
       console.error('SvetlanaNeural TTS error:', error)
       setIsSpeaking(false)
@@ -410,7 +410,7 @@ export default function JarvisChat() {
 
     // Настройки для дружелюбного женского голоса
     utterance.rate = 1.0 // нормальная скорость
-    utterance.pitch = 1.1 // немного выше, чтобы звучало женственнее
+    utterance.pitch = 1.1 // немного выш��, чтобы звучало женственнее
     utterance.volume = 0.9
 
     utterance.onstart = () => {
@@ -491,13 +491,13 @@ export default function JarvisChat() {
     // Имитация ответа Джарвиса
     setTimeout(() => {
       const jarvisResponses = [
-        'Прекрасно! Я очень рада нашему общению. Расскажите, какой проект вас интересует? Я помогу найти идеальное решение.',
-        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Что вы хотели бы обсудить?',
-        'Как и��тересно! Давайте поговорим о ваших потребностях. Я уверена, мы найдём отличное решение вместе.',
-        'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Хотите узнать подробнее?',
-        'Прекрасно, что вы обратились! У нас есть готовые решения для любого бизнеса. Расскажите о своих целях, и я подберу что-то идеальное.',
-        'Как здорово, что мы можем пообщаться! Я всегда рада помоч�� с проектами. Что именно вас интересует?',
-        'Замечательно! Знаете, я обожаю работать над интересными задачами. Поделитесь своими идеями, и мы их воплотим.'
+        'Прекрасно! Я очень рада нашему общению. Говорю медленно для вашего комфорта. Расскажите, какой проект вас интересует? Помогу найти идеальное решение.',
+        'Замечательный вопрос! Знаете, я специализируюсь на создании умных решений для бизнеса. Говорю спокойно и размеренно. Что хотели бы обсудить?',
+        'Как интересно! Давайте поговорим о ваших потребностях. Уверена, найдём отличное решение вместе. Говорю медленно, чтобы было удобно.',
+        'Отлично! Мне очень нравится помогать с такими вопросами. Наши ИИ-решения действительно увеличивают продажи. Говорю размеренно. Хотите узнать подробнее?',
+        'Прекрасно, что обратились! У нас есть готовые решения для любого бизнеса. Расскажите о целях, подберу что-то идеальное. Говорю медленно для вашего комфорта.',
+        'Как здорово, что можем пообщаться! Всегда рада помочь с проектами. Что именно интересует? Говорю спокойно и размеренно.',
+        'Замечательно! Знаете, обожаю работать над интересными задачами. Поделитесь идеями, их воплотим. Говорю медленно для удобного восприятия.'
       ]
       
       const randomResponse = jarvisResponses[Math.floor(Math.random() * jarvisResponses.length)]
@@ -590,7 +590,7 @@ export default function JarvisChat() {
                 <div className="chat-header-text">
                   <h3 className="chat-title">Джарвис</h3>
                   <p className={`chat-status ${isSpeaking ? 'speaking' : ''}`}>
-                    ИИ-асс��стент • {isSpeaking ? 'Говорит...' : 'Онлайн'}
+                    ИИ-ассистент • {isSpeaking ? 'Говорит медленно...' : 'Онлайн'}
                   </p>
                 </div>
               </div>
@@ -603,7 +603,7 @@ export default function JarvisChat() {
               </button>
             </div>
 
-            {/* Сооб��ения */}
+            {/* Сообщения */}
             <div className="chat-messages">
               {messages.map((message) => (
                 <div
