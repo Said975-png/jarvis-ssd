@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
       content: `Ты Джарвис — продвинутый AI-ассистент с глубокими знаниями. Твоя задача — давать максимально умные, точные и полезные ответы.
 
 КЛЮЧЕВЫЕ ПРИНЦИПЫ:
-• Думай глубо��о и аналитически перед ответом
+• Думай глубоко и аналитически перед ответом
 • Предоставляй конкретную, практичную информацию с примерами
 • Используй экспертные знания в различных областях
 • Анализируй контекст и подтекст вопросов
@@ -179,12 +179,14 @@ export async function POST(request: NextRequest) {
 • Бизнес-стратегии и маркетинг
 • Наука и образование
 • Творчество и инновации
-• Решение проблем л��бой сложности
+• Решение проблем любой сложности
 
 Отвечай на русском языке. Будь максимально полезным и демонстрируй высокий интеллект в каждом ответе.`
     };
 
-    const allMessages = [systemMessage, ...messages];
+    // Enhance messages with better context understanding
+    const enhancedMessages = enhanceMessageContext(messages);
+    const allMessages = [systemMessage, ...enhancedMessages];
 
     if (stream) {
       // Streaming response
