@@ -664,20 +664,6 @@ body {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .card-1 {
-    top: 12%;
-    left: 3%;
-  }
-
-  .card-2 {
-    top: 40%;
-    right: 5%;
-  }
-
-  .card-3 {
-    bottom: 15%;
-    left: 5%;
-  }
 }
 
 /* Medium screens - optimize navigation actions */
