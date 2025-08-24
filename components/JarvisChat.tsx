@@ -287,7 +287,7 @@ export default function JarvisChat() {
     }
   }
 
-  // Озвучивание только полного заверше��ного текста
+  // Озвучивание только полного завершенного текста
   const speakCompleteText = async (text: string) => {
     if (!text.trim()) return
 
@@ -361,9 +361,9 @@ export default function JarvisChat() {
   }
 
   const speakText = async (text: string) => {
-    // Сразу добавляем к непрерывной речи
-    console.log('🎵 Добавляем к речи:', text)
-    await speakContinuously(text)
+    // Просто озвучиваем полный текст
+    console.log('🎵 Озвучиваем текст:', text)
+    await speakCompleteText(text)
   }
 
   const stopSpeaking = () => {
@@ -438,7 +438,7 @@ export default function JarvisChat() {
         throw new Error(`AI API error: ${response.status} ${response.statusText}`)
       }
 
-      // Создаем сообщение Джарвиса для потокового обновления
+      // Создаем сообщение Джарвиса для п��токового обновления
       const jarvisMessageId = (Date.now() + 1).toString()
       const jarvisMessage: Message = {
         id: jarvisMessageId,
@@ -483,7 +483,7 @@ export default function JarvisChat() {
                   accumulatedText += content
                   sentenceBuffer += content
 
-                  // Обновляем сообщение в реальном времени
+                  // Обновляем сообщение в р��альном времени
                   setMessages(prev => prev.map(msg => 
                     msg.id === jarvisMessageId 
                       ? { ...msg, text: accumulatedText }
