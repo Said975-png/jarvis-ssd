@@ -333,7 +333,7 @@ export default function JarvisChat() {
         },
         body: JSON.stringify({
           text: cleanText,
-          rate: '0.4'
+          rate: '0.6'
         })
       })
 
@@ -503,7 +503,7 @@ export default function JarvisChat() {
                       : msg
                   ))
 
-                  // Быстрое озвучивание ��о частям без пауз
+                  // Быстрое озвучивание по частям без пауз
                   const shouldSpeak =
                     // Полные предложения
                     /[.!?][\s\n]*$/.test(content) ||
