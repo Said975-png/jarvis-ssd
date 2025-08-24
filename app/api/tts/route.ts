@@ -4,7 +4,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const text = searchParams.get('text');
-    const rate = searchParams.get('rate') || '0.4'; // По умолчанию максимально медленная скорость
+    const rate = searchParams.get('rate') || '0.6'; // Оптимальная скорость для плавной речи
 
     if (!text) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
