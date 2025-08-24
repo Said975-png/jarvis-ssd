@@ -64,7 +64,7 @@ export default function JarvisChat() {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
 
-      // Автоматически озвучиваем приветст��ие при открытии чата
+      // Автоматически озвучиваем приветствие при открытии чата
       if (messages.length === 1) {
         // Небольшая задержка, чтобы чат успел открыться
         setTimeout(() => {
@@ -75,7 +75,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // Инициализация Speech Recognition
+  // ��нициализация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -324,7 +324,7 @@ export default function JarvisChat() {
   const speakCompleteText = async (text: string) => {
     if (!text.trim()) return
 
-    console.log('🎤 Озвучиваем полный текст:', text.length, 'символов')
+    console.log('��� Озвучиваем полный текст:', text.length, 'символов')
 
     // Останавливаем предыдущее аудио
     if (currentAudioRef.current) {
@@ -379,11 +379,9 @@ export default function JarvisChat() {
   }
 
   const startNewSpeech = () => {
-    // Сбрасываем все буферы для нового сообщения
+    // Сбрасываем буфер для нового сообщения
     fullTextRef.current = ''
-    pendingTextRef.current = ''
     isStreamingRef.current = true
-    hasStartedSpeakingRef.current = false
 
     // Останавливаем текущее аудио
     if (currentAudioRef.current) {
@@ -392,7 +390,7 @@ export default function JarvisChat() {
     }
 
     setIsSpeaking(false)
-    console.log('🎤 Начинаем новое озвучивание')
+    console.log('🎤 Готовимся к озвучиванию нового ответа')
   }
 
   const speakText = async (text: string) => {
@@ -402,11 +400,9 @@ export default function JarvisChat() {
   }
 
   const stopSpeaking = () => {
-    // Очищаем все буферы
+    // Очищаем буферы
     fullTextRef.current = ''
-    pendingTextRef.current = ''
     isStreamingRef.current = false
-    hasStartedSpeakingRef.current = false
 
     // Останавливаем текущее аудио
     if (currentAudioRef.current) {
@@ -430,7 +426,7 @@ export default function JarvisChat() {
       }
     })
 
-    console.log('🛑 Вся речь остановлена')
+    console.log('🛑 Речь остановлена')
   }
 
   const sendMessage = async (message: string) => {
@@ -453,7 +449,7 @@ export default function JarvisChat() {
     setIsTyping(true)
 
     try {
-      // Подго��авливаем историю сообщений для AI
+      // Подготавливаем историю сообщений для AI
       const allMessages = [...messages, userMessage]
       const aiMessages = allMessages.map(msg => ({
         role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
@@ -489,7 +485,7 @@ export default function JarvisChat() {
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
-      // Начинае�� новое озвучивание
+      // Начинаем новое озвучивание
       startNewSpeech()
 
       // Обрабатываем потоковый ответ
