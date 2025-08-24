@@ -213,7 +213,7 @@ export default function JarvisChat() {
           console.log('Recognition cleanup error:', error)
         }
       }
-      // Останавливаем р��чь при размонтировании
+      // Останавливаем речь при размонтировании
       if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
         speechSynthesisRef.current.cancel()
       }
@@ -336,7 +336,7 @@ export default function JarvisChat() {
         },
         body: JSON.stringify({
           text: cleanText,
-          rate: '0.6'
+          rate: '0.8'
         })
       })
 
@@ -348,7 +348,7 @@ export default function JarvisChat() {
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
       
-      // Создаем HTML Audio элемент для воспроизведения
+      // Создаем HTML Audio элеме��т для воспроизведения
       const audio = new Audio(audioUrl)
       
       return new Promise<void>((resolve, reject) => {
@@ -687,7 +687,7 @@ export default function JarvisChat() {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isRecording ? "Говорите..." : "На��ишите сообщение..."}
+                  placeholder={isRecording ? "Говорите..." : "Напишите сообщение..."}
                   className="chat-input"
                   disabled={isRecording}
                 />
