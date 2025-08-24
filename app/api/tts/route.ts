@@ -15,19 +15,10 @@ export async function GET(request: NextRequest) {
 
     const voice = "ru-RU-SvetlanaNeural";
 
-    // Создаем SSML с регулировкой скорости для максимально спокойной и медленной речи
-    const ssmlText = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ru-RU">
-      <prosody rate="${rate}" pitch="+2%" volume="80%">
-        <break time="500ms"/>
-        ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\./g, '.<break time="800ms"/>').replace(/,/g, ',<break time="400ms"/>').replace(/;/g, ';<break time="600ms"/>')}
-        <break time="700ms"/>
-      </prosody>
-    </speak>`;
-
     console.log(`Synthesizing text: "${text}" with voice: ${voice}, rate: ${rate}`);
 
-    // Создаем объект для синтеза с SSML
-    const tts = new EdgeTTS(ssmlText, voice);
+    // Создаем объект для синтеза с чистым текстом (без SSML)
+    const tts = new EdgeTTS(text, voice);
 
     // Синтезируем речь
     const result = await tts.synthesize();
@@ -57,7 +48,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { text, rate = '0.4' } = body; // По умолчанию максимально медленная скорость
+    const { text, rate = '0.4' } = body; // По умол��анию максимально медленная скорость
 
     if (!text) {
       return NextResponse.json({ error: 'Text parameter is required' }, { status: 400 });
@@ -68,19 +59,10 @@ export async function POST(request: NextRequest) {
 
     const voice = "ru-RU-SvetlanaNeural";
 
-    // Создаем SSML с регулировкой скорости для максимально спокойной и медленной речи
-    const ssmlText = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ru-RU">
-      <prosody rate="${rate}" pitch="+2%" volume="80%">
-        <break time="500ms"/>
-        ${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\./g, '.<break time="800ms"/>').replace(/,/g, ',<break time="400ms"/>').replace(/;/g, ';<break time="600ms"/>')}
-        <break time="700ms"/>
-      </prosody>
-    </speak>`;
-
     console.log(`Synthesizing text: "${text}" with voice: ${voice}, rate: ${rate}`);
 
-    // Создаем объект для синтеза с SSML
-    const tts = new EdgeTTS(ssmlText, voice);
+    // Создаем объект для синтеза с чистым текстом (без SSML)
+    const tts = new EdgeTTS(text, voice);
 
     // Синтезируем речь
     const result = await tts.synthesize();
