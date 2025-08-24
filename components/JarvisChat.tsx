@@ -345,10 +345,20 @@ export default function JarvisChat() {
     return text
       // Убираем URL
       .replace(/https?:\/\/[^\s]+/g, 'ссылка')
+      // Убираем любые HTML теги и символы < >
+      .replace(/<[^>]*>/g, '')
+      .replace(/</g, '')
+      .replace(/>/g, '')
       // Убираем технические коды в скобках
       .replace(/\([A-Z0-9_]+\)/g, '')
       // Убираем хештеги и специальные символы
       .replace(/#\w+/g, '')
+      // Убираем символы &amp; &lt; &gt; и другие HTML-сущности
+      .replace(/&[a-z]+;/gi, '')
+      .replace(/&/g, '')
+      // Убираем кавычки и специальные символы
+      .replace(/["""'']/g, '')
+      .replace(/[«»]/g, '')
       // Убираем множественные пробелы
       .replace(/\s+/g, ' ')
       .trim()
@@ -470,7 +480,7 @@ export default function JarvisChat() {
           <button
             onClick={toggleChat}
             className="chat-button"
-            aria-label="Открыть чат с Джарвисом"
+            aria-label="Открыть чат с Джарви��ом"
           >
             <MessageCircle className="chat-button-icon" />
             <div className="chat-button-pulse"></div>
