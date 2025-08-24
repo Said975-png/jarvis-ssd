@@ -402,7 +402,7 @@ export default function JarvisChat() {
   }
 
   const stopSpeaking = () => {
-    // О��ищаем все буферы
+    // Очищаем все буферы
     fullTextRef.current = ''
     pendingTextRef.current = ''
     isStreamingRef.current = false
@@ -485,7 +485,7 @@ export default function JarvisChat() {
         timestamp: new Date()
       }
 
-      // Добавляем пустое сообщение, которое будем обновлять
+      // Добавляем пу��тое сообщение, которое будем обновлять
       setMessages(prev => [...prev, jarvisMessage])
       setIsTyping(false)
 
@@ -573,7 +573,7 @@ export default function JarvisChat() {
       isStreamingRef.current = false
 
       if (hasStartedSpeakingRef.current) {
-        // Если уже начали озвучивание, добавляем ост��вшийся текст к очереди
+        // Если уже начали озвучивание, добавляем оставшийся текст к очереди
         const remainingText = pendingTextRef.current.trim()
         if (remainingText.length > 10) {
           console.log('🎤 Очередь: осталось', remainingText.length, 'символов для озвучивания')
@@ -686,7 +686,7 @@ export default function JarvisChat() {
             ))}
           </div>
           <div className="chat-container">
-            {/* Заголовок чата */}
+            {/* Заг��ловок чата */}
             <div className="chat-header">
               <div className="chat-header-info">
                 <div className="chat-avatar">
