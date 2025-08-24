@@ -179,7 +179,7 @@ export default function JarvisChat() {
       console.log('Speech Recognition not supported in this browser')
     }
 
-    // Инициализация TTS - используем только ru-RU-SvetlanaNeural (настройки голоса идеальные)
+    // Инициализация TTS - используем тол��ко ru-RU-SvetlanaNeural (настройки голоса идеальные)
     const initTTS = () => {
       if (typeof window !== 'undefined') {
         setTtsSupported(true)
@@ -373,7 +373,7 @@ export default function JarvisChat() {
   }
 
   const speakText = async (text: string) => {
-    // Проверяем, не говорит ли уже
+    // Пров��ряем, не говорит ли уже
     if (isSpeaking) {
       console.log('Already speaking, stopping current speech first')
       stopSpeaking()
@@ -451,7 +451,7 @@ export default function JarvisChat() {
       }
 
       const data = await response.json()
-      const aiResponse = data.choices?.[0]?.message?.content || 'Извините, произошла ошибка при обработке вашего запроса.'
+      const aiResponse = data.choices?.[0]?.message?.content || 'Извините, произошла ошибка при о��работке вашего запроса.'
 
       const jarvisMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -473,9 +473,9 @@ export default function JarvisChat() {
       
       // Fallback to predefined responses if AI fails
       const fallbackResponses = [
-        'Извините, у меня сейчас проблемы с подключением. Попробуйте ещё раз через несколько секунд.',
-        'Похоже, что-то пошло не так. Перефразируйте ваш вопрос, и я постараюсь ответить.',
-        'Временные технические неполадки. Давайте попробуем снова через момент.'
+        'Извините, возникли временные технические сложности с нейросетью. Пожалуйста, повторите ваш запрос через несколько секунд — я готов предоставить вам максимально качественный анализ.',
+        'Произошел сбой соединения с основными серверами ИИ. Переформулируйте ваш вопрос, и я обязательно дам подробный и экспертный ответ.',
+        'Врем��нная потеря связи с вычислительными ресурсами. Через момент буду готов предоставить глубокий анализ вашей задачи.'
       ]
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
