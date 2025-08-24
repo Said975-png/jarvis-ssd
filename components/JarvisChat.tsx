@@ -72,7 +72,7 @@ export default function JarvisChat() {
     }
   }, [isOpen, messages])
 
-  // Инициализация Speech Recognition
+  // Инициали��ация Speech Recognition
   useEffect(() => {
     console.log('Initializing Speech Recognition...')
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -286,7 +286,7 @@ export default function JarvisChat() {
     }
   }
 
-  // Улучшенная очередь для TTS без пауз
+  // Плавная очередь TTS - озвучивает предложения подряд без остановок
   const processSpeechQueue = async () => {
     if (isSpeakingQueueRef.current || speechQueueRef.current.length === 0) {
       return
@@ -295,16 +295,19 @@ export default function JarvisChat() {
     isSpeakingQueueRef.current = true
     setIsSpeaking(true)
 
-    while (speechQueueRef.current.length > 0) {
-      const textToSpeak = speechQueueRef.current.shift()
-      if (textToSpeak) {
-        await speakWithSvetlanaNeural(textToSpeak)
-        // Убираем задержку для плавной речи
+    try {
+      while (speechQueueRef.current.length > 0) {
+        const textToSpeak = speechQueueRef.current.shift()
+        if (textToSpeak) {
+          await speakWithSvetlanaNeural(textToSpeak)
+        }
       }
+    } catch (error) {
+      console.error('Speech queue error:', error)
+    } finally {
+      isSpeakingQueueRef.current = false
+      setIsSpeaking(false)
     }
-
-    isSpeakingQueueRef.current = false
-    setIsSpeaking(false)
   }
 
   const addToSpeechQueue = (text: string) => {
@@ -531,7 +534,7 @@ export default function JarvisChat() {
       const fallbackResponses = [
         'Извините, проблемы с подключением. Попробуйте ещё раз через пару секунд.',
         'Что-то пошло не так. Перефразируйте вопрос, пожалуйста.',
-        'Временный сбой. Давайте попробуем снова.'
+        'Временный сбой. Дав��йте попробуем снова.'
       ]
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
@@ -598,7 +601,7 @@ export default function JarvisChat() {
       {/* Полноэкранный чат */}
       {isOpen && (
         <div className="chat-overlay">
-          {/* Эффект части�� при открытии */}
+          {/* Эффект частиц при открытии */}
           <div className="chat-particles">
             {Array.from({ length: 20 }).map((_, i) => (
               <div
